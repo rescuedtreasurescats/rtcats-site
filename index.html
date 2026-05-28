@@ -1,0 +1,282 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>RTCats HQ</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #faf7f2;
+      color: #333;
+    }
+
+    .hero-bg {
+      background:
+        linear-gradient(rgba(250,247,242,.85), rgba(250,247,242,.9)),
+        url('https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1400&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .teal {
+      color: #37a6a6;
+    }
+
+    .bg-teal {
+      background: #37a6a6;
+    }
+
+    .card {
+      transition: all .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.08);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+
+      <div class="flex items-center gap-4">
+        <img src="https://i.imgur.com/4KXQ7wL.png" alt="RTPA Logo" class="h-16">
+
+        <div>
+          <h1 class="text-2xl font-bold teal">RTCats HQ</h1>
+          <p class="text-sm text-gray-500">Volunteer & Foster Resource Center</p>
+        </div>
+      </div>
+
+      <nav class="hidden md:flex gap-6 text-sm font-medium">
+        <a href="#resources" class="hover:text-teal-600">Resources</a>
+        <a href="#fosters" class="hover:text-teal-600">Fosters</a>
+        <a href="#cats" class="hover:text-teal-600">Cats</a>
+        <a href="#calendar" class="hover:text-teal-600">Events</a>
+      </nav>
+
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero-bg">
+    <div class="max-w-7xl mx-auto px-6 py-24">
+
+      <div class="max-w-3xl">
+
+        <div class="inline-block px-4 py-1 rounded-full bg-teal text-white text-sm mb-6 shadow-lg">
+          Rescued Treasures Pet Adoptions
+        </div>
+
+        <h2 class="text-5xl md:text-6xl font-bold leading-tight mb-6">
+          Cozy resources for the people helping save lives.
+        </h2>
+
+        <p class="text-lg text-gray-700 leading-relaxed mb-8">
+          Volunteer procedures, foster resources, emergency information,
+          medication guides, events, and cat room operations — all in one place.
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+
+          <a href="#resources" class="bg-teal text-white px-6 py-4 rounded-2xl shadow-lg hover:opacity-90">
+            Volunteer Resources
+          </a>
+
+          <a href="#fosters" class="bg-white px-6 py-4 rounded-2xl shadow border border-gray-200 hover:bg-gray-50">
+            Foster Resources
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- QUICK CARDS -->
+  <section id="resources" class="max-w-7xl mx-auto px-6 py-20">
+
+    <div class="mb-10">
+      <h3 class="text-4xl font-bold mb-3">Quick Access</h3>
+      <p class="text-gray-600">
+        Important volunteer and foster resources.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <div class="card bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+        <div class="text-4xl mb-4">🐾</div>
+        <h4 class="text-2xl font-semibold mb-3">Volunteer Resources</h4>
+        <p class="text-gray-600 leading-relaxed">
+          Cleaning guides, onboarding, room procedures, and volunteer expectations.
+        </p>
+      </div>
+
+      <div id="fosters" class="card bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+        <div class="text-4xl mb-4">🏡</div>
+        <h4 class="text-2xl font-semibold mb-3">Foster Resources</h4>
+        <p class="text-gray-600 leading-relaxed mb-4">
+          Access foster procedures, medical information, FAQs, and important forms.
+        </p>
+
+        <a href="https://rescued-treasures.com/cat-fosters-1" target="_blank"
+           class="inline-block bg-teal text-white px-5 py-3 rounded-xl hover:opacity-90">
+          Open Foster Resources
+        </a>
+      </div>
+
+      <div class="card bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+        <div class="text-4xl mb-4">🚨</div>
+        <h4 class="text-2xl font-semibold mb-3">Emergency Procedures</h4>
+        <p class="text-gray-600 leading-relaxed">
+          Emergency vet contacts, quarantine procedures, escalation steps, and medical guidance.
+        </p>
+      </div>
+
+      <div class="card bg-white rounded-3xl p-8 border border-gray-100 shadow-sm">
+        <div class="text-4xl mb-4">📅</div>
+        <h4 class="text-2xl font-semibold mb-3">Calendar & Events</h4>
+        <p class="text-gray-600 leading-relaxed">
+          Adoption events, trainings, deep cleans, and volunteer scheduling.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURED CATS -->
+  <section id="cats" class="bg-[#f4eee7] py-20">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+      <div class="mb-10">
+        <h3 class="text-4xl font-bold mb-3">Featured Cats</h3>
+        <p class="text-gray-600">
+          Current adoptable cats and rescue room stars.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+
+        <div class="card bg-white rounded-3xl overflow-hidden shadow-sm">
+          <img src="https://placecats.com/400/300" class="h-72 w-full object-cover">
+
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-2xl font-bold">Willow</h4>
+
+              <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                Available
+              </span>
+            </div>
+
+            <p class="text-gray-600">
+              Sweet and social lap cat who loves attention and cozy naps.
+            </p>
+          </div>
+        </div>
+
+        <div class="card bg-white rounded-3xl overflow-hidden shadow-sm">
+          <img src="https://placecats.com/401/300" class="h-72 w-full object-cover">
+
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-2xl font-bold">Remi</h4>
+
+              <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                Pending
+              </span>
+            </div>
+
+            <p class="text-gray-600">
+              Gentle cuddle bug with a playful personality and adorable chirps.
+            </p>
+          </div>
+        </div>
+
+        <div class="card bg-white rounded-3xl overflow-hidden shadow-sm">
+          <img src="https://placecats.com/402/300" class="h-72 w-full object-cover">
+
+          <div class="p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-2xl font-bold">Leonardo</h4>
+
+              <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                Available
+              </span>
+            </div>
+
+            <p class="text-gray-600">
+              Curious explorer and professional treat inspector.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- CALENDAR -->
+  <section id="calendar" class="py-20">
+
+    <div class="max-w-7xl mx-auto px-6">
+
+      <div class="mb-10">
+        <h3 class="text-4xl font-bold mb-3">Upcoming Events</h3>
+        <p class="text-gray-600">
+          Trainings, adoptions, and volunteer events.
+        </p>
+      </div>
+
+      <div class="bg-white rounded-3xl p-10 border border-gray-100 shadow-sm text-center">
+        <p class="text-lg text-gray-600">
+          Google Calendar integration coming soon.
+        </p>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-gray-100">
+
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-4">
+
+      <div>
+        <h4 class="font-bold text-xl teal">RTCats HQ</h4>
+        <p class="text-sm text-gray-500">
+          Volunteer & Foster Resource Center
+        </p>
+      </div>
+
+      <div class="text-sm text-gray-500">
+        © 2026 Rescued Treasures Pet Adoptions
+      </div>
+
+    </div>
+
+  </footer>
+
+</body>
+</html>
+```
