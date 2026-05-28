@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +23,7 @@
 
     .hero-bg {
       background:
-        linear-gradient(rgba(47,158,160,.90), rgba(47,158,160,.94)),
+        linear-gradient(rgba(47,158,160,.92), rgba(47,158,160,.95)),
         url('https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1600&auto=format&fit=crop');
       background-size: cover;
       background-position: center;
@@ -33,181 +34,416 @@
     }
 
     .card-hover:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       box-shadow: 0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .quick-button {
+      display: block;
+      background: white;
+      border-radius: 1.25rem;
+      padding: 1rem;
+      font-weight: 600;
+      transition: all .2s ease;
+      border: 1px solid #e5e7eb;
+    }
+
+    .quick-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.08);
     }
   </style>
 </head>
 
 <body>
 
+<!-- MOBILE NAV -->
 <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl z-50 md:hidden">
   <div class="grid grid-cols-5 text-center text-xs font-medium">
     <a href="#home" class="py-3">Home</a>
-    <a href="#volunteers" class="py-3">Volunteer</a>
-    <a href="#fosters" class="py-3">Foster</a>
-    <a href="#cats" class="py-3">Cats</a>
-    <a href="#emergency" class="py-3 text-red-600">Emergency</a>
+    <a href="#volunteers" class="py-3">Stores</a>
+    <a href="#fosters" class="py-3">Fosters</a>
+    <a href="#shared" class="py-3">Shared</a>
+    <a href="#wishlist" class="py-3 text-[#2f9ea0]">Wishlist</a>
   </div>
 </div>
 
+<!-- HEADER -->
 <header class="bg-[#2f9ea0] text-white sticky top-0 z-40 shadow-lg">
+
   <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+
     <div class="flex items-center gap-4">
-      <img src="rtlogo.webp" class="h-20 object-contain" alt="RTPA Logo">
+
+      <img
+        src="rtlogo.webp"
+        class="h-16 md:h-20 object-contain"
+        alt="RTPA Logo"
+      >
+
     </div>
 
     <nav class="hidden md:flex gap-8 text-sm font-semibold">
-      <a href="#volunteers" class="hover:text-amber-100">Volunteers</a>
-      <a href="#fosters" class="hover:text-amber-100">Fosters</a>
-      <a href="#cats" class="hover:text-amber-100">Cats</a>
-      <a href="#emergency" class="hover:text-amber-100">Emergency</a>
+      <a href="#volunteers" class="hover:text-amber-100">Volunteer Operations</a>
+      <a href="#fosters" class="hover:text-amber-100">Foster Resources</a>
+      <a href="#shared" class="hover:text-amber-100">Shared Resources</a>
     </nav>
+
   </div>
+
 </header>
 
+<!-- HERO -->
 <section id="home" class="hero-bg overflow-hidden">
-  <div class="max-w-7xl mx-auto px-6 py-20 md:py-24 text-white">
+
+  <div class="max-w-7xl mx-auto px-6 py-16 md:py-20 text-white">
+
     <div class="max-w-4xl">
-      <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-5 py-2 rounded-full mb-8 border border-white/20">
-        🐾 Supporting RTPA Volunteers & Fosters
+
+      <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-5 py-2 rounded-full mb-6 border border-white/20">
+        🐾 RTPA Volunteer & Foster Operations Hub
       </div>
 
-      <h1 class="text-4xl md:text-5xl font-extrabold leading-tight mb-8">
+      <h1 class="text-3xl md:text-5xl font-extrabold leading-tight mb-6">
         Built for the people who carry this rescue every day.
       </h1>
 
       <p class="text-lg md:text-xl text-teal-50 leading-relaxed mb-10 max-w-3xl">
-        Resources, procedures, emergency guidance, foster support,
-        medication help, and operational tools for RTPA volunteers and fosters.
+        Quick access to volunteer operations, foster resources,
+        current cats, schedules, wishlists, and rescue support tools.
       </p>
 
       <div class="grid sm:grid-cols-3 gap-4">
-        <a href="#volunteers" class="bg-white text-[#2f9ea0] rounded-3xl p-5 shadow-2xl card-hover">
-          <div class="text-3xl mb-2">🐾</div>
-          <div class="font-bold text-lg">Volunteer Resources</div>
-          <div class="text-sm text-slate-600 mt-1">Cleaning, shifts, cat room procedures & guides.</div>
+
+        <a
+          href="#volunteers"
+          class="bg-white text-[#2f9ea0] rounded-3xl p-5 shadow-2xl card-hover"
+        >
+
+          <div class="text-3xl mb-2">🏪</div>
+
+          <div class="font-bold text-lg">
+            Store Operations
+          </div>
+
+          <div class="text-sm text-slate-600 mt-1">
+            Brighton, Hard Rd & Baytowne tools and links.
+          </div>
+
         </a>
 
-        <a href="#fosters" class="bg-[#f8efe2] text-slate-800 rounded-3xl p-5 shadow-2xl card-hover">
+        <a
+          href="#fosters"
+          class="bg-[#f8efe2] text-slate-800 rounded-3xl p-5 shadow-2xl card-hover"
+        >
+
           <div class="text-3xl mb-2">🏡</div>
-          <div class="font-bold text-lg">Foster Resources</div>
-          <div class="text-sm text-slate-600 mt-1">Medical help, foster guidance & emergency support.</div>
+
+          <div class="font-bold text-lg">
+            Foster Resources
+          </div>
+
+          <div class="text-sm text-slate-600 mt-1">
+            Medical help, current cats and foster support.
+          </div>
+
         </a>
 
-        <a href="#emergency" class="bg-[#b84d4d] text-white rounded-3xl p-5 shadow-2xl card-hover">
-          <div class="text-3xl mb-2">🚨</div>
-          <div class="font-bold text-lg">Emergency Help</div>
-          <div class="text-sm text-red-100 mt-1">Emergency contacts and urgent procedures.</div>
+        <a
+          href="#shared"
+          class="bg-white/15 border border-white/20 text-white rounded-3xl p-5 shadow-2xl card-hover"
+        >
+
+          <div class="text-3xl mb-2">🐾</div>
+
+          <div class="font-bold text-lg">
+            Shared Resources
+          </div>
+
+          <div class="text-sm text-teal-50 mt-1">
+            Wishlist, RTPA links and organization resources.
+          </div>
+
         </a>
+
       </div>
+
     </div>
+
   </div>
+
 </section>
 
-<section class="max-w-7xl mx-auto px-6 pt-16">
-  <div class="bg-white rounded-[2rem] p-8 md:p-12 shadow-xl border border-slate-100">
-    <div class="max-w-4xl">
-      <div class="text-[#2f9ea0] font-semibold uppercase tracking-widest text-sm mb-4">RTCats HQ</div>
+<!-- STORE OPERATIONS -->
+<section id="volunteers" class="max-w-7xl mx-auto px-6 py-14">
 
-      <h2 class="text-3xl md:text-5xl font-bold leading-tight mb-6">
-        A support system for the people behind RTPA rescue operations.
+  <div class="flex items-center justify-between mb-8">
+    <div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">
+        Volunteer Operations
       </h2>
 
-      <p class="text-lg text-slate-600 leading-relaxed">
-        RTCats HQ exists to support the volunteers and fosters carrying RTPA rescue operations every day —
-        from medications and cleaning shifts to fostering, transports, recovery care, emergency situations,
-        and adoptions.
+      <p class="text-slate-600">
+        Quick access for store volunteers and cat room operations.
       </p>
     </div>
   </div>
-</section>
 
-<section class="max-w-7xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-10">
-  <div id="volunteers" class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
-    <div class="flex items-center gap-4 mb-8">
-      <div class="w-16 h-16 rounded-3xl bg-[#2f9ea0]/10 flex items-center justify-center text-3xl">🐾</div>
-      <div>
-        <h3 class="text-3xl font-bold">Volunteer Resources</h3>
-        <p class="text-slate-500">Cat room operations and daily procedures.</p>
+  <div class="grid lg:grid-cols-3 gap-6">
+
+    <!-- Brighton -->
+    <div class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#2f9ea0]/10 flex items-center justify-center text-2xl">
+          🏪
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-bold">Brighton</h3>
+          <p class="text-sm text-slate-500">Monroe Ave PSP</p>
+        </div>
       </div>
+
+      <div class="space-y-3">
+
+        <a href="#" class="quick-button">
+          Open Tracker
+        </a>
+
+        <a href="#" class="quick-button">
+          View Schedule
+        </a>
+
+        <a href="#" class="quick-button">
+          Join Store Chat
+        </a>
+
+      </div>
+
     </div>
 
-    <div class="grid sm:grid-cols-2 gap-4">
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Opening Procedures</div>
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Closing Procedures</div>
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Cleaning Protocols</div>
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Deep Clean Guides</div>
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Medication Logs</div>
-      <div class="bg-[#f7f4ef] rounded-2xl p-5 card-hover">Store Resources</div>
+    <!-- Hard Rd -->
+    <div class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#2f9ea0]/10 flex items-center justify-center text-2xl">
+          🏪
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-bold">Hard Rd</h3>
+          <p class="text-sm text-slate-500">Webster PSP</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+
+        <a href="#" class="quick-button">
+          Open Tracker
+        </a>
+
+        <a href="#" class="quick-button">
+          View Schedule
+        </a>
+
+        <a href="#" class="quick-button">
+          Join Store Chat
+        </a>
+
+      </div>
+
     </div>
+
+    <!-- Baytowne -->
+    <div class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
+
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-14 h-14 rounded-2xl bg-[#2f9ea0]/10 flex items-center justify-center text-2xl">
+          🏪
+        </div>
+
+        <div>
+          <h3 class="text-2xl font-bold">Baytowne</h3>
+          <p class="text-sm text-slate-500">Baytowne Plaza PSP</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+
+        <a href="#" class="quick-button">
+          Open Tracker
+        </a>
+
+        <a href="#" class="quick-button">
+          View Schedule
+        </a>
+
+        <a href="#" class="quick-button">
+          Join Store Chat
+        </a>
+
+      </div>
+
+    </div>
+
   </div>
 
-  <div id="fosters" class="bg-[#f8efe2] rounded-[2rem] p-8 shadow-xl border border-[#eadcc8]">
-    <div class="flex items-center gap-4 mb-8">
-      <div class="w-16 h-16 rounded-3xl bg-white flex items-center justify-center text-3xl shadow-md">🏡</div>
-      <div>
-        <h3 class="text-3xl font-bold">Foster Resources</h3>
-        <p class="text-slate-600">Medical support, foster guidance, and emergency procedures.</p>
-      </div>
-    </div>
-
-    <div class="grid sm:grid-cols-2 gap-4 mb-6">
-      <div class="bg-white rounded-2xl p-5 card-hover">URI Guidance</div>
-      <div class="bg-white rounded-2xl p-5 card-hover">Ringworm Procedures</div>
-      <div class="bg-white rounded-2xl p-5 card-hover">Medication Resources</div>
-      <div class="bg-white rounded-2xl p-5 card-hover">Bottle Baby Help</div>
-      <div class="bg-white rounded-2xl p-5 card-hover">Weight Tracking</div>
-      <div class="bg-white rounded-2xl p-5 card-hover">Emergency Foster Help</div>
-    </div>
-
-    <a href="https://rescued-treasures.com/cat-fosters-1" target="_blank" class="inline-flex items-center gap-2 bg-[#2f9ea0] text-white px-6 py-4 rounded-2xl shadow-lg font-semibold hover:opacity-90">
-      Open Full Foster Resource Center
-    </a>
-  </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-6 pb-16">
-  <div class="bg-white rounded-[2rem] p-8 shadow-xl border border-slate-100">
+<!-- FOSTERS -->
+<section id="fosters" class="max-w-7xl mx-auto px-6 pb-14">
+
+  <div class="bg-[#f8efe2] rounded-[2rem] p-8 md:p-10 shadow-xl border border-[#eadcc8]">
+
     <div class="mb-8">
-      <h3 class="text-3xl font-bold mb-2">Shared Hero Resources</h3>
-      <p class="text-slate-500">Resources used by both volunteers and fosters.</p>
+
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">
+        Foster Resources
+      </h2>
+
+      <p class="text-slate-600">
+        Support tools and resources for RTPA fosters.
+      </p>
+
     </div>
 
-    <div class="grid md:grid-cols-3 gap-5">
-      <div class="bg-[#f7f4ef] rounded-2xl p-6">
-        <div class="text-3xl mb-3">💊</div>
-        <h4 class="font-bold text-xl mb-2">Medication Resources</h4>
-        <p class="text-slate-600 text-sm">Medication charts, dosing guides, and printable resources.</p>
-      </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
 
-      <div class="bg-[#f7f4ef] rounded-2xl p-6">
-        <div class="text-3xl mb-3">📅</div>
-        <h4 class="font-bold text-xl mb-2">Calendar & Events</h4>
-        <p class="text-slate-600 text-sm">Adoption events, trainings, cleanings, and scheduling.</p>
-      </div>
+      <a
+        href="https://rescued-treasures.com/cat-fosters-1"
+        target="_blank"
+        class="quick-button"
+      >
+        Foster Resource Center
+      </a>
 
-      <div id="emergency" class="bg-[#b84d4d] text-white rounded-2xl p-6">
-        <div class="text-3xl mb-3">🚨</div>
-        <h4 class="font-bold text-xl mb-2">Emergency Procedures</h4>
-        <p class="text-red-100 text-sm">Emergency vet contacts and escalation procedures.</p>
-      </div>
+      <a
+        href="https://rescued-treasures.com/cats-1"
+        target="_blank"
+        class="quick-button"
+      >
+        Current Cats
+      </a>
+
+      <a
+        href="#"
+        class="quick-button"
+      >
+        Medication Resources
+      </a>
+
+      <a
+        href="#"
+        class="quick-button"
+      >
+        Bottle Baby Help
+      </a>
+
+      <a
+        href="#"
+        class="quick-button"
+      >
+        Emergency Foster Help
+      </a>
+
+      <a
+        href="https://www.chewy.com/g/rescued-treasures-pet-adoptions_b75574561#wish-list"
+        target="_blank"
+        class="quick-button"
+      >
+        Chewy Wishlist
+      </a>
+
     </div>
+
   </div>
+
 </section>
 
+<!-- SHARED -->
+<section id="shared" class="max-w-7xl mx-auto px-6 pb-20">
+
+  <div class="bg-white rounded-[2rem] p-8 md:p-10 shadow-xl border border-slate-100">
+
+    <div class="mb-8">
+
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">
+        Shared Resources
+      </h2>
+
+      <p class="text-slate-600">
+        Organization-wide tools and quick links.
+      </p>
+
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      <a
+        href="https://rescued-treasures.com"
+        target="_blank"
+        class="quick-button"
+      >
+        RTPA Main Website
+      </a>
+
+      <a
+        href="https://rescued-treasures.com/cat-application"
+        target="_blank"
+        class="quick-button"
+      >
+        Adoption Application
+      </a>
+
+      <a
+        href="https://www.facebook.com/groups/147953258572717/"
+        target="_blank"
+        class="quick-button"
+      >
+        Volunteer Group
+      </a>
+
+      <a
+        id="wishlist"
+        href="https://www.chewy.com/g/rescued-treasures-pet-adoptions_b75574561#wish-list"
+        target="_blank"
+        class="quick-button"
+      >
+        Chewy Wishlist
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
 <footer class="bg-[#2f9ea0] text-white py-10 mb-16 md:mb-0">
+
   <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
     <div>
-      <div class="text-2xl font-bold">RTCats HQ</div>
-      <div class="text-teal-100 text-sm">Volunteer & Foster Resource Center</div>
+
+      <div class="text-2xl font-bold">
+        RTCats HQ
+      </div>
+
+      <div class="text-teal-100 text-sm">
+        Volunteer & Foster Operations Hub
+      </div>
+
     </div>
 
     <div class="text-sm text-teal-100">
       Supporting the people behind RTPA rescue operations.
     </div>
+
   </div>
+
 </footer>
 
 </body>
 </html>
+```
