@@ -1,40 +1,588 @@
-<!-- NEW SCHEDULE PORTAL -->
-<section class="max-w-7xl mx-auto px-6 pb-10">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-6 shadow-sm">
+  <title>RTCats HQ</title>
 
-    <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-3">
-      🆕 Volunteer Schedule Portal
-    </h2>
+  <script src="https://cdn.tailwindcss.com"></script>
 
-    <p class="text-slate-700 mb-4">
-      Use the Volunteer Schedule Portal to sign up for meal shifts, view your upcoming schedule, and help keep our cat rooms covered.
-    </p>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <div class="flex flex-col md:flex-row gap-3">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-      <a
-        href="https://script.google.com/macros/s/AKfycbzuG587DOfqo7SDpvJQ3b9Inr4Nv7YoVS8tDpTu9RRgN3gh3rIOR2JO1O3D28Pz8FDg/exec"
-        target="_blank"
-        class="quick-button schedule-btn"
-      >
-        Open Schedule Portal
-      </a>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f7f4ef;
+      color: #1e293b;
+    }
 
-      <a
-        href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing"
-        target="_blank"
-        class="quick-button tracker-btn"
-      >
-        View Schedule
-      </a>
+    .hero-bg {
+      background:
+        linear-gradient(rgba(47,158,160,.92), rgba(47,158,160,.95)),
+        url('https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1600&auto=format&fit=crop');
+      background-size: cover;
+      background-position: center;
+    }
 
+    .card-hover {
+      transition: all .25s ease;
+    }
+
+    .card-hover:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.08);
+    }
+
+    .quick-button {
+      display: block;
+      background: white;
+      border-radius: 1.25rem;
+      padding: 1rem;
+      font-weight: 600;
+      transition: all .2s ease;
+      border: 1px solid #e5e7eb;
+      text-decoration: none;
+    }
+
+    .quick-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(0,0,0,.08);
+    }
+
+    .tracker-btn {
+      background: #2f9ea0;
+      color: white;
+      border: none;
+    }
+
+    .schedule-btn {
+      background: white;
+      color: #1e293b;
+    }
+
+    .chat-btn {
+      background: #1877F2;
+      color: white;
+      border: none;
+    }
+
+    .placeholder-btn {
+      background: #f1f5f9;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+
+    .section-card {
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,.06);
+      border: 1px solid rgba(226,232,240,.9);
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- MOBILE NAV -->
+<div class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 shadow-2xl z-50 md:hidden">
+  <div class="grid grid-cols-5 text-center text-xs font-medium">
+    <a href="#home" class="py-3">Home</a>
+    <a href="#volunteers" class="py-3">Stores</a>
+    <a href="#fosters" class="py-3">Fosters</a>
+    <a href="#forms" class="py-3">Forms</a>
+    <a href="#shared" class="py-3 text-[#2f9ea0]">Shared</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="bg-[#2f9ea0] text-white sticky top-0 z-40 shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+
+    <div class="flex items-center gap-4">
+      <img src="rtlogo.webp" class="h-16 md:h-20 object-contain" alt="RTPA Logo">
     </div>
 
-    <p class="text-sm text-slate-500 mt-4">
-      Thank you for volunteering with Rescued Treasures Pet Adoptions!
-    </p>
+    <nav class="hidden md:flex gap-8 text-sm font-semibold">
+      <a href="#volunteers">Volunteer Resources</a>
+      <a href="#fosters">Foster Resources</a>
+      <a href="#shared">Shared Resources</a>
+    </nav>
+
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="home" class="hero-bg overflow-hidden">
+
+  <div class="max-w-7xl mx-auto px-6 py-10 md:py-14 text-white">
+
+    <div class="max-w-4xl">
+
+      <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur px-5 py-2 rounded-full mb-6 border border-white/20">
+        🐾 RTPA Volunteer & Foster Operations Hub
+      </div>
+
+      <h1 class="text-3xl md:text-4xl font-extrabold leading-tight mb-5">
+        Built for the people who carry this rescue every day.
+      </h1>
+
+      <p class="text-base md:text-lg text-teal-50 leading-relaxed mb-8 max-w-3xl">
+        Trackers, schedules, chats, foster resources, current cats, and the tools that keep RTPA running.
+      </p>
+
+    </div>
 
   </div>
 
 </section>
+<!-- NEW SCHEDULE PORTAL --> <section class="max-w-7xl mx-auto px-6 pb-10"> <div class="bg-blue-50 border-2 border-blue-300 rounded-xl p-6 shadow-sm"> <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-3"> 🆕 New Volunteer Schedule Portal (Testing) </h2> <p class="text-slate-700 mb-4"> We are preparing to launch our new volunteer scheduling system. Before we go live, please take a few minutes to sign in, schedule a shift, and familiarize yourself with the new portal. </p> <div class="flex flex-col md:flex-row gap-3"> <a href="https://script.google.com/macros/s/AKfycbzMD2_73UDg1DIdFsehPmLKD2Wx2d2mG5YK1q742cbxaE25nornZUh7PdkggbtXsasb/exec" target="_blank" class="quick-button schedule-btn" > Open Schedule Portal </a> <a href="https://docs.google.com/spreadsheets/d/1HlkktmV4TivrsRdD_srl8Cu9po1mC1L7NLhMAk8SNqM/edit?usp=sharing" target="_blank" class="quick-button tracker-btn" > View Crash Test Schedule </a> </div> <p class="text-sm text-slate-500 mt-4"> This is currently a test environment. Changes made here will not affect the live volunteer schedule. </p> </div> </section>
+<!-- VOLUNTEER RESOURCES -->
+<section id="volunteers" class="max-w-7xl mx-auto px-6 py-14">
+
+  <div class="mb-8">
+    <h2 class="text-3xl md:text-4xl font-bold mb-2">
+      Volunteer Resources
+    </h2>
+
+    <p class="text-slate-600">
+      Quick access for store volunteers and cat room operations.
+    </p>
+  </div>
+
+  <div class="grid lg:grid-cols-3 gap-6 mb-8">
+
+    <!-- BRIGHTON -->
+    <div class="bg-white section-card">
+
+      <h3 class="text-2xl font-bold mb-1">
+        🐈 Brighton
+      </h3>
+
+      <p class="text-sm text-slate-500 mb-6">
+        Monroe Ave PSP
+      </p>
+
+      <div class="space-y-3">
+
+        <a
+          href="https://docs.google.com/spreadsheets/u/0/d/1RoF0DpyCc0sYQVmbeh1WFPzfGO1GZlYl2isZFlZbsBg/htmlview?pli=1#gid=340749424"
+          target="_blank"
+          class="quick-button tracker-btn"
+        >
+          Open Tracker
+        </a>
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing"
+          target="_blank"
+          class="quick-button schedule-btn"
+        >
+          View Schedule
+        </a>
+
+        <a
+          href="https://m.me/j/AbYxO5hAUQidrdSH/?send_source=gc%3Asend_in_messenger_c"
+          target="_blank"
+          class="quick-button chat-btn"
+        >
+          Join Brighton Chat
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- HARD RD -->
+    <div class="bg-white section-card">
+
+      <h3 class="text-2xl font-bold mb-1">
+        🐾 Hard Rd
+      </h3>
+
+      <p class="text-sm text-slate-500 mb-6">
+        Webster PSP
+      </p>
+
+      <div class="space-y-3">
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1ZtLoV1Q30qV8SlSXkaMraOalUFYSPAHJA1TIx9eWdFU/edit?usp=sharing"
+          target="_blank"
+          class="quick-button tracker-btn"
+        >
+          Open Tracker
+        </a>
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing"
+          target="_blank"
+          class="quick-button schedule-btn"
+        >
+          View Schedule
+        </a>
+
+        <a
+          href="https://m.me/j/Abal_JXoCW_HfQ_i/?send_source=gc%3Asend_in_messenger_c"
+          target="_blank"
+          class="quick-button chat-btn"
+        >
+          Join Hard Rd Chat
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- BAYTOWNE -->
+    <div class="bg-white section-card">
+
+      <h3 class="text-2xl font-bold mb-1">
+        🏡 Baytowne
+      </h3>
+
+      <p class="text-sm text-slate-500 mb-6">
+        Baytowne Plaza PSP
+      </p>
+
+      <div class="space-y-3">
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1EnjPOVu2hc5cBzUo5jrTQONDkmGtdkIx_4cy6TGaObE/edit?gid=47840000#gid=47840000"
+          target="_blank"
+          class="quick-button tracker-btn"
+        >
+          Open Tracker
+        </a>
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing"
+          target="_blank"
+          class="quick-button schedule-btn"
+        >
+          View Schedule
+        </a>
+
+        <a
+          href="https://m.me/j/AbZZ6IEW7H5kaWv-/?send_source=gc%3Asend_in_messenger_c"
+          target="_blank"
+          class="quick-button chat-btn"
+        >
+          Join Baytowne Chat
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="bg-white section-card">
+
+    <h3 class="text-2xl font-bold mb-2">
+      Volunteer-Wide Resources
+    </h3>
+
+    <p class="text-slate-600 mb-6">
+      General volunteer resources used across all stores.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-4">
+
+      <a
+        href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing"
+        target="_blank"
+        class="quick-button"
+      >
+        Volunteer Schedule
+      </a>
+
+      <a
+        href="https://www.facebook.com/groups/156877281633083"
+        target="_blank"
+        class="quick-button"
+      >
+        Volunteer Facebook Group
+      </a>
+
+      <a
+        href="#"
+        class="quick-button placeholder-btn"
+      >
+        Orientation Information Coming Soon
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+<!-- FOSTER RESOURCES -->
+<section id="fosters" class="max-w-7xl mx-auto px-6 pb-14">
+
+  <div class="bg-[#f8efe2] section-card border-[#eadcc8]">
+
+    <div class="mb-8">
+
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">
+        Foster Resources
+      </h2>
+
+      <p class="text-slate-600">
+        Tools, forms, and reference resources for RTPA foster homes.
+      </p>
+
+    </div>
+
+    <!-- FOSTER OPERATIONAL TOOLS -->
+    <div class="mb-10">
+
+      <h3 class="text-2xl font-bold mb-2">
+        Foster Tools
+      </h3>
+
+      <p class="text-slate-600 mb-5">
+        Common tools used by fosters and foster coordinators.
+      </p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+        <a
+          href="https://docs.google.com/forms/d/1xTpyOFf9sRQqUpgsZmJdSIFnKF9h6gyCOwtd9LcFnFM/viewform?edit_requested=true"
+          target="_blank"
+          class="quick-button"
+        >
+          Cat Onboarding Form
+        </a>
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/1d64T7j1v6exTqCxIGL-CT2x6a138iE79FqbWTkgLRLU/edit?gid=0#gid=0"
+          target="_blank"
+          class="quick-button"
+        >
+          Cat Foster Spreadsheet
+        </a>
+
+        <a
+          href="https://drive.google.com/file/d/1MgOUHHRLuFWMr0BUoWlZTdvnBixFYqk-/view"
+          target="_blank"
+          class="quick-button"
+        >
+          Foster Contract
+        </a>
+
+        <a
+          href="https://docs.google.com/spreadsheets/d/182r4WaMW9EliMPt3m_mbQIflK68kPpWx-Bs4T0DY_zA/edit?gid=1769998888#gid=1769998888"
+          target="_blank"
+          class="quick-button"
+        >
+          Do Not Adopt List
+        </a>
+
+        <a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSeOgpTzpZXnHJMJjUerUsLP3N3yEU1iEg4ha2Ia7eM0SEBN6A/viewform"
+          target="_blank"
+          class="quick-button"
+        >
+          Do Not Adopt Form
+        </a>
+
+        <a
+          href="https://www.facebook.com/groups/125881194153254"
+          target="_blank"
+          class="quick-button"
+        >
+          RTPA Fosters Facebook Group
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- ADOPTION PACKET RESOURCES -->
+    <div id="forms" class="mb-10">
+
+      <h3 class="text-2xl font-bold mb-2">
+        Adoption Packet Resources
+      </h3>
+
+      <p class="text-slate-600 mb-5">
+        Downloadable documents commonly used by fosters and adopters.
+      </p>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+
+        <a
+          href="https://raw.githubusercontent.com/rescuedtreasurescats/rtcats-site/main/downloads/Cat%20Adoption%20Contract%202025%20-%20Copy.pdf"
+          target="_blank"
+          class="quick-button"
+        >
+          Cat Adoption Contract
+        </a>
+
+        <a
+          href="https://raw.githubusercontent.com/rescuedtreasurescats/rtcats-site/main/FIP%20Basics.pdf"
+          target="_blank"
+          class="quick-button"
+        >
+          FIP Basics
+        </a>
+
+        <a
+          href="https://raw.githubusercontent.com/rescuedtreasurescats/rtcats-site/main/Introducing-A-New-Cat.docx"
+          target="_blank"
+          class="quick-button"
+        >
+          Introducing a New Cat
+        </a>
+
+        <a
+          href="https://raw.githubusercontent.com/rescuedtreasurescats/rtcats-site/main/cat_food_transition_guide%20(1).docx"
+          target="_blank"
+          class="quick-button"
+        >
+          Food Transition Guide
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- PLACEHOLDER DOWNLOADS -->
+    <div>
+
+      <h3 class="text-2xl font-bold mb-2">
+        Forms Coming Soon
+      </h3>
+
+      <p class="text-slate-600 mb-5">
+        These will be added once the final files are uploaded.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-4">
+
+        <a
+          href="#"
+          class="quick-button placeholder-btn"
+        >
+          Deposit Agreement Coming Soon
+        </a>
+
+        <a
+          href="#"
+          class="quick-button placeholder-btn"
+        >
+          Cat Health Record Coming Soon
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SHARED RESOURCES -->
+<section id="shared" class="max-w-7xl mx-auto px-6 pb-20">
+
+  <div class="bg-white section-card">
+
+    <div class="mb-8">
+
+      <h2 class="text-3xl md:text-4xl font-bold mb-2">
+        Shared Resources
+      </h2>
+
+      <p class="text-slate-600">
+        Common RTPA links used by volunteers, fosters, coordinators, and adopters.
+      </p>
+
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <a
+        href="https://docs.google.com/forms/d/e/1FAIpQLSdy2lkq1s519kkf6xbsS69Q4t9c9vIocRXCSIHcd83Okxxr_g/viewform?usp=dialog"
+        target="_blank"
+        class="quick-button"
+      >
+        Cat Adoption Application
+      </a>
+
+      <a
+        href="https://www.petfinder.com/member/us/ny/rochester/rescued-treasures-pet-adoptions-ny990/"
+        target="_blank"
+        class="quick-button"
+      >
+        Current Cats on Petfinder
+      </a>
+
+      <a
+        href="https://docs.google.com/forms/d/1G2bYpwNbE1UjdULtMMuP10VO3Ojo1U14vR_oLLAVLgA/viewform?edit_requested=true"
+        target="_blank"
+        class="quick-button"
+      >
+        Petfinder Submission Form
+      </a>
+
+      <a
+        id="wishlist"
+        href="https://www.chewy.com/g/rescued-treasures-pet-adoptions_b75574561#wish-list"
+        target="_blank"
+        class="quick-button"
+      >
+        Chewy Wishlist
+      </a>
+
+      <a
+        href="https://a.co/a66QHo9"
+        target="_blank"
+        class="quick-button"
+      >
+        Amazon Wishlist
+      </a>
+
+      <a
+        href="#"
+        class="quick-button placeholder-btn"
+      >
+        RTPA Calendar Coming Soon
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-[#2f9ea0] text-white py-10 mb-16 md:mb-0">
+
+  <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+
+    <div>
+
+      <div class="text-2xl font-bold">
+        RTCats HQ
+      </div>
+
+      <div class="text-teal-100 text-sm">
+        Volunteer & Foster Operations Hub
+      </div>
+
+    </div>
+
+    <div class="text-sm text-teal-100">
+      Supporting the people behind RTPA rescue operations.
+    </div>
+
+  </div>
+
+</footer>
+
+</body>
+</html>
