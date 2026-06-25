@@ -583,6 +583,50 @@
   </div>
 
 </footer>
+<script>
+(async function () {
+  try {
 
+    const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbyddU2ObZ4DkECGUqVA62O7nVN9pHxCjYsauSb1WJmF_kufiIuQ9J7v_DncXVa1xTN2/exec?action=settings";
+
+    const settings = await fetch(SETTINGS_URL).then(r => r.json());
+
+    document.querySelectorAll('a').forEach(link => {
+
+      switch (link.textContent.trim()) {
+
+        case "Open Schedule Portal":
+          link.href = settings.PortalDeploymentURL;
+          break;
+
+        case "View Schedule":
+        case "Volunteer Schedule":
+          link.href = settings.LiveScheduleURL;
+          break;
+
+        case "Volunteer Facebook Group":
+          link.href = settings.VolunteerFacebookURL;
+          break;
+
+        case "RTPA Fosters Facebook Group":
+          link.href = settings.FosterFacebookURL;
+          break;
+
+        case "Chewy Wishlist":
+          link.href = settings.ChewyWishlistURL;
+          break;
+
+        case "Amazon Wishlist":
+          link.href = settings.AmazonWishlistURL;
+          break;
+      }
+
+    });
+
+  } catch (err) {
+    console.error("Unable to load settings.", err);
+  }
+})();
+</script>
 </body>
 </html>
