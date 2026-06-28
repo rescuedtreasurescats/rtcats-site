@@ -142,11 +142,22 @@ fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6
         card.style.marginBottom = "16px";
         card.style.boxShadow = "0 2px 8px rgba(0,0,0,.12)";
 
-        const when = new Date(note.timestamp).toLocaleString();
+        const when = new Date(note.timestamp);
+
+        const prettyDate = when.toLocaleDateString(undefined,{
+            weekday:"long",
+            month:"long",
+            day:"numeric"
+        });
+
+        const prettyTime = when.toLocaleTimeString([],{
+            hour:"numeric",
+            minute:"2-digit"
+        });
 
         card.innerHTML = `
             <div style="font-size:13px;color:#666;margin-bottom:8px;">
-                ${when}
+                ${prettyDate} • ${prettyTime}
             </div>
 
             <div style="font-size:20px;font-weight:bold;">
