@@ -1,1 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#f5f7fa;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#1976d2;
+    color:white;
+    padding:18px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.backButton{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:10px 18px;
+    background:#1976d2;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.storeTitle{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#333;
+}
+
+.card{
+    background:white;
+    border-radius:10px;
+    padding:18px;
+    margin-bottom:18px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+Dashboard
+
+</header>
+
+<div class="container">
+
+<a class="backButton" href="index.html">
+
+← Back to RTCats
+
+</a>
+
+<div class="storeTitle" id="storeTitle">
+
+Loading...
+
+</div>
+
+<div class="card">
+
+Dashboard coming soon...
+
+</div>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const store = params.get("store") || "Brighton";
+
+const displayNames = {
+    "Brighton":"Brighton",
+    "Baytowne":"Baytowne",
+    "Hard Rd":"Hard Rd"
+};
+
+document.getElementById("storeTitle").textContent =
+(displayNames[store] || store) + " Dashboard";
+
+</script>
+
+</body>
+
+</html>
