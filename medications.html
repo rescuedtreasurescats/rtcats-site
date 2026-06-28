@@ -137,10 +137,9 @@ fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6
 
         const meals = [];
 
-        if (med.breakfast === "Yes") meals.push("🍳 Breakfast");
-        if (med.lunch === "Yes") meals.push("🥪 Lunch");
-        if (med.dinner === "Yes") meals.push("🍽 Dinner");
-
+        if (med.breakfast) meals.push("🍳 Breakfast");
+if (med.lunch) meals.push("🥪 Lunch");
+if (med.dinner) meals.push("🍽 Dinner");
         const card = document.createElement("div");
 
         card.style.background = "white";
