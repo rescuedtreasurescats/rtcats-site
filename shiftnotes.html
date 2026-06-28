@@ -117,20 +117,48 @@ const displayNames = {
 document.getElementById("storeTitle").textContent =
     (displayNames[store] || store) + " Shift Notes";
 
-document.getElementById("notes").textContent =
-    "Loading shift notes...";
+const notesDiv = document.getElementById("notes");
+
+notesDiv.textContent = "Loading shift notes...";
 
 fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=shiftnotes&store=" + encodeURIComponent(store))
 .then(response => response.json())
 .then(data => {
 
-    console.log(data);
+    notesDiv.innerHTML = "";
+
+    if (data.length === 0) {
+
+        notesDiv.innerHTML = "<p>No shift notes found.</p>";
+        return;
+
+    }
+
+    data.forEach(note => {
+
+        const card = document.createElement("div");
+
+        card.style.background = "white";
+        card.style.padding = "15px";
+        card.style.marginBottom = "15px";
+        card.style.borderRadius = "8px";
+        card.style.boxShadow = "0 2px 6px rgba(0,0,0,.15)";
+
+        card.innerHTML = `
+            <strong>${note.volunteer}</strong><br>
+            ${note.shift}<br><br>
+            ${note.note}<br><br>
+            <small>${note.source}</small>
+        `;
+
+        notesDiv.appendChild(card);
+
+    });
 
 })
 .catch(error => {
 
-    document.getElementById("notes").textContent =
-        "Unable to load shift notes.";
+    notesDiv.textContent = "Unable to load shift notes.";
 
     console.error(error);
 
