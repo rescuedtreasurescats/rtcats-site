@@ -108,9 +108,14 @@ const params = new URLSearchParams(window.location.search);
 
 const store = params.get("store") || "Brighton";
 
-document.getElementById("storeTitle").textContent =
-    store + " Shift Notes";
+const displayNames = {
+    "Brighton": "Brighton",
+    "Baytowne": "Baytowne",
+    "Hard Rd": "Hard Rd"
+};
 
+document.getElementById("storeTitle").textContent =
+    (displayNames[store] || store) + " Shift Notes";
 </script>
 </body>
 
