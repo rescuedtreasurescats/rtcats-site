@@ -1,15 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shift Notes</title>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Shift Notes</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#f5f7fa;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#1976d2;
+    color:white;
+    padding:18px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.backButton{
+
+    display:inline-block;
+
+    margin-bottom:20px;
+
+    padding:10px 18px;
+
+    background:#1976d2;
+
+    color:white;
+
+    text-decoration:none;
+
+    border-radius:8px;
+
+    font-weight:bold;
+
+}
+
+.storeTitle{
+
+    font-size:28px;
+
+    margin-bottom:25px;
+
+    color:#333;
+
+}
+
+#notes{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:18px;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-<h1>Shift Notes</h1>
+<header>
 
-<p>Loading...</p>
+Shift Notes
+
+</header>
+
+<div class="container">
+
+<a class="backButton" href="index.html">
+
+← Back to RTCats
+
+</a>
+
+<div class="storeTitle" id="storeTitle">
+
+Loading...
+
+</div>
+
+<div id="notes">
+
+</div>
+
+</div>
 
 </body>
+
 </html>
