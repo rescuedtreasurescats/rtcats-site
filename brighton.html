@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Medication Instructions</title>
+
+<style>
+
+body{
+    margin:0;
+    background:#f5f7fa;
+    font-family:Arial,sans-serif;
+}
+
+header{
+    background:#1976d2;
+    color:white;
+    padding:18px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+.backButton{
+    display:inline-block;
+    margin-bottom:20px;
+    padding:10px 18px;
+    background:#1976d2;
+    color:white;
+    text-decoration:none;
+    border-radius:8px;
+    font-weight:bold;
+}
+
+.storeTitle{
+    font-size:28px;
+    margin-bottom:25px;
+    color:#333;
+}
+
+#meds{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+Medication Instructions
+
+</header>
+
+<div class="container">
+
+<a class="backButton" href="index.html">
+
+← Back to RTCats
+
+</a>
+
+<div class="storeTitle" id="storeTitle">
+
+Loading...
+
+</div>
+
+<div id="meds">
+
+Loading medication instructions...
+
+</div>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+const store = params.get("store") || "Brighton";
+
+const displayNames = {
+    "Brighton": "Brighton",
+    "Baytowne": "Baytowne",
+    "Hard Rd": "Hard Rd"
+};
+
+document.getElementById("storeTitle").textContent =
+    (displayNames[store] || store) + " Medication Instructions";
+
+const medsDiv = document.getElementById("meds");
+
+medsDiv.textContent = "Loading medication instructions...";
+
+fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=medications&store=" + encodeURIComponent(store))
+.then(response => response.json())
+.then(data => {
+
+    medsDiv.innerHTML = "";
+
+    if (data.length === 0) {
+
+        medsDiv.innerHTML = `
+            <div style="
+                background:white;
+                border-radius:10px;
+                padding:24px;
+                text-align:center;
+                box-shadow:0 2px 8px rgba(0,0,0,.12);
+                font-size:20px;
+            ">
+                💊<br><br>
+                No active medications for this store.
+            </div>
+        `;
+
+        return;
+
+    }
+
+       data.forEach(med => {
+
+        const meals = [];
+
+        if (med.breakfast) meals.push("🍳 Breakfast");
+if (med.lunch) meals.push("🥪 Lunch");
+if (med.dinner) meals.push("🍽 Dinner");
+        const card = document.createElement("div");
+
+        card.style.background = "white";
+        card.style.borderRadius = "10px";
+        card.style.padding = "16px";
+        card.style.marginBottom = "16px";
+        card.style.boxShadow = "0 2px 8px rgba(0,0,0,.12)";
+
+        card.innerHTML = `
+            <div style="font-size:22px;font-weight:bold;margin-bottom:10px;">
+                🐱 ${med.cat}
+            </div>
+
+            <div style="font-weight:bold;">Medication</div>
+            <div style="margin-bottom:12px;">
+                ${med.medication}
+            </div>
+
+            ${
+                med.instructions
+                ? `<div style="font-weight:bold;">Instructions</div>
+                   <div style="margin-bottom:12px;">
+                     ${med.instructions}
+                   </div>`
+                : ""
+            }
+
+            <div style="font-weight:bold;">Meals</div>
+            <div style="margin-bottom:12px;">
+                ${meals.join(" • ")}
+            </div>
+
+            ${
+                med.notes
+                ? `<div style="font-weight:bold;">Notes</div>
+                   <div>${med.notes}</div>`
+                : ""
+            }
+        `;
+
+        medsDiv.appendChild(card);
+
+    });
+
+})
+.catch(error => {
+
+    medsDiv.textContent = "Unable to load medication instructions.";
+
+    console.error(error);
+
+});
+
+</script>
+</body>
+
+</html>
