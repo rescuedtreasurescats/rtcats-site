@@ -12,16 +12,16 @@
 
 body{
     margin:0;
-    background:#f5f7fa;
+    background:#f4f6f9;
     font-family:Arial,sans-serif;
 }
 
 header{
     background:#1976d2;
     color:white;
-    padding:18px;
     text-align:center;
-    font-size:24px;
+    padding:18px;
+    font-size:26px;
     font-weight:bold;
 }
 
@@ -43,17 +43,80 @@ header{
 }
 
 .storeTitle{
-    font-size:28px;
-    margin-bottom:25px;
+    font-size:30px;
+    font-weight:bold;
     color:#333;
+    margin-bottom:25px;
 }
 
 .card{
+
     background:white;
-    border-radius:10px;
-    padding:18px;
+    border-radius:12px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 3px 10px rgba(0,0,0,.12);
+
+}
+
+.card h2{
+
+    margin-top:0;
     margin-bottom:18px;
-    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    color:#1976d2;
+
+}
+
+.loading{
+
+    color:#777;
+    font-style:italic;
+
+}
+
+.shift{
+
+    margin-bottom:15px;
+
+}
+
+.shiftTitle{
+
+    font-weight:bold;
+    color:#444;
+    margin-bottom:6px;
+
+}
+
+.volunteer{
+
+    padding-left:18px;
+    margin-bottom:4px;
+
+}
+
+.medCard{
+
+    border-left:5px solid #43a047;
+    padding-left:14px;
+    margin-bottom:18px;
+
+}
+
+.noteCard{
+
+    border-left:5px solid #ff9800;
+    padding-left:14px;
+    margin-bottom:18px;
+
+}
+
+.empty{
+
+    text-align:center;
+    color:#777;
+    padding:20px;
+
 }
 
 </style>
@@ -84,12 +147,39 @@ Loading...
 
 <div class="card">
 
-Dashboard coming soon...
+<h2>👥 Today's Volunteers</h2>
+
+<div id="todaySchedule" class="loading">
+
+Loading today's schedule...
 
 </div>
 
 </div>
 
+<div class="card">
+
+<h2>💊 Medication Instructions</h2>
+
+<div id="medications" class="loading">
+
+Loading medication instructions...
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>📝 Previous Shift Notes</h2>
+
+<div id="shiftNotes" class="loading">
+
+Loading shift notes...
+
+</div>
+
+</div>
 <script>
 
 const params = new URLSearchParams(window.location.search);
@@ -103,10 +193,221 @@ const displayNames = {
 };
 
 document.getElementById("storeTitle").textContent =
-(displayNames[store] || store) + " Dashboard";
+    (displayNames[store] || store) + " Dashboard";
+
+const BASE_URL =
+"https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec";
+
+loadTodaySchedule();
+loadMedications();
+loadShiftNotes();
+
+function loadTodaySchedule(){
+
+const div=document.getElementById("todaySchedule");
+
+fetch(BASE_URL +
+"?action=todayschedule&store=" +
+encodeURIComponent(store))
+
+.then(r=>r.json())
+
+.then(data=>{
+
+    div.innerHTML="";
+
+    if(data.length===0){
+
+        div.innerHTML=
+        '<div class="empty">No volunteers scheduled today.</div>';
+
+        return;
+
+    }
+
+    let html="";
+
+    let currentShift="";
+
+    data.forEach(item=>{
+
+        if(item.shift!==currentShift){
+
+            if(currentShift!==""){
+                html+="</div>";
+            }
+
+            currentShift=item.shift;
+
+            html+=`
+            <div class="shift">
+            <div class="shiftTitle">${item.shift}</div>
+            `;
+
+        }
+
+        html+=`
+        <div class="volunteer">
+        • ${item.volunteer}
+        </div>
+        `;
+
+    });
+
+    html+="</div>";
+
+    div.innerHTML=html;
+
+})
+
+.catch(error=>{
+
+    console.error(error);
+
+    div.innerHTML=
+    '<div class="empty">Unable to load today\'s volunteers.</div>';
+
+});
+
+}
+function loadMedications(){
+
+const div=document.getElementById("medications");
+
+fetch(BASE_URL +
+"?action=medications&store=" +
+encodeURIComponent(store))
+
+.then(r=>r.json())
+
+.then(data=>{
+
+    div.innerHTML="";
+
+    if(data.length===0){
+
+        div.innerHTML=
+        '<div class="empty">No active medications for this store.</div>';
+
+        return;
+
+    }
+
+    data.forEach(med=>{
+
+        const meals=[];
+
+        if(med.breakfast) meals.push("🍳 Breakfast");
+        if(med.lunch) meals.push("🥪 Lunch");
+        if(med.dinner) meals.push("🍽 Dinner");
+
+        div.innerHTML+=`
+
+<div class="medCard">
+
+<div style="font-size:22px;font-weight:bold;">
+🐱 ${med.cat}
+</div>
+
+<div style="margin-top:10px;">
+<b>Medication</b><br>
+${med.medication}
+</div>
+
+${med.instructions ?
+`<div style="margin-top:10px;">
+<b>Instructions</b><br>
+${med.instructions}
+</div>` : ""}
+
+<div style="margin-top:10px;">
+<b>Meals</b><br>
+${meals.join(" • ")}
+</div>
+
+${med.notes ?
+`<div style="margin-top:10px;">
+<b>Notes</b><br>
+${med.notes}
+</div>` : ""}
+
+</div>
+
+`;
+
+    });
+
+})
+
+.catch(error=>{
+
+    console.error(error);
+
+    div.innerHTML=
+    '<div class="empty">Unable to load medications.</div>';
+
+});
+
+}
+
+function loadShiftNotes(){
+
+const div=document.getElementById("shiftNotes");
+
+fetch(BASE_URL +
+"?action=shiftnotes&store=" +
+encodeURIComponent(store))
+
+.then(r=>r.json())
+
+.then(data=>{
+
+    div.innerHTML="";
+
+    if(data.length===0){
+
+        div.innerHTML=
+        '<div class="empty">No previous shift notes.</div>';
+
+        return;
+
+    }
+
+    data.forEach(note=>{
+
+        div.innerHTML+=`
+
+<div class="noteCard">
+
+<div style="font-weight:bold;">
+${note.date || ""}
+</div>
+
+<div style="margin-top:8px;">
+${note.notes || note.note || ""}
+</div>
+
+</div>
+
+`;
+
+    });
+
+})
+
+.catch(error=>{
+
+    console.error(error);
+
+    div.innerHTML=
+    '<div class="empty">Unable to load shift notes.</div>';
+
+});
+
+}
 
 </script>
 
 </body>
 
-</html>
+</html>    
