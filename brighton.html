@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Medication Instructions</title>
+<title>Brighton HQ</title>
 
 <style>
 
@@ -26,7 +26,7 @@ header{
 }
 
 .container{
-    max-width:900px;
+    max-width:650px;
     margin:auto;
     padding:20px;
 }
@@ -43,15 +43,61 @@ header{
 }
 
 .storeTitle{
-    font-size:28px;
-    margin-bottom:25px;
+    font-size:30px;
+    font-weight:bold;
     color:#333;
+    margin-bottom:6px;
 }
 
-#meds{
-    display:flex;
-    flex-direction:column;
-    gap:18px;
+.storeSubtitle{
+    color:#666;
+    margin-bottom:24px;
+}
+
+.toolButton{
+
+    display:block;
+    width:100%;
+    box-sizing:border-box;
+
+    background:white;
+
+    color:#333;
+
+    text-decoration:none;
+
+    padding:18px;
+
+    margin-bottom:14px;
+
+    border-radius:10px;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+
+    font-size:20px;
+
+    font-weight:bold;
+
+}
+
+.toolButton:hover{
+
+    background:#eef6ff;
+
+}
+
+.comingSoon{
+
+    display:block;
+
+    font-size:13px;
+
+    font-weight:normal;
+
+    color:#777;
+
+    margin-top:4px;
+
 }
 
 </style>
@@ -62,7 +108,7 @@ header{
 
 <header>
 
-Medication Instructions
+Brighton HQ
 
 </header>
 
@@ -70,130 +116,64 @@ Medication Instructions
 
 <a class="backButton" href="index.html">
 
-← Back to RTCats
+← Back to HQ
 
 </a>
 
-<div class="storeTitle" id="storeTitle">
+<div class="storeTitle">
 
-Loading...
-
-</div>
-
-<div id="meds">
-
-Loading medication instructions...
+🐈 Brighton
 
 </div>
 
+<div class="storeSubtitle">
+
+Monroe Ave Pet Supplies Plus
+
+</div>
+<a
+  href="https://docs.google.com/spreadsheets/u/0/d/1RoF0DpyCc0sYQVmbeh1WFPzfGO1GZlYl2isZFlZbsBg/htmlview?pli=1#gid=340749424"
+  target="_blank"
+  class="toolButton"
+>
+📋 Tracker
+</a>
+
+<a
+  href="dashboard.html?store=Brighton"
+  class="toolButton"
+>
+📊 Dashboard
+</a>
+
+<a
+  href="medications.html?store=Brighton"
+  class="toolButton"
+>
+💊 Medication Instructions
+</a>
+
+<a
+  href="shiftnotes.html?store=Brighton"
+  class="toolButton"
+>
+📝 Shift Notes
+</a>
+
+<a
+  href="YOUR_BRIGHTON_DAILY_FORM_URL"
+  target="_blank"
+  class="toolButton"
+>
+📄 Daily Form
+
+<span class="comingSoon">
+Coming Soon
+</span>
+
+</a>
 </div>
 
-<script>
-
-const params = new URLSearchParams(window.location.search);
-
-const store = params.get("store") || "Brighton";
-
-const displayNames = {
-    "Brighton": "Brighton",
-    "Baytowne": "Baytowne",
-    "Hard Rd": "Hard Rd"
-};
-
-document.getElementById("storeTitle").textContent =
-    (displayNames[store] || store) + " Medication Instructions";
-
-const medsDiv = document.getElementById("meds");
-
-medsDiv.textContent = "Loading medication instructions...";
-
-fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=medications&store=" + encodeURIComponent(store))
-.then(response => response.json())
-.then(data => {
-
-    medsDiv.innerHTML = "";
-
-    if (data.length === 0) {
-
-        medsDiv.innerHTML = `
-            <div style="
-                background:white;
-                border-radius:10px;
-                padding:24px;
-                text-align:center;
-                box-shadow:0 2px 8px rgba(0,0,0,.12);
-                font-size:20px;
-            ">
-                💊<br><br>
-                No active medications for this store.
-            </div>
-        `;
-
-        return;
-
-    }
-
-       data.forEach(med => {
-
-        const meals = [];
-
-        if (med.breakfast) meals.push("🍳 Breakfast");
-if (med.lunch) meals.push("🥪 Lunch");
-if (med.dinner) meals.push("🍽 Dinner");
-        const card = document.createElement("div");
-
-        card.style.background = "white";
-        card.style.borderRadius = "10px";
-        card.style.padding = "16px";
-        card.style.marginBottom = "16px";
-        card.style.boxShadow = "0 2px 8px rgba(0,0,0,.12)";
-
-        card.innerHTML = `
-            <div style="font-size:22px;font-weight:bold;margin-bottom:10px;">
-                🐱 ${med.cat}
-            </div>
-
-            <div style="font-weight:bold;">Medication</div>
-            <div style="margin-bottom:12px;">
-                ${med.medication}
-            </div>
-
-            ${
-                med.instructions
-                ? `<div style="font-weight:bold;">Instructions</div>
-                   <div style="margin-bottom:12px;">
-                     ${med.instructions}
-                   </div>`
-                : ""
-            }
-
-            <div style="font-weight:bold;">Meals</div>
-            <div style="margin-bottom:12px;">
-                ${meals.join(" • ")}
-            </div>
-
-            ${
-                med.notes
-                ? `<div style="font-weight:bold;">Notes</div>
-                   <div>${med.notes}</div>`
-                : ""
-            }
-        `;
-
-        medsDiv.appendChild(card);
-
-    });
-
-})
-.catch(error => {
-
-    medsDiv.textContent = "Unable to load medication instructions.";
-
-    console.error(error);
-
-});
-
-</script>
 </body>
 
 </html>
