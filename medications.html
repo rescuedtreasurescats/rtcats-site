@@ -103,8 +103,48 @@ const displayNames = {
 document.getElementById("storeTitle").textContent =
     (displayNames[store] || store) + " Medication Instructions";
 
-</script>
+const medsDiv = document.getElementById("meds");
 
+medsDiv.textContent = "Loading medication instructions...";
+
+fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=medications&store=" + encodeURIComponent(store))
+.then(response => response.json())
+.then(data => {
+
+    medsDiv.innerHTML = "";
+
+    if (data.length === 0) {
+
+        medsDiv.innerHTML = `
+            <div style="
+                background:white;
+                border-radius:10px;
+                padding:24px;
+                text-align:center;
+                box-shadow:0 2px 8px rgba(0,0,0,.12);
+                font-size:20px;
+            ">
+                💊<br><br>
+                No active medications for this store.
+            </div>
+        `;
+
+        return;
+
+    }
+
+    // We'll build the medication cards next.
+
+})
+.catch(error => {
+
+    medsDiv.textContent = "Unable to load medication instructions.";
+
+    console.error(error);
+
+});
+
+</script>
 </body>
 
 </html>
