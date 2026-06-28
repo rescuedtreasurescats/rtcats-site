@@ -133,7 +133,57 @@ fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6
 
     }
 
-    // We'll build the medication cards next.
+       data.forEach(med => {
+
+        const meals = [];
+
+        if (med.breakfast === "Yes") meals.push("🍳 Breakfast");
+        if (med.lunch === "Yes") meals.push("🥪 Lunch");
+        if (med.dinner === "Yes") meals.push("🍽 Dinner");
+
+        const card = document.createElement("div");
+
+        card.style.background = "white";
+        card.style.borderRadius = "10px";
+        card.style.padding = "16px";
+        card.style.marginBottom = "16px";
+        card.style.boxShadow = "0 2px 8px rgba(0,0,0,.12)";
+
+        card.innerHTML = `
+            <div style="font-size:22px;font-weight:bold;margin-bottom:10px;">
+                🐱 ${med.cat}
+            </div>
+
+            <div style="font-weight:bold;">Medication</div>
+            <div style="margin-bottom:12px;">
+                ${med.medication}
+            </div>
+
+            ${
+                med.instructions
+                ? `<div style="font-weight:bold;">Instructions</div>
+                   <div style="margin-bottom:12px;">
+                     ${med.instructions}
+                   </div>`
+                : ""
+            }
+
+            <div style="font-weight:bold;">Meals</div>
+            <div style="margin-bottom:12px;">
+                ${meals.join(" • ")}
+            </div>
+
+            ${
+                med.notes
+                ? `<div style="font-weight:bold;">Notes</div>
+                   <div>${med.notes}</div>`
+                : ""
+            }
+        `;
+
+        medsDiv.appendChild(card);
+
+    });
 
 })
 .catch(error => {
