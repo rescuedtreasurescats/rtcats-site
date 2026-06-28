@@ -116,7 +116,27 @@ const displayNames = {
 
 document.getElementById("storeTitle").textContent =
     (displayNames[store] || store) + " Shift Notes";
+
+document.getElementById("notes").textContent =
+    "Loading shift notes...";
+
+fetch("https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=shiftnotes&store=" + encodeURIComponent(store))
+.then(response => response.json())
+.then(data => {
+
+    console.log(data);
+
+})
+.catch(error => {
+
+    document.getElementById("notes").textContent =
+        "Unable to load shift notes.";
+
+    console.error(error);
+
+});
+
 </script>
 </body>
+   </html> 
 
-</html>
