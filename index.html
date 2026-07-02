@@ -13,6 +13,29 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
+  .header-btn{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:none;
+    cursor:pointer;
+    font-size:18px;
+    transition:.2s;
+    background:#e2e8f0;
+}
+
+.header-btn:hover{
+    transform:scale(1.08);
+}
+
+.help-header-btn{
+    width:auto;
+    padding:0 14px;
+    border-radius:999px;
+    background:#f59e0b;
+    color:white;
+    font-weight:700;
+}
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -106,11 +129,27 @@
       <img src="rtlogo.webp" class="h-16 md:h-20 object-contain" alt="RTPA Logo">
     </div>
 
-    <nav class="hidden md:flex gap-8 text-sm font-semibold">
-      <a href="#volunteers">Volunteer Resources</a>
-      <a href="#fosters">Foster Resources</a>
-      <a href="#shared">Shared Resources</a>
-    </nav>
+    <nav class="hidden md:flex items-center gap-3">
+
+  <button
+    class="header-btn help-header-btn"
+    onclick="location.href='help.html'">
+    🛠 Help
+  </button>
+
+  <button
+    class="header-btn"
+    onclick="alert('Coming Soon!')">
+    ⭐
+  </button>
+
+  <button
+    class="header-btn"
+    onclick="alert('Coming Soon!')">
+    👤
+  </button>
+
+</nav>
 
   </div>
 </header>
