@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>RTCats Volunteer Help Center</title>
+<title>RTCats Volunteer Troubleshooter</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -15,116 +16,229 @@
 
 <style>
 
+*{
+box-sizing:border-box;
+}
+
 body{
-    font-family:'Poppins',sans-serif;
-    background:#f7f4ef;
-    color:#1e293b;
+margin:0;
+font-family:'Poppins',sans-serif;
+background:#f6f3ee;
+color:#1f2937;
+}
+
+header{
+background:#2f9ea0;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.header{
+max-width:1200px;
+margin:auto;
+padding:18px 24px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.logo{
+height:72px;
+}
+
+.homeButton{
+background:white;
+color:#2f9ea0;
+font-weight:700;
+text-decoration:none;
+padding:11px 18px;
+border-radius:999px;
+transition:.2s;
+}
+
+.homeButton:hover{
+transform:translateY(-2px);
 }
 
 .hero{
-    background:#2f9ea0;
-    color:white;
+background:#2f9ea0;
+color:white;
+padding:55px 20px;
+}
+
+.heroInner{
+max-width:1000px;
+margin:auto;
+}
+
+.hero h1{
+margin:0;
+font-size:2.8rem;
+font-weight:800;
+}
+
+.hero p{
+margin-top:18px;
+font-size:1.1rem;
+color:#e8ffff;
+max-width:700px;
+}
+
+main{
+max-width:1000px;
+margin:40px auto;
+padding:0 20px;
+}
+
+.searchBox{
+width:100%;
+padding:18px;
+font-size:18px;
+border-radius:16px;
+border:1px solid #cbd5e1;
+margin-bottom:30px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:20px;
 }
 
 .card{
-    background:white;
-    border-radius:22px;
-    border:1px solid #e2e8f0;
-    box-shadow:0 18px 40px rgba(0,0,0,.06);
-    overflow:hidden;
+background:white;
+border-radius:22px;
+padding:26px;
+cursor:pointer;
+border:1px solid #e2e8f0;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+transition:.2s;
 }
 
-.topic{
-    border-top:1px solid #e5e7eb;
+.card:hover{
+transform:translateY(-4px);
 }
 
-.topic:first-child{
-    border-top:none;
+.card h2{
+margin-top:0;
+margin-bottom:10px;
+font-size:1.35rem;
 }
 
-.topic-btn{
-    width:100%;
-    text-align:left;
-    padding:22px 26px;
-    font-size:1.08rem;
-    font-weight:700;
-    background:white;
-    transition:.2s;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.card p{
+margin:0;
+line-height:1.7;
+color:#64748b;
 }
 
-.topic-btn:hover{
-    background:#f8fafc;
+.hidden{
+display:none;
 }
 
-.topic-content{
-    display:none;
-    padding:0 28px 24px;
-    animation:fade .25s ease;
+#flow{
+margin-top:35px;
 }
 
-.topic-content ol{
-    margin-left:24px;
-    line-height:1.8;
+.flowCard{
+background:white;
+border-radius:22px;
+padding:34px;
+box-shadow:0 12px 30px rgba(0,0,0,.08);
 }
 
-.topic-content li{
-    margin-bottom:10px;
+.progress{
+font-weight:700;
+color:#2f9ea0;
+margin-bottom:18px;
 }
 
-.search-box{
-    width:100%;
-    padding:16px 20px;
-    border-radius:14px;
-    border:1px solid #cbd5e1;
-    font-size:17px;
+.question{
+font-size:2rem;
+font-weight:800;
+margin-bottom:25px;
 }
 
-.back-btn{
-    background:white;
-    color:#2f9ea0;
-    padding:12px 22px;
-    border-radius:999px;
-    font-weight:700;
-    display:inline-block;
-    transition:.2s;
-    text-decoration:none;
+.answer{
+display:block;
+width:100%;
+text-align:left;
+background:#2f9ea0;
+color:white;
+border:none;
+border-radius:14px;
+padding:18px;
+margin-bottom:14px;
+cursor:pointer;
+font-size:18px;
+transition:.2s;
 }
 
-.back-btn:hover{
-    transform:translateY(-2px);
+.answer:hover{
+background:#277f81;
 }
 
-.notice{
-    background:#fff8dc;
-    border:2px solid #fbbf24;
-    border-radius:16px;
-    padding:18px;
-    margin:25px 0;
+.answer h3{
+margin:0 0 8px;
+font-size:20px;
 }
 
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(-8px);
+.answer small{
+display:block;
+font-size:15px;
+opacity:.95;
 }
-to{
-opacity:1;
-transform:translateY(0);
+
+.secondary{
+background:#e2e8f0;
+color:#1f2937;
 }
+
+.secondary:hover{
+background:#cfd8e3;
+}
+
+.tip{
+background:#fff8dc;
+border-left:5px solid #f59e0b;
+padding:18px;
+border-radius:12px;
+margin-bottom:20px;
+line-height:1.9;
+}
+
+.warning{
+background:#ffeaea;
+border-left:5px solid #dc2626;
+padding:18px;
+border-radius:12px;
+margin-bottom:20px;
+line-height:1.9;
+}
+
+.success{
+background:#e8faef;
+border-left:5px solid #22c55e;
+padding:18px;
+border-radius:12px;
+margin-bottom:20px;
+line-height:1.9;
 }
 
 @media(max-width:700px){
 
-.topic-btn{
-font-size:16px;
-padding:18px;
+.hero h1{
+font-size:2rem;
 }
 
-.topic-content{
-padding:0 18px 20px;
+.question{
+font-size:1.45rem;
+}
+
+.logo{
+height:58px;
 }
 
 }
@@ -135,23 +249,35 @@ padding:0 18px 20px;
 
 <body>
 
-<section class="hero">
+<header>
 
-<div class="max-w-6xl mx-auto px-6 py-10">
+<div class="header">
 
-<a class="back-btn" href="index.html">
-← Back to RTCats HQ
+<img src="rtlogo.webp" class="logo" alt="RTCats">
+
+<a href="index.html" class="homeButton">
+
+← RTCats HQ
+
 </a>
 
-<h1 class="text-4xl font-extrabold mt-8">
-🛠 Volunteer Help Center
+</div>
+
+</header>
+
+<section class="hero">
+
+<div class="heroInner">
+
+<h1>
+
+🛠 Volunteer Troubleshooter
+
 </h1>
 
-<p class="mt-4 text-teal-50 text-lg max-w-3xl">
+<p>
 
-Having trouble?
-
-Search below or choose the topic that best matches your problem.
+Answer a few questions and we'll walk you through fixing the problem.
 
 </p>
 
@@ -159,381 +285,1386 @@ Search below or choose the topic that best matches your problem.
 
 </section>
 
-<section class="max-w-5xl mx-auto px-6 py-10">
+<main>
 
 <input
-id="searchBox"
-class="search-box"
+id="search"
+class="searchBox"
 type="text"
-placeholder="Search... iPhone, Google, Schedule, Messenger, Daily Log, Chrome, Safari">
+placeholder="Search for Portal, iPhone, Google, Messenger, Daily Log...">
 
-<div class="notice">
+<div id="home" class="grid">
 
-<b>Before contacting Sue...</b>
+<div class="card" onclick="portalHome()">
 
-Please include:
+<h2>📅 Scheduling Portal</h2>
 
-<ul class="list-disc ml-6 mt-3">
-
-<li>A screenshot of the problem</li>
-
-<li>Your device (iPhone, Android, Chromebook, Windows, Mac)</li>
-
-<li>Your browser (Safari, Chrome, Edge, Firefox)</li>
-
-<li>What you were trying to do</li>
-
-</ul>
+<p>I can't open the Scheduling Portal.</p>
 
 </div>
 
-<div class="card" id="helpContainer">
+<div class="card" onclick="dailyHome()">
 
-<div class="topic">
+<h2>📝 Daily Log</h2>
 
-<button class="topic-btn">
-
-🚫 I can't access the Scheduling Portal
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Google says it can't open the Scheduling Portal
-</h3>
-
-<ol>
-
-<li>Always open the Scheduling Portal from <b>RTCats HQ</b>. Avoid old bookmarks or saved text messages.</li>
-
-<li>If you have multiple Google accounts signed in, remove the extra account(s) and try again.</li>
-
-<li>On an iPhone or iPad, open the portal in a <b>Private Safari</b> window.</li>
-
-<li>If you're opening the portal from Facebook Messenger, use <b>Open in Safari</b> instead of Messenger's built-in browser.</li>
-
-<li>Try Chrome if Safari still won't open the portal.</li>
-
-<li>If it still fails, send Sue a screenshot showing the error and the address bar.</li>
-
-</ol>
+<p>I need help with the Daily Log.</p>
 
 </div>
-<div class="topic">
 
-<button class="topic-btn">
+<div class="card" onclick="iphoneHome()">
 
-🍎 iPhone & iPad Help
+<h2>📱 iPhone & iPad</h2>
 
-<span>+</span>
+<p>Problems using an Apple device.</p>
 
-</button>
+</div>
 
-<div class="topic-content">
+<div class="card" onclick="googleHome()">
 
-<h3 class="font-bold text-xl mb-4">
-Common iPhone Issues
-</h3>
+<h2>👤 Google Accounts</h2>
 
-<ol>
+<p>Multiple Google accounts and sign in problems.</p>
 
-<li><b>Open links in Safari.</b> If you opened the portal from Facebook or Messenger, tap the Share button and choose <b>Open in Safari</b>.</li>
+</div>
 
-<li><b>Use a Private Safari tab.</b><br>
-Open Safari → Tap the Tabs button → Tap <b>Private</b> → Tap the <b>+</b> to open a new Private tab → Open RTCats HQ and try again.</li>
+<div class="card" onclick="messengerHome()">
 
-<li><b>If Safari still won't work, install Chrome.</b> Open the portal in Chrome instead.</li>
+<h2>💬 Facebook Messenger</h2>
 
-<li><b>Restart Safari.</b> Close all Safari windows and reopen the browser.</li>
+<p>Opening RTCats links from Messenger.</p>
 
-<li><b>Restart your iPhone.</b> A simple restart fixes many browser issues.</li>
+</div>
 
-<li><b>Update iOS.</b> Older versions of Safari occasionally have compatibility issues.</li>
+<div class="card" onclick="otherHome()">
 
-</ol>
+<h2>❓ Something Else</h2>
+
+<p>General troubleshooting.</p>
 
 </div>
 
 </div>
 
-<div class="topic">
+<div id="flow" class="hidden">
 
-<button class="topic-btn">
+<div class="flowCard">
 
-👤 Google Account Problems
+<div id="progress" class="progress"></div>
 
-<span>+</span>
+<div id="question" class="question"></div>
 
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Multiple Google Accounts
-</h3>
-
-<ol>
-
-<li>If Google says it cannot open the Scheduling Portal, the most common cause is having multiple Google accounts signed in.</li>
-
-<li>Open <b>gmail.com</b> and tap your profile picture.</li>
-
-<li>If you see more than one Google account, temporarily remove the extra account(s) and try again.</li>
-
-<li>After removing the extra account, reopen the portal from RTCats HQ.</li>
-
-<li>If you need both accounts, you can usually add the second account back after the portal is working.</li>
-
-<li>If Google keeps changing the web address to something containing <b>/u/1/</b> or <b>/u/2/</b>, this is almost always a Google account issue.</li>
-
-</ol>
+<div id="answers"></div>
 
 </div>
 
 </div>
-
-<div class="topic">
-
-<button class="topic-btn">
-
-💬 Facebook Messenger Problems
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Messenger Browser Issues
-</h3>
-
-<ol>
-
-<li>Facebook Messenger opens links inside its own browser instead of Safari or Chrome.</li>
-
-<li>Some Google pages do not work correctly inside Messenger.</li>
-
-<li>Tap the menu in Messenger and choose <b>Open in Safari</b> (or Chrome).</li>
-
-<li>If that option isn't available, copy the link and paste it directly into Safari.</li>
-
-<li>Avoid saving Messenger versions of links as bookmarks.</li>
-
-</ol>
-
-</div>
-
-</div>
-
-<div class="topic">
-
-<button class="topic-btn">
-
-📅 Scheduling Problems
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Scheduling Questions
-</h3>
-
-<ol>
-
-<li>I can't sign up for a shift.</li>
-
-<li>I can't cancel my shift.</li>
-
-<li>My upcoming shifts aren't showing.</li>
-
-<li>The shift says it is full.</li>
-
-<li>I accidentally signed up twice.</li>
-
-<li>If something doesn't look right, refresh the page before trying again.</li>
-
-</ol>
-
-</div>
-
-</div>
-
-<div class="topic">
-
-<button class="topic-btn">
-
-📝 Daily Log Problems
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Daily Log Help
-</h3>
-
-<ol>
-
-<li>The Daily Log won't open.</li>
-
-<li>The form won't submit.</li>
-
-<li>I selected the wrong store.</li>
-
-<li>I accidentally submitted twice.</li>
-
-<li>I lost my internet connection while completing the form.</li>
-
-</ol>
-
-</div>
-
-</div>
-  <div class="topic">
-
-<button class="topic-btn">
-
-💻 Device & Browser Help
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Choose the instructions that match your device
-</h3>
-
-<h4 class="font-bold mt-4">🍎 iPhone / iPad</h4>
-
-<ul class="list-disc ml-6 mb-5">
-<li>Open links in Safari whenever possible.</li>
-<li>If the portal won't open, try a Private Safari tab.</li>
-<li>If Safari doesn't work, install Chrome and try again.</li>
-<li>If you're signed into multiple Google accounts, remove the extra account and try again.</li>
-</ul>
-
-<h4 class="font-bold">🤖 Android</h4>
-
-<ul class="list-disc ml-6 mb-5">
-<li>Chrome is recommended.</li>
-<li>Refresh the page before trying again.</li>
-<li>If using Facebook Messenger, open the link in Chrome instead.</li>
-</ul>
-
-<h4 class="font-bold">💻 Chromebook</h4>
-
-<ul class="list-disc ml-6 mb-5">
-<li>Chrome is recommended.</li>
-<li>If multiple Google accounts are signed in, temporarily remove the extra account.</li>
-<li>Refresh the page after switching accounts.</li>
-</ul>
-
-<h4 class="font-bold">🪟 Windows / 🍎 Mac</h4>
-
-<ul class="list-disc ml-6">
-<li>Chrome is recommended.</li>
-<li>Refresh the page.</li>
-<li>If the problem continues, try an Incognito window.</li>
-</ul>
-
-</div>
-
-</div>
-
-<div class="topic">
-
-<button class="topic-btn">
-
-❓ Still Need Help?
-
-<span>+</span>
-
-</button>
-
-<div class="topic-content">
-
-<h3 class="font-bold text-xl mb-4">
-Contact Sue
-</h3>
-
-<p class="mb-4">
-
-If the steps above didn't solve your problem, please include the following:
-
-</p>
-
-<ul class="list-disc ml-6 leading-8">
-
-<li>📷 Screenshot of the error</li>
-
-<li>📱 Device (iPhone, Android, Chromebook, Windows, Mac)</li>
-
-<li>🌐 Browser (Safari, Chrome, Edge, Firefox)</li>
-
-<li>📝 What you were trying to do</li>
-
-<li>⏰ Approximately what time it happened</li>
-
-</ul>
-
-</div>
-
-</div>
-
-</div>
-
-</section>
 
 <script>
 
-document.querySelectorAll(".topic-btn").forEach(button=>{
+const home=document.getElementById("home");
+const flow=document.getElementById("flow");
+const progress=document.getElementById("progress");
+const question=document.getElementById("question");
+const answers=document.getElementById("answers");
 
-button.addEventListener("click",()=>{
+function showFlow(){
 
-const content=button.nextElementSibling;
-const plus=button.querySelector("span");
-
-if(content.style.display==="block"){
-
-content.style.display="none";
-plus.textContent="+";
-
-}else{
-
-document.querySelectorAll(".topic-content").forEach(c=>c.style.display="none");
-document.querySelectorAll(".topic-btn span").forEach(s=>s.textContent="+");
-
-content.style.display="block";
-plus.textContent="−";
+home.classList.add("hidden");
+flow.classList.remove("hidden");
 
 }
 
+function goHome(){
+
+flow.classList.add("hidden");
+home.classList.remove("hidden");
+
+question.innerHTML="";
+answers.innerHTML="";
+progress.innerHTML="";
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
 });
 
-});
+}
+/* ---------- HOME SCREEN ---------- */
 
-const search=document.getElementById("searchBox");
+function portalHome(){
 
-search.addEventListener("keyup",function(){
+showFlow();
+
+progress.innerHTML="Scheduling Portal";
+
+question.innerHTML="What device are you using?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="portalIPhone()">
+
+<h3>🍎 iPhone / iPad</h3>
+
+<small>Apple phones and tablets</small>
+
+</button>
+
+<button class="answer" onclick="portalComputer()">
+
+<h3>💻 Windows / Mac / Chromebook</h3>
+
+<small>Laptop or desktop computer</small>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+
+
+function dailyHome(){
+
+showFlow();
+
+progress.innerHTML="Daily Log";
+
+question.innerHTML="What do you need help with?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="dailyOpen()">
+
+<h3>📝 I can't open the Daily Log</h3>
+
+</button>
+
+<button class="answer" onclick="dailySubmit()">
+
+<h3>📨 The Daily Log won't submit</h3>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+
+
+function iphoneHome(){
+
+showFlow();
+
+progress.innerHTML="iPhone";
+
+question.innerHTML="What are you having trouble with?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="portalIPhone()">
+
+<h3>📅 Scheduling Portal</h3>
+
+</button>
+
+<button class="answer" onclick="messengerHome()">
+
+<h3>💬 Facebook Messenger</h3>
+
+</button>
+
+<button class="answer" onclick="googleHome()">
+
+<h3>👤 Google Accounts</h3>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+
+
+function googleHome(){
+
+showFlow();
+
+progress.innerHTML="Google Accounts";
+
+question.innerHTML="What do you need help with?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="multipleAccounts()">
+
+<h3>👥 I have more than one Google account</h3>
+
+</button>
+
+<button class="answer" onclick="multipleAccounts()">
+
+<h3>🚫 Google says it can't open the file</h3>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+
+
+function messengerHome(){
+
+showFlow();
+
+progress.innerHTML="Facebook Messenger";
+
+question.innerHTML="Messenger can interfere with opening Google Apps.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Messenger opens links inside its own browser.
+
+Opening RTCats in Safari or Chrome fixes many problems.
+
+</div>
+
+<button class="answer" onclick="messengerSteps()">
+
+<h3>Show me how</h3>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+
+
+function otherHome(){
+
+showFlow();
+
+progress.innerHTML="Other";
+
+question.innerHTML="Choose a topic.";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="browserHelp()">
+
+<h3>🌐 Browser Problems</h3>
+
+</button>
+
+<button class="answer" onclick="bookmarkHelp()">
+
+<h3>⭐ Old Bookmark</h3>
+
+</button>
+
+<button class="answer" onclick="refreshHelp()">
+
+<h3>🔄 Refresh the Portal</h3>
+
+</button>
+
+<button class="answer secondary" onclick="goHome()">
+
+🏠 Back to Home
+
+</button>
+
+`;
+
+}
+    /* ---------- PORTAL : iPHONE ---------- */
+
+function portalIPhone(){
+
+progress.innerHTML="Scheduling Portal → iPhone";
+
+question.innerHTML="What happens when you try to open the Scheduling Portal?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="iphoneGoogleError()">
+
+<h3>🚫 Google says it can't open the file</h3>
+
+<small>This is the most common problem.</small>
+
+</button>
+
+<button class="answer" onclick="iphoneBlankScreen()">
+
+<h3>⬜ I get a blank white screen</h3>
+
+</button>
+
+<button class="answer" onclick="iphoneNothing()">
+
+<h3>❌ Nothing happens when I tap the link</h3>
+
+</button>
+
+<button class="answer" onclick="messengerSteps()">
+
+<h3>💬 I'm opening it from Facebook Messenger</h3>
+
+</button>
+
+<button class="answer secondary" onclick="portalHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- PORTAL : COMPUTER ---------- */
+
+function portalComputer(){
+
+progress.innerHTML="Scheduling Portal → Computer";
+
+question.innerHTML="Which browser are you using?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="chromeHelp()">
+
+<h3>🌎 Google Chrome</h3>
+
+</button>
+
+<button class="answer" onclick="edgeHelp()">
+
+<h3>🟦 Microsoft Edge</h3>
+
+</button>
+
+<button class="answer" onclick="firefoxHelp()">
+
+<h3>🦊 Firefox</h3>
+
+</button>
+
+<button class="answer secondary" onclick="portalHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- iPHONE GOOGLE ERROR ---------- */
+
+function iphoneGoogleError(){
+
+progress.innerHTML="Google Error";
+
+question.innerHTML="How did you open the Scheduling Portal?";
+
+answers.innerHTML=`
+
+<button class="answer" onclick="messengerSteps()">
+
+<h3>💬 Facebook Messenger</h3>
+
+</button>
+
+<button class="answer" onclick="facebookSteps()">
+
+<h3>📘 Facebook</h3>
+
+</button>
+
+<button class="answer" onclick="googleAccounts()">
+
+<h3>🍎 Safari</h3>
+
+</button>
+
+<button class="answer" onclick="googleAccounts()">
+
+<h3>🌎 Chrome</h3>
+
+</button>
+
+<button class="answer secondary" onclick="portalIPhone()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- MESSENGER ---------- */
+
+function messengerSteps(){
+
+progress.innerHTML="Messenger";
+
+question.innerHTML="Let's open the portal outside Messenger.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Messenger has its own built-in browser.
+
+Google Apps sometimes won't load correctly inside it.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Tap the Share button.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Choose <b>Open in Safari</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Open the Scheduling Portal again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="googleAccounts()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="portalIPhone()">
+
+← Back
+
+</button>
+
+`;
+
+}
+    /* ---------- FACEBOOK ---------- */
+
+function facebookSteps(){
+
+progress.innerHTML="Facebook";
+
+question.innerHTML="Open the Scheduling Portal from RTCats HQ instead of inside Facebook.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Facebook sometimes opens websites inside its own browser.
+
+Opening RTCats HQ directly in Safari or Chrome usually fixes the problem.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Open Safari.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Go to <b>rtcats.com</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Open the Scheduling Portal.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="googleAccounts()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="iphoneGoogleError()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- GOOGLE ACCOUNTS ---------- */
+
+function googleAccounts(){
+
+progress.innerHTML="Google Accounts";
+
+question.innerHTML="Let's check how many Google accounts are signed in.";
+
+answers.innerHTML=`
+
+<div class="warning">
+
+Having more than one Google account signed in is the #1 cause of this error.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Open <b>gmail.com</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Tap your profile picture.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Do you see more than one Google account?</small>
+
+</button>
+
+<button class="answer" onclick="removeGoogleAccount()">
+
+✅ Yes
+
+</button>
+
+<button class="answer" onclick="privateSafari()">
+
+❌ No
+
+</button>
+
+<button class="answer secondary" onclick="iphoneGoogleError()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- REMOVE ACCOUNT ---------- */
+
+function removeGoogleAccount(){
+
+progress.innerHTML="Remove Extra Google Account";
+
+question.innerHTML="Temporarily remove the extra account.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+You can add it back after you're finished using the Scheduling Portal.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Tap the extra Google account.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Choose <b>Remove Account</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Return to RTCats HQ and try again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="privateSafari()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="googleAccounts()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- PRIVATE SAFARI ---------- */
+
+function privateSafari(){
+
+progress.innerHTML="Private Safari";
+
+question.innerHTML="Let's try a Private Safari window.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Private Safari ignores many saved cookies and often fixes Google sign-in problems.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Open Safari.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Tap the Tabs button (two overlapping squares).</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Select <b>Private</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 4</h3>
+
+<small>Tap the + button and open <b>rtcats.com</b>.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="chromeHelp()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="removeGoogleAccount()">
+
+← Back
+
+</button>
+
+`;
+
+}
+    /* ---------- CHROME ---------- */
+
+function chromeHelp(){
+
+progress.innerHTML="Google Chrome";
+
+question.innerHTML="Let's try Chrome.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Chrome is the recommended browser for the Scheduling Portal.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Open Google Chrome.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Go to <b>rtcats.com</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Open the Scheduling Portal.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="computerGoogleError()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="privateSafari()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- COMPUTER GOOGLE ERROR ---------- */
+
+function computerGoogleError(){
+
+progress.innerHTML="Computer";
+
+question.innerHTML="Google still says it can't open the file.";
+
+answers.innerHTML=`
+
+<div class="warning">
+
+This is usually caused by multiple Google accounts.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Open <b>gmail.com</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Click your Google profile picture.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Sign out of the extra Google account.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 4</h3>
+
+<small>Return to RTCats HQ and try again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="incognitoHelp()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="chromeHelp()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- INCOGNITO ---------- */
+
+function incognitoHelp(){
+
+progress.innerHTML="Incognito";
+
+question.innerHTML="Let's try an Incognito window.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+An Incognito window ignores most saved Google cookies.
+
+</div>
+
+<button class="answer">
+
+<h3>Chrome</h3>
+
+<small>Click the three dots in the upper-right corner.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Select</h3>
+
+<small><b>New Incognito Window</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Open</h3>
+
+<small>Go to <b>rtcats.com</b>.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Try</h3>
+
+<small>Open the Scheduling Portal again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer" onclick="lastResort()">
+
+➡ Still doesn't work
+
+</button>
+
+<button class="answer secondary" onclick="computerGoogleError()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- EDGE ---------- */
+
+function edgeHelp(){
+
+question.innerHTML="Microsoft Edge";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+If Edge doesn't work, Chrome usually does.
+
+</div>
+
+<button class="answer" onclick="chromeHelp()">
+
+🌎 Open Chrome Instead
+
+</button>
+
+<button class="answer secondary" onclick="portalComputer()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- FIREFOX ---------- */
+
+function firefoxHelp(){
+
+question.innerHTML="Firefox";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Firefox occasionally blocks Google authentication differently than Chrome.
+
+</div>
+
+<button class="answer" onclick="chromeHelp()">
+
+🌎 Try Chrome Instead
+
+</button>
+
+<button class="answer secondary" onclick="portalComputer()">
+
+← Back
+
+</button>
+
+`;
+
+}
+   /* ---------- DAILY LOG ---------- */
+
+function dailyOpen(){
+
+progress.innerHTML="Daily Log";
+
+question.innerHTML="The Daily Log won't open.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+Always start from RTCats HQ instead of using an old bookmark.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Return to RTCats HQ.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Select your store.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>Tap the Daily Log button again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer secondary" onclick="dailyHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+function dailySubmit(){
+
+progress.innerHTML="Daily Log";
+
+question.innerHTML="The Daily Log won't submit.";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+This is usually caused by a slow internet connection.
+
+</div>
+
+<button class="answer">
+
+<h3>Step 1</h3>
+
+<small>Wait 15 seconds.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 2</h3>
+
+<small>Press Submit once.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Step 3</h3>
+
+<small>If nothing happens, refresh the page and complete the Daily Log again.</small>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer secondary" onclick="dailyHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- GENERAL HELP ---------- */
+
+function browserHelp(){
+
+progress.innerHTML="Browser Help";
+
+question.innerHTML="General Browser Tips";
+
+answers.innerHTML=`
+
+<div class="tip">
+
+These simple fixes solve many temporary problems.
+
+</div>
+
+<button class="answer">
+
+<h3>✔ Refresh the page.</h3>
+
+</button>
+
+<button class="answer">
+
+<h3>✔ Close your browser completely.</h3>
+
+</button>
+
+<button class="answer">
+
+<h3>✔ Reopen RTCats HQ.</h3>
+
+</button>
+
+<button class="answer">
+
+<h3>✔ Try Google Chrome.</h3>
+
+</button>
+
+<button class="answer" onclick="successPage()">
+
+✅ That fixed it
+
+</button>
+
+<button class="answer secondary" onclick="otherHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+function bookmarkHelp(){
+
+progress.innerHTML="Bookmarks";
+
+question.innerHTML="Old bookmarks sometimes stop working.";
+
+answers.innerHTML=`
+
+<div class="warning">
+
+Don't use an old bookmark for the Scheduling Portal.
+
+</div>
+
+<div class="tip">
+
+Always begin at <b>RTCats HQ</b>.
+
+</div>
+
+<button class="answer" onclick="successPage()">
+
+✅ Got it
+
+</button>
+
+<button class="answer secondary" onclick="otherHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+function refreshHelp(){
+
+progress.innerHTML="Refreshing";
+
+question.innerHTML="Refreshing fixes many temporary issues.";
+
+answers.innerHTML=`
+
+<button class="answer">
+
+<h3>Windows</h3>
+
+<small>Press F5.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Mac</h3>
+
+<small>Press Command + R.</small>
+
+</button>
+
+<button class="answer">
+
+<h3>Phone</h3>
+
+<small>Close Safari or Chrome completely, then reopen it.</small>
+
+</button>
+
+<button class="answer secondary" onclick="otherHome()">
+
+← Back
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- SUCCESS ---------- */
+
+function successPage(){
+
+progress.innerHTML="Finished";
+
+question.innerHTML="🎉 Great!";
+
+answers.innerHTML=`
+
+<div class="success">
+
+Hopefully you're back up and running.
+
+</div>
+
+<div class="tip">
+
+If the problem returns, come back to the Troubleshooter and try another path.
+
+We're continuing to add more solutions as volunteers discover new issues.
+
+</div>
+
+<button class="answer" onclick="goHome()">
+
+🏠 Return to Home
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- LAST RESORT ---------- */
+
+function lastResort(){
+
+progress.innerHTML="Still Stuck";
+
+question.innerHTML="We've tried the most common fixes.";
+
+answers.innerHTML=`
+
+<div class="warning">
+
+Please gather this information before asking for help.
+
+</div>
+
+<ul style="line-height:2;margin-left:24px;">
+
+<li>📷 Screenshot of the error</li>
+
+<li>📱 Device (iPhone, Android, Windows, Chromebook, Mac)</li>
+
+<li>🌐 Browser (Safari, Chrome, Edge, Firefox)</li>
+
+<li>👤 Are multiple Google accounts signed in?</li>
+
+<li>💬 Did you open it from Messenger, Facebook, or RTCats HQ?</li>
+
+</ul>
+
+<br>
+
+<button class="answer" onclick="goHome()">
+
+🏠 Return Home
+
+</button>
+
+`;
+
+}
+
+
+/* ---------- SEARCH ---------- */
+
+const search=document.getElementById("search");
+
+search.addEventListener("input",function(){
 
 const value=this.value.toLowerCase();
 
-document.querySelectorAll(".topic").forEach(topic=>{
+document.querySelectorAll(".card").forEach(card=>{
 
-const text=topic.innerText.toLowerCase();
-
-topic.style.display=text.includes(value) ? "" : "none";
+card.style.display=
+card.innerText.toLowerCase().includes(value)
+? ""
+: "none";
 
 });
 
@@ -544,6 +1675,3 @@ topic.style.display=text.includes(value) ? "" : "none";
 </body>
 
 </html>
-
-</div>
-  
