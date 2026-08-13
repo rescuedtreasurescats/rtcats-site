@@ -533,8 +533,11 @@
     document.querySelectorAll('a').forEach(link => {
 
       switch (link.textContent.trim()) {
-          case "🐾 Cat Corner":
-          link.href = settings["Cat Corner"];
+        case "🐾 Cat Corner":
+          if (settings["Cat Corner"]) {
+            let baseUrl = settings["Cat Corner"].split('?')[0];
+            link.href = baseUrl + "?authuser=0";
+          }
           break;
 
         case "Open Schedule Portal":
