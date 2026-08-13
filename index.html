@@ -531,6 +531,9 @@
     document.querySelectorAll('a').forEach(link => {
 
       switch (link.textContent.trim()) {
+          case "🐾 Cat Corner":
+          link.href = settings["Cat Corner"];
+          break;
 
         case "Open Schedule Portal":
           link.href = settings.PortalDeploymentURL;
