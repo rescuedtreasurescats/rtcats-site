@@ -214,8 +214,11 @@ Monroe Ave Pet Supplies Plus
 
 <script>
 
-const SUPPLIES_URL =
-  "https://script.google.com/macros/s/AKfycbyddU2ObZ4DkECGUqVA62O7nVN9pHxCjYsauSb1WJmF_kufiIuQ9J7v_DncXVa1xTN2/exec?action=supplies&store=Brighton";
+cconst SETTINGS_URL =
+  "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
+
+let brightonSupplies = [];
+let suppliesUrl = "";
 
 let brightonSupplies = [];
 
@@ -224,8 +227,18 @@ async function loadSupplies() {
   const list = document.getElementById("suppliesList");
 
   try {
-    const response = await fetch(SUPPLIES_URL);
-    const result = await response.json();
+    if (!suppliesUrl) {
+  const settingsResponse = await fetch(SETTINGS_URL);
+  const settings = await settingsResponse.json();
+
+  suppliesUrl =
+    settings.PortalDeploymentURL +
+    "?action=supplies&store=" +
+    encodeURIComponent("Brighton");
+}
+
+const response = await fetch(suppliesUrl);
+const result = await response.json();
 
     if (!result || !result.success) {
       throw new Error("Could not load supplies.");
