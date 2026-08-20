@@ -139,6 +139,40 @@ Monroe Ave Pet Supplies Plus
 >
 📄 Daily Form
 </a>
+<button
+  id="suppliesButton"
+  class="toolButton"
+  type="button"
+  onclick="toggleSupplies()"
+  style="border:none; cursor:pointer; text-align:left;"
+>
+📦 Brighton Supplies Needed · loading...
+</button>
+
+<div
+  id="suppliesPanel"
+  style="
+    display:none;
+    background:white;
+    padding:18px;
+    margin-top:-6px;
+    margin-bottom:14px;
+    border-radius:10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+  "
+>
+  <div style="font-weight:bold; margin-bottom:6px;">
+    Already on this list? No need to request it again!
+  </div>
+
+  <div style="font-size:14px; color:#666; margin-bottom:14px;">
+    These items have already been reported and are waiting to be delivered.
+  </div>
+
+  <div id="suppliesList">
+    Loading...
+  </div>
+</div>    
 
 <a
   href="https://docs.google.com/forms/d/e/1FAIpQLScPsY92chq-7pKXMRh2j509NQrucDyqeVWZceqqb0q32o0CAw/viewform"
