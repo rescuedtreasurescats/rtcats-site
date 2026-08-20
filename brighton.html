@@ -212,4 +212,119 @@ Monroe Ave Pet Supplies Plus
 
 </body>
 
+<script>
+
+const SUPPLIES_URL =
+  "https://script.google.com/macros/s/AKfycbyddU2ObZ4DkECGUqVA62O7nVN9pHxCjYsauSb1WJmF_kufiIuQ9J7v_DncXVa1xTN2/exec?action=supplies&store=Brighton";
+
+let brightonSupplies = [];
+
+async function loadSupplies() {
+  const button = document.getElementById("suppliesButton");
+  const list = document.getElementById("suppliesList");
+
+  try {
+    const response = await fetch(SUPPLIES_URL);
+    const result = await response.json();
+
+    if (!result || !result.success) {
+      throw new Error("Could not load supplies.");
+    }
+
+    brightonSupplies = result.requests || [];
+
+    button.textContent =
+      "📦 Brighton Supplies Needed · " +
+      result.count +
+      " open";
+
+    renderSupplies();
+
+  } catch (error) {
+    console.error("Unable to load Brighton supplies.", error);
+
+    button.textContent = "📦 Brighton Supplies Needed";
+    list.innerHTML =
+      "<span style='color:#b91c1c;'>Unable to load supply list.</span>";
+  }
+}
+
+function renderSupplies() {
+  const list = document.getElementById("suppliesList");
+
+  if (!brightonSupplies.length) {
+    list.innerHTML =
+      "<strong>Nothing currently needed. 🎉</strong>";
+    return;
+  }
+
+  let html = "";
+
+  brightonSupplies.forEach(function(request) {
+
+    html +=
+      "<div style='padding:10px 0; border-bottom:1px solid #e5e7eb;'>";
+
+    html +=
+      "<strong style='font-size:16px;'>" +
+      escapeSupplyHtml(request.item || "Supply Request") +
+      "</strong>";
+
+    if (request.details) {
+      html +=
+        "<div style='margin-top:4px; font-size:14px;'>" +
+        escapeSupplyHtml(request.details) +
+        "</div>";
+    }
+
+    const meta = [];
+
+    if (request.volunteer) {
+      meta.push("Requested by " + request.volunteer);
+    }
+
+    if (request.requestedDate) {
+      meta.push(request.requestedDate);
+    }
+
+    if (meta.length) {
+      html +=
+        "<div style='font-size:12px; color:#64748b; margin-top:5px;'>" +
+        escapeSupplyHtml(meta.join(" · ")) +
+        "</div>";
+    }
+
+    html += "</div>";
+  });
+
+  list.innerHTML = html;
+}
+
+function toggleSupplies() {
+  const panel = document.getElementById("suppliesPanel");
+
+  if (panel.style.display === "none" || !panel.style.display) {
+    panel.style.display = "block";
+
+    // Refresh whenever someone opens it.
+    loadSupplies();
+  } else {
+    panel.style.display = "none";
+  }
+}
+
+function escapeSupplyHtml(value) {
+  return String(value || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+// Load the count as soon as Brighton opens.
+loadSupplies();
+
+</script>
+    
 </html>
