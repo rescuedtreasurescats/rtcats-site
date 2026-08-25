@@ -20,23 +20,45 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
   position:relative;
   overflow:hidden;
   background:
-    linear-gradient(90deg,rgba(26,125,128,.97) 0%,rgba(37,145,148,.88) 48%,rgba(37,145,148,.48) 100%),
+    linear-gradient(
+      90deg,
+      rgba(26,125,128,.98) 0%,
+      rgba(37,145,148,.90) 45%,
+      rgba(37,145,148,.42) 100%
+    ),
     url('https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1600&auto=format&fit=crop');
   background-size:cover;
-  background-position:70% center;
+  background-position:72% center;
 }
 
 .hero-title{
-  font-size:clamp(2rem,7vw,4.5rem);
+  font-size:clamp(2rem,6.3vw,4.5rem);
   line-height:1.05;
   font-weight:800;
   letter-spacing:-.03em;
+  max-width:900px;
 }
 
 .hero-message{
-  font-size:clamp(1.75rem,5.5vw,3.25rem);
-  line-height:1.1;
+  font-size:clamp(1.65rem,5vw,3.25rem);
+  line-height:1.08;
   font-weight:700;
+}
+
+@media(max-width:767px){
+  .hero-bg{
+    background-position:67% center;
+  }
+
+  .hero-title{
+    font-size:2rem;
+    max-width:100%;
+  }
+
+  .hero-message{
+    font-size:1.7rem;
+    max-width:72%;
+  }
 }
 .header-btn{padding:.5rem 1rem;border-radius:.6rem;font-weight:600;transition:.2s}
 .help-header-btn{background:rgba(255,255,255,.15);color:white}.help-header-btn:hover{background:rgba(255,255,255,.25)}
@@ -106,17 +128,17 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
 <!-- HERO -->
 <section id="home" class="hero-bg">
 
-  <div class="max-w-7xl mx-auto px-6 py-10 md:py-16 text-white relative z-10">
+  <div class="max-w-7xl mx-auto px-6 py-8 md:py-14 text-white relative z-10">
 
     <div class="max-w-4xl">
 
-      <h1 class="hero-title mb-7">
+      <h1 class="hero-title mb-5">
         🐾 RTPA VOLUNTEER + FOSTER HQ
       </h1>
 
-      <div class="w-20 h-1 bg-white/50 rounded-full mb-6"></div>
+      <div class="w-16 h-1 bg-white/50 rounded-full mb-5"></div>
 
-      <div class="hero-message mb-6">
+      <div class="hero-message mb-5">
         Saving cats.<br>
         Loving them.<br>
         Keeping it all running.
