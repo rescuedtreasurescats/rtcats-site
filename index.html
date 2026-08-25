@@ -16,68 +16,25 @@
    <style>
 *{box-sizing:border-box}
 body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
-.hero-bg{
-  position:relative;
-  overflow:hidden;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(26,125,128,.98) 0%,
-      rgba(37,145,148,.90) 45%,
-      rgba(37,145,148,.42) 100%
-    ),
-    url('https://images.unsplash.com/photo-1511044568932-338cba0ad803?q=80&w=1600&auto=format&fit=crop');
-  background-size:cover;
-  background-position:72% center;
-}
-
-.hero-title{
-  font-size:clamp(2rem,6.3vw,4.5rem);
-  line-height:1.05;
-  font-weight:800;
-  letter-spacing:-.03em;
-  max-width:900px;
-}
-
-.hero-message{
-  font-size:clamp(1.65rem,5vw,3.25rem);
-  line-height:1.08;
-  font-weight:700;
-}
-
-@media(max-width:767px){
-  .hero-bg{
-    background-position:67% center;
-  }
-
-  .hero-title{
-    font-size:2rem;
-    max-width:100%;
-  }
-
-  .hero-message{
-    font-size:1.7rem;
-    max-width:72%;
-  }
-}
+.hero-bg{position:relative;overflow:hidden;min-height:430px;background:#237f82}
+.hero-bg::before{content:"";position:absolute;inset:0 0 0 48%;background:linear-gradient(90deg,#237f82 0%,rgba(35,127,130,.50) 30%,rgba(35,127,130,.08) 68%,rgba(35,127,130,0) 100%),url('https://images.unsplash.com/photo-ip25moYmzaw?auto=format&fit=crop&w=1400&q=85');background-size:cover;background-position:center 38%;background-repeat:no-repeat}
+.hero-content{position:relative;z-index:1;max-width:56%}
+.hero-title{font-size:clamp(2.2rem,5vw,4.5rem);line-height:1.04;font-weight:800;letter-spacing:-.03em}
+.hero-message{font-size:clamp(1.75rem,3.6vw,3rem);line-height:1.08;font-weight:700}
 .header-btn{padding:.5rem 1rem;border-radius:.6rem;font-weight:600;transition:.2s}
 .help-header-btn{background:rgba(255,255,255,.15);color:white}.help-header-btn:hover{background:rgba(255,255,255,.25)}
 .quick-button{display:flex;align-items:center;gap:.8rem;width:100%;min-height:64px;background:white;color:#1e293b;border:1px solid #e2e8f0;border-radius:1rem;padding:.9rem 1rem;font-weight:600;line-height:1.3;text-decoration:none;box-shadow:0 5px 14px rgba(0,0,0,.05);transition:.18s}
-.quick-button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08)}
-.quick-button::after{content:"›";margin-left:auto;color:#2f9ea0;font-size:1.7rem;font-weight:400;line-height:1}
-.tracker-btn{background:#2f9ea0;color:white;border-color:#2f9ea0}.tracker-btn::after,.chat-btn::after{color:white}
-.schedule-btn{background:white;color:#1e293b}.chat-btn{background:#1877F2;color:white;border-color:#1877F2}
+.quick-button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08)}.quick-button::after{content:"›";margin-left:auto;color:#2f9ea0;font-size:1.7rem;line-height:1}
+.tracker-btn{background:#2f9ea0;color:white;border-color:#2f9ea0}.tracker-btn::after,.chat-btn::after{color:white}.schedule-btn{background:white;color:#1e293b}.chat-btn{background:#1877F2;color:white;border-color:#1877F2}
 .placeholder-btn{background:#f1f5f9;color:#64748b;cursor:not-allowed;box-shadow:none}.placeholder-btn::after{content:""}
 .section-card{border-radius:1.25rem;padding:1.25rem;box-shadow:0 8px 22px rgba(0,0,0,.05);border:1px solid rgba(226,232,240,.9)}
-#new-volunteers .section-card{padding:0;background:transparent;border:0;box-shadow:none;border-radius:0}
-#new-volunteers .quick-button{min-height:112px;align-items:flex-start;padding:1rem 1.1rem}
-#new-volunteers .quick-button::after{align-self:center}
+.volunteer-card{display:flex;flex-direction:column;height:100%;min-height:230px;background:white;border:1px solid #e2e8f0;border-radius:1.2rem;padding:1.35rem;box-shadow:0 7px 18px rgba(0,0,0,.06);color:#1e293b;text-decoration:none;transition:.18s}
+.volunteer-card:hover{transform:translateY(-2px);box-shadow:0 11px 24px rgba(0,0,0,.09)}
+.volunteer-card-icon{font-size:2rem;line-height:1;margin-bottom:.9rem}.volunteer-card-title{font-size:1.18rem;font-weight:800;line-height:1.2;margin-bottom:.55rem}.volunteer-card-subtitle{font-size:.96rem;font-weight:600;line-height:1.3;margin-bottom:.55rem}.volunteer-card-desc{font-size:.84rem;line-height:1.45;color:#64748b;margin-bottom:1rem}.volunteer-card-arrow{margin-top:auto;padding-top:.75rem;border-top:1px solid #edf0f2;color:#2f9ea0;font-size:1.65rem;line-height:1}
 @media(max-width:767px){
-.quick-button{min-height:58px;padding:.8rem .9rem;border-radius:.9rem}
-.section-card{padding:1rem;border-radius:1rem}
-#new-volunteers .quick-button{min-height:0;padding:.9rem 1rem}
-#new-volunteers,#stores{padding-top:2rem;padding-bottom:2rem}
-#new-volunteers .mb-8,#stores .mb-8{margin-bottom:1.25rem}
+.hero-bg{min-height:455px}.hero-bg::before{inset:0;background:linear-gradient(90deg,rgba(35,127,130,.99) 0%,rgba(35,127,130,.94) 43%,rgba(35,127,130,.40) 67%,rgba(35,127,130,.08) 100%),url('https://images.unsplash.com/photo-ip25moYmzaw?auto=format&fit=crop&w=900&q=85');background-size:cover;background-position:64% 42%}.hero-content{max-width:68%}.hero-title{font-size:2rem}.hero-message{font-size:1.65rem}
+.quick-button{min-height:58px;padding:.8rem .9rem;border-radius:.9rem}.section-card{padding:1rem;border-radius:1rem}#new-volunteers,#stores{padding-top:2rem;padding-bottom:2rem}#new-volunteers .mb-8,#stores .mb-8{margin-bottom:1.25rem}
+.volunteer-card{min-height:0;display:grid;grid-template-columns:42px minmax(0,1fr) 24px;grid-template-rows:auto auto auto;column-gap:.8rem;padding:1rem;align-items:start}.volunteer-card-icon{grid-column:1;grid-row:1/4;margin:0;font-size:1.8rem;padding-top:.1rem}.volunteer-card-title{grid-column:2;grid-row:1;margin:0 0 .25rem;font-size:1.05rem}.volunteer-card-subtitle{grid-column:2;grid-row:2;margin:0 0 .25rem;font-size:.9rem}.volunteer-card-desc{grid-column:2;grid-row:3;margin:0;font-size:.78rem;line-height:1.35}.volunteer-card-arrow{grid-column:3;grid-row:1/4;align-self:center;margin:0;padding:0;border:0;text-align:right}
 }
 </style>
 </head>
@@ -127,32 +84,16 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
 
 <!-- HERO -->
 <section id="home" class="hero-bg">
-
-  <div class="max-w-7xl mx-auto px-6 py-8 md:py-14 text-white relative z-10">
-
-    <div class="max-w-4xl">
-
-      <h1 class="hero-title mb-5">
-        🐾 RTPA VOLUNTEER + FOSTER HQ
-      </h1>
-
+  <div class="max-w-7xl mx-auto px-6 py-10 md:py-14 text-white relative z-10">
+    <div class="hero-content">
+      <h1 class="hero-title mb-5">🐾 RTPA VOLUNTEER + FOSTER HQ</h1>
       <div class="w-16 h-1 bg-white/50 rounded-full mb-5"></div>
-
-      <div class="hero-message mb-5">
-        Saving cats.<br>
-        Loving them.<br>
-        Keeping it all running.
-      </div>
-
-      <p class="text-base md:text-xl text-teal-50 leading-relaxed max-w-2xl">
-        Schedules, store tools, foster resources, training &amp; more — all in one place.
-      </p>
-
+      <div class="hero-message mb-5">Saving cats.<br>Loving them.<br>Keeping it all running.</div>
+      <p class="text-base md:text-xl text-teal-50 leading-relaxed">Schedules, store tools, foster resources, training &amp; more — all in one place.</p>
     </div>
-
   </div>
-
 </section>
+
 <!-- NEW SCHEDULE PORTAL --> 
 <section class="max-w-7xl mx-auto px-6 pb-10 pt-10"> 
   <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 md:p-5 shadow-sm"> 
@@ -188,40 +129,16 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
     <h2 class="text-3xl md:text-4xl font-bold mb-2">🌟 New Volunteers</h2>
     <p class="text-slate-600">Getting started? Everything you need is here.</p>
   </div>
-
   <div class="grid md:grid-cols-3 gap-4">
-
-    <div class="bg-white section-card">
-      <a href="gettingstarted.html" class="quick-button">
-        <div class="text-xl font-bold mb-2">🌟 New Volunteers</div>
-        <div class="font-semibold">Getting Started?</div>
-        <div class="text-sm text-slate-500 mt-2">
-          Everything you need to get started is right here.
-        </div>
-      </a>
-    </div>
-
-    <div class="bg-white section-card">
-      <a href="https://script.google.com/macros/s/AKfycbx8cwGKROcrvJuriP2OuaA1qfGgpMzS3hTszzrdDOsZtxJmJvsrzmUyPHNT8vZZH2qA/exec?page=checklist"
-         class="quick-button">
-        <div class="text-xl font-bold mb-2">📋 Training Checklist</div>
-        <div class="font-semibold">Training Guide & Refresher</div>
-        <div class="text-sm text-slate-500 mt-2">
-          Follow along during training or return anytime for a quick refresher.
-        </div>
-      </a>
-    </div>
-
-    <div class="bg-white section-card">
-      <a href="/trainers" class="quick-button">
-        <div class="text-xl font-bold mb-2">🔐 Trainers Only</div>
-        <div class="font-semibold">Trainer Center</div>
-        <div class="text-sm text-slate-500 mt-2">
-          Trainer discussions, resources, tools and training support.
-        </div>
-      </a>
-    </div>
-
+    <a href="gettingstarted.html" class="volunteer-card">
+      <div class="volunteer-card-icon">🌟</div><div class="volunteer-card-title">New Volunteers</div><div class="volunteer-card-subtitle">Getting Started?</div><div class="volunteer-card-desc">Everything you need to get started is right here.</div><div class="volunteer-card-arrow">›</div>
+    </a>
+    <a href="https://script.google.com/macros/s/AKfycbx8cwGKROcrvJuriP2OuaA1qfGgpMzS3hTszzrdDOsZtxJmJvsrzmUyPHNT8vZZH2qA/exec?page=checklist" class="volunteer-card">
+      <div class="volunteer-card-icon">📋</div><div class="volunteer-card-title">Training Checklist</div><div class="volunteer-card-subtitle">Training Guide &amp; Refresher</div><div class="volunteer-card-desc">Follow along during training or return anytime for a quick refresher.</div><div class="volunteer-card-arrow">›</div>
+    </a>
+    <a href="/trainers" class="volunteer-card">
+      <div class="volunteer-card-icon">🔐</div><div class="volunteer-card-title">Trainers Only</div><div class="volunteer-card-subtitle">Trainer Center</div><div class="volunteer-card-desc">Trainer discussions, resources, tools and training support.</div><div class="volunteer-card-arrow">›</div>
+    </a>
   </div>
 </section>
 
