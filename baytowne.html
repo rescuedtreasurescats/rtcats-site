@@ -105,8 +105,6 @@ Baytowne HQ
 Baytowne Pet Supplies Plus
 </div>
 
-<a href="#" id="announcementsButton" class="toolButton" target="_blank">📣 Announcements</a>
-
 <a
   href="https://docs.google.com/forms/d/e/1FAIpQLScr-yIj1k9AmDB2VO3XqSJpC7V138djQFliuhQFRnT7OE54ZQ/viewform"
   target="_blank"
@@ -150,19 +148,6 @@ Baytowne Pet Supplies Plus
 </a>
 
 </div>
-
-<script>
-const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
-(async function(){
-  try {
-    const settings = await fetch(SETTINGS_URL).then(r => r.json());
-    const button = document.getElementById("announcementsButton");
-    if (settings.PortalDeploymentURL) button.href = settings.PortalDeploymentURL;
-  } catch (err) {
-    console.error("Unable to load announcement link.", err);
-  }
-})();
-</script>
 
 </body>
 
