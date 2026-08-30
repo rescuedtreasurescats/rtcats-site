@@ -14,7 +14,6 @@ body{margin:0;background:#f5f7fa;font-family:Arial,sans-serif}header{background:
 <a class="backButton" href="index.html">← Back to HQ</a>
 <div class="storeTitle">🐈 Brighton</div>
 <div class="storeSubtitle">Monroe Ave Pet Supplies Plus</div>
-<a href="#" id="announcementsButton" class="toolButton" target="_blank">📣 Announcements</a>
 <a href="https://docs.google.com/forms/d/e/1FAIpQLSf6UG_Y0Uocn0s0Zvv0Z1HUBqYfXge7P-a3eXWjid8KsTGaXA/viewform" target="_blank" class="toolButton">📄 Daily Form</a>
 <button id="suppliesButton" class="toolButton" type="button" onclick="toggleSupplies()" style="border:none; cursor:pointer; text-align:left;">📦 Brighton Supplies Needed · loading...</button>
 <div id="suppliesPanel" style="display:none;background:white;padding:18px;margin-top:-6px;margin-bottom:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.12);">
@@ -31,15 +30,6 @@ body{margin:0;background:#f5f7fa;font-family:Arial,sans-serif}header{background:
 const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
 let brightonSupplies = [];
 let suppliesUrl = "";
-async function loadSettings(){
-  try{
-    const settings = await fetch(SETTINGS_URL).then(r=>r.json());
-    if(settings.PortalDeploymentURL){
-      document.getElementById("announcementsButton").href = settings.PortalDeploymentURL;
-      suppliesUrl = settings.PortalDeploymentURL + "?action=supplies&store=" + encodeURIComponent("Brighton");
-    }
-  }catch(err){console.error("Unable to load settings.",err)}
-}
 async function loadSupplies(){
  const button=document.getElementById("suppliesButton"),list=document.getElementById("suppliesList");
  try{
@@ -55,7 +45,7 @@ function renderSupplies(){
 }
 function toggleSupplies(){const panel=document.getElementById("suppliesPanel");if(panel.style.display==="none"||!panel.style.display){panel.style.display="block";loadSupplies();}else panel.style.display="none";}
 function escapeSupplyHtml(value){return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");}
-loadSettings();loadSupplies();
+loadSupplies();
 </script>
 </body>
 </html>
