@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f766e">
+  <title>Wheelie Cat | Cat Corner</title>
+  <style>
+    :root{--ink:#18253f;--teal:#0f766e;--aqua:#5eead4;--cream:#fff8df;--orange:#f97316;--red:#e11d48;--green:#22c55e}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;min-height:100%;font-family:Arial,sans-serif;color:var(--ink);background:#dff8f3;overscroll-behavior:none}
+    body{display:flex;justify-content:center;min-height:100dvh;padding:0 0 env(safe-area-inset-bottom)}
+    button,a{font:inherit}
+    .game{width:min(100%,520px);min-height:100dvh;background:linear-gradient(180deg,#0f766e 0 13%,#bdf4e9 13% 64%,#fff5cf 64%);position:relative;overflow:hidden;display:flex;flex-direction:column}
+    .top{height:13dvh;min-height:92px;padding:14px 18px 10px;color:white;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px}
+    .back{color:white;text-decoration:none;font-weight:800;font-size:14px;justify-self:start;background:#ffffff20;padding:9px 11px;border-radius:999px}
+    h1{font-size:clamp(25px,7vw,36px);margin:0;text-align:center;line-height:.95;letter-spacing:-1px;text-shadow:0 3px 0 #084f4a;white-space:nowrap}
+    .sound{justify-self:end;border:0;background:#ffffff20;color:white;border-radius:999px;width:42px;height:42px;font-size:20px;cursor:pointer}
+    .stats{position:absolute;top:calc(13dvh + 10px);left:14px;right:14px;display:flex;justify-content:space-between;z-index:5;font-weight:900}
+    .pill{background:#ffffffdd;border:2px solid #ffffff;padding:8px 12px;border-radius:999px;box-shadow:0 5px 14px #064e3b22;font-size:14px}
+    .arena{height:51dvh;min-height:350px;position:relative;display:flex;align-items:flex-end;justify-content:center;padding-bottom:17px}
+    .speckles{position:absolute;inset:0;background-image:radial-gradient(#ffffff88 2px,transparent 2px);background-size:31px 31px;opacity:.75}
+    .wheel-wrap{width:min(68vw,310px);aspect-ratio:1;position:relative;display:grid;place-items:center;filter:drop-shadow(0 15px 10px #0f766e33)}
+    .wheel{position:absolute;inset:0;border:18px solid #6d28d9;border-radius:50%;background:repeating-conic-gradient(from 0deg,#c4b5fd 0 3deg,transparent 3deg 30deg),radial-gradient(circle,#f5f3ff 0 13%,#ddd6fe 13% 16%,transparent 16%);box-shadow:inset 0 0 0 8px #8b5cf6,0 0 0 5px #4c1d95;will-change:transform}
+    .stand{position:absolute;width:52%;height:17px;background:#4c1d95;border-radius:10px;bottom:-20px}
+    .stand:before,.stand:after{content:"";position:absolute;width:15px;height:58px;background:#6d28d9;bottom:8px;border-radius:8px;transform-origin:bottom}
+    .stand:before{left:28%;transform:rotate(24deg)}.stand:after{right:28%;transform:rotate(-24deg)}
+    .cat{font-size:min(22vw,102px);position:absolute;bottom:18%;z-index:3;transform-origin:50% 80%;filter:drop-shadow(0 5px 2px #4c1d9530);user-select:none;will-change:transform}
+    .cat.running{animation:bob .19s ease-in-out infinite alternate}.cat.wobble{animation:wobble .12s linear infinite}.cat.launched{animation:launch 1.15s cubic-bezier(.2,.8,.5,1) forwards}
+    @keyframes bob{to{transform:translateY(-7px) rotate(-3deg)}}
+    @keyframes wobble{25%{transform:translate(-5px,-4px) rotate(-7deg)}75%{transform:translate(5px,1px) rotate(7deg)}}
+    @keyframes launch{20%{transform:translate(12px,-18px) rotate(15deg)}100%{transform:translate(120vw,-85vh) rotate(1000deg)}}
+    .message{position:absolute;top:75px;left:50%;transform:translateX(-50%);z-index:4;background:#fff;color:var(--ink);font-weight:900;text-align:center;padding:10px 15px;border-radius:15px;box-shadow:0 6px 0 #134e4a22;min-width:190px;max-width:84%;transition:.18s}
+    .message:after{content:"";position:absolute;left:50%;bottom:-9px;border:10px solid transparent;border-top-color:white;border-bottom:0}
+    .controls{flex:1;min-height:280px;padding:12px 18px 24px;display:flex;flex-direction:column;gap:12px;position:relative;z-index:6}
+    .meter-label{display:flex;justify-content:space-between;font-weight:900;font-size:13px}
+    .meter{height:28px;background:linear-gradient(90deg,#60a5fa 0 23%,#22c55e 23% 76%,#f43f5e 76%);border:4px solid white;border-radius:999px;box-shadow:0 5px 0 #92400e22;overflow:hidden;position:relative}
+    .needle{position:absolute;top:-2px;bottom:-2px;width:8px;background:#18253f;border:2px solid white;border-radius:999px;left:0;transform:translateX(-50%);transition:left .08s linear}
+    .run{flex:1;min-height:92px;border:0;border-radius:25px;background:linear-gradient(#fb923c,#f97316);color:white;font-weight:1000;font-size:clamp(35px,11vw,55px);letter-spacing:2px;box-shadow:0 10px 0 #c2410c,0 16px 25px #9a341e33;cursor:pointer;touch-action:manipulation;text-shadow:0 3px 0 #c2410c;transition:transform .06s,box-shadow .06s}
+    .run:active,.run.pressed{transform:translateY(8px);box-shadow:0 2px 0 #c2410c,0 5px 10px #9a341e33}
+    .hint{text-align:center;font-size:14px;font-weight:800;color:#78350f;margin:2px 0 0}
+    .overlay{position:absolute;inset:0;background:#082f49dd;z-index:20;display:grid;place-items:center;padding:24px}
+    .overlay.hidden{display:none}
+    .card{background:#fff8df;border:5px solid white;border-radius:28px;padding:25px 20px;text-align:center;width:min(100%,390px);box-shadow:0 15px 0 #02061744}
+    .card .big{font-size:72px;display:block;margin-bottom:4px}.card h2{font-size:32px;margin:0 0 8px}.card p{font-size:17px;line-height:1.35;margin:8px 0 18px}.again{width:100%;border:0;border-radius:16px;padding:16px;background:var(--teal);color:white;font-weight:900;font-size:21px;box-shadow:0 6px 0 #064e3b;cursor:pointer}
+    .shake{animation:screenShake .3s linear 2}@keyframes screenShake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    @media (max-height:680px){.arena{min-height:300px}.controls{min-height:230px}.message{top:54px}.wheel-wrap{width:min(56vw,255px)}}
+    @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important}}
+  </style>
+</head>
+<body>
+  <main class="game" id="game">
+    <header class="top">
+      <a class="back" href="https://script.google.com/macros/s/AKfycbwim1GRFMEbznRvc6mvkg1LevG9nNj211Ds4q5UROcxnRS4cxoPA5oxijJ4wqhqvOvgig/exec">← Cat Corner</a>
+      <h1>WHEELIE CAT</h1>
+      <button class="sound" id="sound" type="button" aria-label="Turn sound off">🔊</button>
+    </header>
+
+    <div class="stats">
+      <div class="pill">Score: <span id="score">0</span></div>
+      <div class="pill">Best: <span id="best">0</span></div>
+    </div>
+
+    <section class="arena" aria-label="Cat running wheel">
+      <div class="speckles"></div>
+      <div class="message" id="message">Tap RUN to get this loaf moving.</div>
+      <div class="wheel-wrap">
+        <div class="wheel" id="wheel"></div>
+        <div class="cat" id="cat" aria-hidden="true">🐈</div>
+        <div class="stand"></div>
+      </div>
+    </section>
+
+    <section class="controls">
+      <div class="meter-label"><span>😴 LOAF</span><span>😸 PURRFECT</span><span>🚀 OH NO</span></div>
+      <div class="meter" aria-label="Wheel speed"><div class="needle" id="needle"></div></div>
+      <button class="run" id="run" type="button">RUN!</button>
+      <p class="hint">Tap to keep the cat moving. Do not create a furry projectile.</p>
+    </section>
+
+    <div class="overlay hidden" id="overlay">
+      <div class="card">
+        <span class="big">🚀🐈</span>
+        <h2 id="resultTitle">CATAPULTED!</h2>
+        <p id="resultText"></p>
+        <button class="again" id="again" type="button">Try Again</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const wheel=document.getElementById('wheel');
+    const cat=document.getElementById('cat');
+    const needle=document.getElementById('needle');
+    const scoreEl=document.getElementById('score');
+    const bestEl=document.getElementById('best');
+    const message=document.getElementById('message');
+    const runButton=document.getElementById('run');
+    const overlay=document.getElementById('overlay');
+    const game=document.getElementById('game');
+    const resultText=document.getElementById('resultText');
+    const soundButton=document.getElementById('sound');
+    let speed=0,score=0,best=Number(localStorage.getItem('wheelieCatBest')||0),rotation=0;
+    let started=false,over=false,last=performance.now(),dangerTime=0,lastMessage='';
+    let soundOn=true,audioContext;
+    bestEl.textContent=best;
+
+    function beep(freq,duration,volume=.04){
+      if(!soundOn)return;
+      try{
+        audioContext=audioContext||new (window.AudioContext||window.webkitAudioContext)();
+        const osc=audioContext.createOscillator(),gain=audioContext.createGain();
+        osc.frequency.value=freq;osc.type='sine';gain.gain.value=volume;
+        osc.connect(gain);gain.connect(audioContext.destination);osc.start();
+        gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+duration);
+        osc.stop(audioContext.currentTime+duration);
+      }catch(e){}
+    }
+
+    function say(text){if(text!==lastMessage){message.textContent=text;lastMessage=text}}
+
+    function tapRun(){
+      if(over)return;
+      started=true;
+      speed=Math.min(112,speed+8.5);
+      runButton.classList.add('pressed');
+      setTimeout(()=>runButton.classList.remove('pressed'),70);
+      beep(150+speed*3,.05,.025);
+      if(navigator.vibrate)navigator.vibrate(12);
+    }
+
+    function finish(){
+      over=true;speed=108;cat.className='cat launched';game.classList.add('shake');
+      beep(520,.12,.06);setTimeout(()=>beep(760,.2,.05),100);
+      if(navigator.vibrate)navigator.vibrate([70,40,120]);
+      best=Math.max(best,Math.floor(score));localStorage.setItem('wheelieCatBest',best);bestEl.textContent=best;
+      const endings=[
+        'The cat has left the wheel. And possibly the county.',
+        'Excellent speed. Questionable stopping strategy.',
+        'The judges award 10 points for distance and 0 for judgment.',
+        'Somewhere, a volunteer just heard a suspicious crash.'
+      ];
+      resultText.textContent=endings[Math.floor(Math.random()*endings.length)]+' Final score: '+Math.floor(score)+'.';
+      setTimeout(()=>overlay.classList.remove('hidden'),700);
+    }
+
+    function reset(){
+      speed=0;score=0;rotation=0;started=false;over=false;dangerTime=0;last=performance.now();
+      scoreEl.textContent='0';needle.style.left='0%';wheel.style.transform='rotate(0deg)';
+      cat.className='cat';game.classList.remove('shake');overlay.classList.add('hidden');
+      say('Tap RUN to get this loaf moving.');
+      requestAnimationFrame(loop);
+    }
+
+    function loop(now){
+      if(over)return;
+      const dt=Math.min(40,now-last);last=now;
+      speed=Math.max(0,speed-dt*.0075);
+      rotation=(rotation+speed*dt*.006)%360;
+      wheel.style.transform='rotate('+rotation+'deg)';
+      needle.style.left=Math.min(100,speed)+'%';
+
+      if(started&&speed>=23&&speed<=76){
+        score+=dt*.012*(1+speed/85);scoreEl.textContent=Math.floor(score);
+      }
+      if(!started||speed<9){cat.className='cat';say(started?'The loaf is returning. Tap!':'Tap RUN to get this loaf moving.');}
+      else if(speed<23){cat.className='cat running';say('Needs more zoomies!');}
+      else if(speed<=66){cat.className='cat running';say('Purrfect pace!');}
+      else if(speed<=84){cat.className='cat running';say('That tail is getting aerodynamic...');}
+      else{cat.className='cat wobble';say('TOO FAST. ABORT ZOOMIES!');}
+
+      if(speed>98)dangerTime+=dt;else dangerTime=Math.max(0,dangerTime-dt*2);
+      if(dangerTime>260){finish();return;}
+      requestAnimationFrame(loop);
+    }
+
+    runButton.addEventListener('pointerdown',tapRun);
+    document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();tapRun()}});
+    document.getElementById('again').addEventListener('click',reset);
+    soundButton.addEventListener('click',()=>{soundOn=!soundOn;soundButton.textContent=soundOn?'🔊':'🔇';soundButton.setAttribute('aria-label',soundOn?'Turn sound off':'Turn sound on')});
+    requestAnimationFrame(loop);
+  </script>
+</body>
+</html>
