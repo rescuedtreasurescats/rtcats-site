@@ -19,6 +19,8 @@ body{margin:0;background:#f5f7fa;font-family:Arial,sans-serif}header{background:
 <div id="suppliesPanel" style="display:none;background:white;padding:18px;margin-top:-6px;margin-bottom:14px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.12);">
 <div style="font-weight:bold; margin-bottom:6px;">Already on this list? No need to request it again!</div>
 <div style="font-size:14px; color:#666; margin-bottom:14px;">These items have already been reported and are waiting to be delivered.</div>
+<button id="manageSuppliesButton" type="button" onclick="unlockSupplyManager()" style="background:#1976d2;color:white;border:none;border-radius:8px;padding:10px 14px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:8px;">🔒 Manage Supplies</button>
+<div id="manageSuppliesStatus" style="font-size:13px;color:#475569;margin-bottom:10px;"></div>
 <div id="suppliesList">Loading...</div>
 </div>
 <a href="https://docs.google.com/forms/d/e/1FAIpQLScPsY92chq-7pKXMRh2j509NQrucDyqeVWZceqqb0q32o0CAw/viewform" target="_blank" class="toolButton">📝 Additional Notes<span class="comingSoon">(Forgot to add something?)</span></a>
@@ -28,23 +30,130 @@ body{margin:0;background:#f5f7fa;font-family:Arial,sans-serif}header{background:
 </div>
 <script>
 const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
-let brightonSupplies = [];
-let suppliesUrl = "";
+const SUPPLY_STORE = "Brighton";
+let storeSupplies = [];
+let portalBaseUrl = "";
+let supplyManagerPin = "";
+let supplyManagerUnlocked = false;
+
+async function getPortalBaseUrl(){
+  if(portalBaseUrl)return portalBaseUrl;
+  const settings=await fetch(SETTINGS_URL).then(r=>r.json());
+  portalBaseUrl=settings.PortalDeploymentURL;
+  if(!portalBaseUrl)throw new Error("Portal URL is unavailable.");
+  return portalBaseUrl;
+}
+
 async function loadSupplies(){
- const button=document.getElementById("suppliesButton"),list=document.getElementById("suppliesList");
- try{
-  if(!suppliesUrl){const settings=await fetch(SETTINGS_URL).then(r=>r.json());suppliesUrl=settings.PortalDeploymentURL+"?action=supplies&store="+encodeURIComponent("Brighton");}
-  const result=await fetch(suppliesUrl).then(r=>r.json());
-  if(!result||!result.success)throw new Error("Could not load supplies.");
-  brightonSupplies=result.requests||[];button.textContent="📦 Brighton Supplies Needed · "+result.count+" open";renderSupplies();
- }catch(error){console.error("Unable to load Brighton supplies.",error);button.textContent="📦 Brighton Supplies Needed";list.innerHTML="<span style='color:#b91c1c;'>Unable to load supply list.</span>";}
+  const button=document.getElementById("suppliesButton");
+  const list=document.getElementById("suppliesList");
+  try{
+    const base=await getPortalBaseUrl();
+    const result=await fetch(base+"?action=supplies&store="+encodeURIComponent(SUPPLY_STORE)).then(r=>r.json());
+    if(!result||!result.success)throw new Error("Could not load supplies.");
+    storeSupplies=result.requests||[];
+    button.textContent="📦 "+SUPPLY_STORE+" Supplies Needed · "+result.count+" open";
+    renderSupplies();
+  }catch(error){
+    console.error("Unable to load "+SUPPLY_STORE+" supplies.",error);
+    button.textContent="📦 "+SUPPLY_STORE+" Supplies Needed";
+    list.innerHTML="<span style='color:#b91c1c;'>Unable to load supply list.</span>";
+  }
 }
+
 function renderSupplies(){
- const list=document.getElementById("suppliesList");if(!brightonSupplies.length){list.innerHTML="<strong>Nothing currently needed. 🎉</strong>";return;}
- let html="";brightonSupplies.forEach(function(request){html+="<div style='padding:10px 0; border-bottom:1px solid #e5e7eb;'><strong style='font-size:16px;'>"+escapeSupplyHtml(request.item||"Supply Request")+"</strong>";if(request.details)html+="<div style='margin-top:4px; font-size:14px;'>"+escapeSupplyHtml(request.details)+"</div>";const meta=[];if(request.volunteer)meta.push("Requested by "+request.volunteer);if(request.requestedDate)meta.push(request.requestedDate);if(meta.length)html+="<div style='font-size:12px; color:#64748b; margin-top:5px;'>"+escapeSupplyHtml(meta.join(" · "))+"</div>";html+="</div>";});list.innerHTML=html;
+  const list=document.getElementById("suppliesList");
+  if(!storeSupplies.length){
+    list.innerHTML="<strong>Nothing currently needed. 🎉</strong>";
+    return;
+  }
+  let html="";
+  storeSupplies.forEach(function(request){
+    html+="<div style='display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #e5e7eb;'>";
+    if(supplyManagerUnlocked){
+      html+="<input type='checkbox' aria-label='Mark delivered' style='width:22px;height:22px;margin-top:1px;cursor:pointer;' onchange='completeSupply(this,"+Number(request.requestRow)+")'>";
+    }
+    html+="<div><strong style='font-size:16px;'>"+escapeSupplyHtml(request.item||"Supply Request")+"</strong>";
+    if(request.details)html+="<div style='margin-top:4px;font-size:14px;'>"+escapeSupplyHtml(request.details)+"</div>";
+    const meta=[];
+    if(request.volunteer)meta.push("Requested by "+request.volunteer);
+    if(request.requestedDate)meta.push(request.requestedDate);
+    if(meta.length)html+="<div style='font-size:12px;color:#64748b;margin-top:5px;'>"+escapeSupplyHtml(meta.join(" · "))+"</div>";
+    html+="</div></div>";
+  });
+  list.innerHTML=html;
 }
-function toggleSupplies(){const panel=document.getElementById("suppliesPanel");if(panel.style.display==="none"||!panel.style.display){panel.style.display="block";loadSupplies();}else panel.style.display="none";}
-function escapeSupplyHtml(value){return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");}
+
+async function unlockSupplyManager(){
+  if(supplyManagerUnlocked){
+    supplyManagerUnlocked=false;
+    supplyManagerPin="";
+    document.getElementById("manageSuppliesButton").textContent="🔒 Manage Supplies";
+    document.getElementById("manageSuppliesStatus").textContent="";
+    renderSupplies();
+    return;
+  }
+  const pin=window.prompt("Enter the coordinator PIN to manage supplies:");
+  if(pin===null)return;
+  const status=document.getElementById("manageSuppliesStatus");
+  status.textContent="Checking PIN...";
+  try{
+    const base=await getPortalBaseUrl();
+    const result=await fetch(base+"?action=verifySupplyPin&pin="+encodeURIComponent(pin)).then(r=>r.json());
+    if(!result||!result.authorized)throw new Error("Incorrect coordinator PIN.");
+    supplyManagerPin=pin;
+    supplyManagerUnlocked=true;
+    document.getElementById("manageSuppliesButton").textContent="🔓 Stop Managing Supplies";
+    status.textContent="Management unlocked. Check an item when it has been delivered.";
+    renderSupplies();
+  }catch(error){
+    supplyManagerPin="";
+    supplyManagerUnlocked=false;
+    status.textContent="Incorrect coordinator PIN.";
+  }
+}
+
+async function completeSupply(checkbox,requestRow){
+  if(!supplyManagerUnlocked||!supplyManagerPin){
+    checkbox.checked=false;
+    return;
+  }
+  if(!window.confirm("Mark this supply item delivered?")){
+    checkbox.checked=false;
+    return;
+  }
+  checkbox.disabled=true;
+  try{
+    const base=await getPortalBaseUrl();
+    const url=base+"?action=completeSupply&store="+encodeURIComponent(SUPPLY_STORE)+"&requestRow="+encodeURIComponent(requestRow)+"&pin="+encodeURIComponent(supplyManagerPin);
+    const result=await fetch(url).then(r=>r.json());
+    if(!result||!result.success)throw new Error((result&&result.message)||"Could not update this item.");
+    await loadSupplies();
+  }catch(error){
+    checkbox.checked=false;
+    checkbox.disabled=false;
+    window.alert(error.message||"Could not update this item.");
+  }
+}
+
+function toggleSupplies(){
+  const panel=document.getElementById("suppliesPanel");
+  if(panel.style.display==="none"||!panel.style.display){
+    panel.style.display="block";
+    loadSupplies();
+  }else{
+    panel.style.display="none";
+    supplyManagerUnlocked=false;
+    supplyManagerPin="";
+    document.getElementById("manageSuppliesButton").textContent="🔒 Manage Supplies";
+    document.getElementById("manageSuppliesStatus").textContent="";
+  }
+}
+
+function escapeSupplyHtml(value){
+  return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/\"/g,"&quot;").replace(/'/g,"&#039;");
+}
+
 loadSupplies();
 </script>
 </body>
