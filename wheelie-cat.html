@@ -129,6 +129,26 @@
         color: #ddd6fe;
         font-size: 13px;
       }
+      .league-tabs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin-bottom: 14px;
+      }
+      .league-tab {
+        border: 2px solid #ffffff36;
+        border-radius: 11px;
+        background: #ffffff12;
+        color: #fff;
+        padding: 8px 5px;
+        font-size: 11px;
+        font-weight: 900;
+      }
+      .league-tab.active {
+        background: #fbbf24;
+        border-color: #fde68a;
+        color: #312e81;
+      }
       .score-list {
         display: grid;
         gap: 8px;
@@ -188,6 +208,46 @@
       .modal-input:focus {
         outline: 3px solid #5eead4;
         border-color: #0f766e;
+      }
+      .difficulty-options {
+        display: grid;
+        gap: 8px;
+        margin: 3px 0 14px;
+        text-align: left;
+      }
+      .difficulty-choice {
+        display: grid;
+        grid-template-columns: 38px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 9px 11px;
+        border: 3px solid #d7dee8;
+        border-radius: 14px;
+        background: #fff;
+        cursor: pointer;
+      }
+      .difficulty-choice:has(input:checked) {
+        border-color: #0f766e;
+        background: #d5f7ef;
+        box-shadow: 0 4px 0 #0f766e33;
+      }
+      .difficulty-choice input {
+        position: absolute;
+        opacity: 0;
+      }
+      .difficulty-emoji {
+        grid-row: 1 / 3;
+        font-size: 29px;
+        text-align: center;
+      }
+      .difficulty-choice strong {
+        display: block;
+        font-size: 15px;
+      }
+      .difficulty-choice small {
+        color: #52657a;
+        font-size: 11px;
+        line-height: 1.2;
       }
       .menu-buttons {
         display: grid;
@@ -616,6 +676,7 @@
         display: grid;
         place-items: center;
         padding: 24px;
+        overflow-y: auto;
       }
       .card {
         background: var(--cream);
@@ -624,6 +685,7 @@
         padding: 20px;
         text-align: center;
         width: min(100%, 395px);
+        margin: auto;
         box-shadow: 0 15px 0 #02061744;
       }
       .result-cat {
@@ -732,6 +794,7 @@
           ><span class="score-pop" id="scorePop">+5</span>
         </div>
         <div class="pill">Level: <span id="level">1</span></div>
+        <div class="pill">Streak: <span id="streak">1×</span></div>
         <div class="pill">Best: <span id="best">0</span></div>
       </div>
       <section class="arena">
@@ -789,7 +852,7 @@
           </p>
           <p>
             Enter your name, beat the other players, and fight your way onto the
-            Top 10 Wheelie Legends board!
+            Top 10 board for your league!
           </p>
           <input
             class="modal-input"
@@ -799,6 +862,36 @@
             placeholder="Enter your name"
             required
           />
+          <div class="difficulty-options" aria-label="Choose a difficulty">
+            <label class="difficulty-choice">
+              <input type="radio" name="difficulty" value="newbie" />
+              <span class="difficulty-emoji">🐾</span>
+              <span
+                ><strong>Baby Beans — Newbie</strong
+                ><small
+                  >Roomy and forgiving while you learn the wheel.</small
+                ></span
+              >
+            </label>
+            <label class="difficulty-choice">
+              <input type="radio" name="difficulty" value="normal" checked />
+              <span class="difficulty-emoji">😸</span>
+              <span
+                ><strong>Zoomie Qualified — Pretty Good</strong
+                ><small
+                  >Moving zones, streak bonuses, respectable chaos.</small
+                ></span
+              >
+            </label>
+            <label class="difficulty-choice">
+              <input type="radio" name="difficulty" value="expert" />
+              <span class="difficulty-emoji">😈</span>
+              <span
+                ><strong>Unsupervised Kitten — Expert</strong
+                ><small>Fast, twitchy, and deeply irresponsible.</small></span
+              >
+            </label>
+          </div>
           <button class="again" type="submit">Let’s Get Wheelie!</button>
           <div class="menu-buttons">
             <a class="secondary" href="cat-corner.html"
@@ -826,17 +919,102 @@
     <aside class="leaderboard" aria-live="polite">
       <h2>🏆 Wheelie Legends</h2>
       <p class="sub">
-        The ten finest examples of questionable cat-wheel judgment.
+        <span id="leagueName">Original Wheelie Legends</span>
       </p>
+      <div class="league-tabs" id="leagueTabs">
+        <button class="league-tab" data-league="wheelie-newbie">
+          🐾 Baby Beans
+        </button>
+        <button class="league-tab" data-league="wheelie-normal">
+          😸 Qualified
+        </button>
+        <button class="league-tab" data-league="wheelie-expert">
+          😈 Expert
+        </button>
+        <button class="league-tab active" data-league="wheelie">
+          📜 Original
+        </button>
+      </div>
       <div id="scoreList" class="score-list">
         <div class="board-status">Loading the legends…</div>
       </div>
       <button class="change-player" id="changePlayer" type="button">
-        Change Player
+        Change Player / Difficulty
       </button>
     </aside>
     <script>
-      const cats = [
+      const DIFFICULTIES = {
+          newbie: {
+            game: "wheelie-newbie",
+            label: "🐾 Baby Beans",
+            levelPoints: 125,
+            safeBase: 54,
+            safeMin: 16,
+            shrinkRate: 900,
+            centerShift: 2.5,
+            driftStart: 5,
+            driftAmount: 1.5,
+            driftSpeed: 5200,
+            drainBase: 0.011,
+            drainGrowth: 0.0025,
+            tapPower: 10,
+            loafSpeed: 11,
+            loafLimit: 2700,
+            warningSpeed: 87,
+            launchSpeed: 101,
+            dangerLimit: 520,
+            maxMultiplier: 2,
+          },
+          normal: {
+            game: "wheelie-normal",
+            label: "😸 Zoomie Qualified",
+            levelPoints: 100,
+            safeBase: 47,
+            safeMin: 8,
+            shrinkRate: 620,
+            centerShift: 5,
+            driftStart: 3,
+            driftAmount: 3.5,
+            driftSpeed: 3900,
+            drainBase: 0.013,
+            drainGrowth: 0.0045,
+            tapPower: 10.5,
+            loafSpeed: 12,
+            loafLimit: 2100,
+            warningSpeed: 84,
+            launchSpeed: 96,
+            dangerLimit: 330,
+            maxMultiplier: 3,
+          },
+          expert: {
+            game: "wheelie-expert",
+            label: "😈 Unsupervised Kitten",
+            levelPoints: 80,
+            safeBase: 39,
+            safeMin: 6,
+            shrinkRate: 430,
+            centerShift: 7,
+            driftStart: 2,
+            driftAmount: 6,
+            driftSpeed: 2700,
+            drainBase: 0.015,
+            drainGrowth: 0.0065,
+            tapPower: 11.25,
+            loafSpeed: 13,
+            loafLimit: 1700,
+            warningSpeed: 81,
+            launchSpeed: 93,
+            dangerLimit: 240,
+            maxMultiplier: 5,
+          },
+        },
+        LEAGUE_NAMES = {
+          "wheelie-newbie": "Baby Beans Top 10",
+          "wheelie-normal": "Zoomie Qualified Top 10",
+          "wheelie-expert": "Unsupervised Kitten Top 10",
+          wheelie: "Original Wheelie Legends",
+        },
+        cats = [
           {
             name: "Orange Menace",
             frames: ["game-assets/orange-a.webp", "game-assets/orange-b.webp"],
@@ -868,6 +1046,7 @@
         scoreEl = $("score"),
         scorePop = $("scorePop"),
         levelEl = $("level"),
+        streakEl = $("streak"),
         bestEl = $("best"),
         catName = $("catName"),
         runButton = $("run"),
@@ -883,13 +1062,15 @@
         nameForm = $("nameForm"),
         playerNameInput = $("playerName"),
         stopOverlay = $("stopOverlay"),
-        scoreList = $("scoreList");
+        scoreList = $("scoreList"),
+        leagueName = $("leagueName"),
+        leagueTabs = $("leagueTabs");
       const SETTINGS_URL =
         "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
       let apiBase = "";
       let speed = 0,
         score = 0,
-        best = Number(localStorage.getItem("wheelieCatBest") || 0),
+        best = 0,
         rotation = 0,
         started = false,
         ready = false,
@@ -903,9 +1084,15 @@
         currentFrame = -1,
         lastCat = -1,
         playerName = "",
+        difficultyKey = "normal",
+        difficulty = DIFFICULTIES.normal,
+        viewingLeague = "wheelie",
         scoreSaved = false,
         currentLevel = 1,
         lastRewardMark = 0,
+        streakTime = 0,
+        multiplier = 1,
+        elapsedTime = 0,
         paused = false,
         canResume = false,
         toastTimer,
@@ -986,11 +1173,25 @@
           );
         });
       }
-      async function loadScores() {
+      function showLeague(gameId) {
+        viewingLeague = gameId;
+        leagueName.textContent = LEAGUE_NAMES[gameId] || "Wheelie Legends";
+        leagueTabs.querySelectorAll(".league-tab").forEach((button) => {
+          button.classList.toggle("active", button.dataset.league === gameId);
+        });
+        loadScores(gameId);
+      }
+      async function loadScores(gameId = viewingLeague) {
         try {
+          scoreList.innerHTML =
+            '<div class="board-status">Loading the legends…</div>';
           const base = await getApiBase();
           const response = await fetch(
-            base + "?action=gameScores&game=wheelie&t=" + Date.now(),
+            base +
+              "?action=gameScores&game=" +
+              encodeURIComponent(gameId) +
+              "&t=" +
+              Date.now(),
           );
           const data = await response.json();
           renderScores(Array.isArray(data) ? data : data.scores);
@@ -1006,7 +1207,9 @@
           const base = await getApiBase();
           const url =
             base +
-            "?action=saveGameScore&game=wheelie&name=" +
+            "?action=saveGameScore&game=" +
+            encodeURIComponent(difficulty.game) +
+            "&name=" +
             encodeURIComponent(playerName) +
             "&score=" +
             Math.floor(score) +
@@ -1015,7 +1218,7 @@
           const response = await fetch(url);
           const data = await response.json();
           if (!data.success) throw new Error(data.error || "Score not saved");
-          await loadScores();
+          showLeague(difficulty.game);
           showToast("🏆 SCORE POSTED!");
         } catch (error) {
           scoreSaved = false;
@@ -1061,7 +1264,7 @@
               speed = 42;
               runButton.disabled = false;
               runButton.textContent = "RUN!";
-              showToast("Keep it in the green!");
+              showToast(difficulty.label + " — KEEP IT GREEN!");
               last = performance.now();
             }, 500);
         }
@@ -1069,7 +1272,7 @@
       }
       function tapRun() {
         if (over || !ready) return;
-        speed = Math.min(112, speed + 10.5);
+        speed = Math.min(112, speed + difficulty.tapPower);
         runButton.classList.add("pressed");
         setTimeout(() => runButton.classList.remove("pressed"), 65);
         beep(145 + speed * 2.8, 0.045, 0.022);
@@ -1080,7 +1283,7 @@
         ready = false;
         runButton.disabled = true;
         best = Math.max(best, Math.floor(score));
-        localStorage.setItem("wheelieCatBest", best);
+        localStorage.setItem("wheelieCatBest-" + difficultyKey, best);
         bestEl.textContent = best;
         saveScore();
         if (reason === "loaf") {
@@ -1138,6 +1341,10 @@
         levelEl.textContent = "1";
         currentLevel = 1;
         lastRewardMark = 0;
+        streakTime = 0;
+        multiplier = 1;
+        elapsedTime = 0;
+        streakEl.textContent = "1×";
         needle.style.left = "0%";
         wheel.style.transform = "rotate(0deg)";
         wheel.classList.remove("danger");
@@ -1155,12 +1362,26 @@
         const dt = Math.min(45, now - last);
         last = now;
         if (ready) {
-          const newLevel = Math.floor(score / 100) + 1,
-            safeWidth = Math.max(7, 47 / (1 + score / 650)),
-            safeCenter = 48.5 + Math.sin((newLevel - 1) * 1.3) * 5,
+          elapsedTime += dt;
+          const newLevel = Math.floor(score / difficulty.levelPoints) + 1,
+            safeWidth = Math.max(
+              difficulty.safeMin,
+              difficulty.safeBase / (1 + score / difficulty.shrinkRate),
+            ),
+            levelShift =
+              Math.sin((newLevel - 1) * 1.3) * difficulty.centerShift,
+            drift =
+              newLevel >= difficulty.driftStart
+                ? Math.sin(elapsedTime / difficulty.driftSpeed) *
+                  difficulty.driftAmount
+                : 0,
+            safeCenter = Math.max(
+              20 + safeWidth / 2,
+              Math.min(80 - safeWidth / 2, 48.5 + levelShift + drift),
+            ),
             greenLow = safeCenter - safeWidth / 2,
             greenHigh = safeCenter + safeWidth / 2,
-            difficulty = Math.log1p(score / 100);
+            difficultyRise = Math.log1p(score / difficulty.levelPoints);
           if (newLevel !== currentLevel) {
             currentLevel = newLevel;
             levelEl.textContent = currentLevel;
@@ -1168,12 +1389,18 @@
             beep(440 + Math.min(currentLevel, 8) * 35, 0.18, 0.045, "square");
           }
           meter.style.background = `linear-gradient(90deg,
-              #60a5fa 0 12%,
-              #facc15 12% ${greenLow}%,
+              #60a5fa 0 ${difficulty.loafSpeed}%,
+              #facc15 ${difficulty.loafSpeed}% ${greenLow}%,
               #22c55e ${greenLow}% ${greenHigh}%,
-              #facc15 ${greenHigh}% 86%,
-              #f43f5e 86%)`;
-          speed = Math.max(0, speed - dt * (0.013 + difficulty * 0.004));
+              #facc15 ${greenHigh}% ${difficulty.warningSpeed}%,
+              #f43f5e ${difficulty.warningSpeed}%)`;
+          speed = Math.max(
+            0,
+            speed -
+              dt *
+                (difficulty.drainBase +
+                  difficultyRise * difficulty.drainGrowth),
+          );
           rotation = (rotation + speed * dt * 0.0062) % 360;
           wheel.style.transform = "rotate(" + rotation + "deg)";
           needle.style.left = Math.min(100, speed) + "%";
@@ -1186,7 +1413,18 @@
             catImage.src = currentCat.frames[frame];
           }
           if (speed >= greenLow && speed <= greenHigh) {
-            score += dt * 0.017 * (1 + speed / 75);
+            streakTime += dt;
+            const nextMultiplier = Math.min(
+              difficulty.maxMultiplier,
+              1 + Math.floor(streakTime / 4500),
+            );
+            if (nextMultiplier !== multiplier) {
+              multiplier = nextMultiplier;
+              streakEl.textContent = multiplier + "×";
+              showToast("PURRFECT STREAK — " + multiplier + "× POINTS!");
+              beep(560 + multiplier * 55, 0.13, 0.04, "square");
+            }
+            score += dt * 0.017 * (1 + speed / 75) * multiplier;
             scoreEl.textContent = Math.floor(score);
             const rewardMark = Math.floor(score / 5);
             if (rewardMark > lastRewardMark) {
@@ -1195,29 +1433,37 @@
               void scorePop.offsetWidth;
               scorePop.classList.add("bump");
             }
+          } else {
+            streakTime = 0;
+            multiplier = 1;
+            streakEl.textContent = "1×";
           }
           cat.className =
             speed < 8 ? "cat" : speed < 84 ? "cat running" : "cat wobble";
-          meter.classList.toggle("too-slow", speed < 12);
-          meter.classList.toggle("too-fast", speed > 84);
-          if (speed < 12) {
+          meter.classList.toggle("too-slow", speed < difficulty.loafSpeed);
+          meter.classList.toggle("too-fast", speed > difficulty.warningSpeed);
+          if (speed < difficulty.loafSpeed) {
             loafTime += dt;
             if (loafTime > 650 && loafTime < 720)
               showToast("WAKE UP! TAP TAP TAP!");
           } else loafTime = Math.max(0, loafTime - dt * 2);
-          if (speed > 72 && speed <= 84 && Math.random() < 0.025)
+          if (
+            speed > difficulty.warningSpeed - 12 &&
+            speed <= difficulty.warningSpeed &&
+            Math.random() < 0.025
+          )
             showToast("Easy there, " + currentCat.name + "!");
-          if (speed > 84) {
+          if (speed > difficulty.warningSpeed) {
             wheelWrap.classList.add("danger");
             if (Math.random() < 0.04) showToast("ABORT ZOOMIES!");
           } else wheelWrap.classList.remove("danger");
-          if (speed > 96) dangerTime += dt;
+          if (speed > difficulty.launchSpeed) dangerTime += dt;
           else dangerTime = Math.max(0, dangerTime - dt * 1.5);
-          if (loafTime > 2100) {
+          if (loafTime > difficulty.loafLimit) {
             finish("loaf");
             return;
           }
-          if (dangerTime > 330) {
+          if (dangerTime > difficulty.dangerLimit) {
             finish("launch");
             return;
           }
@@ -1254,11 +1500,27 @@
         event.preventDefault();
         const entered = cleanName(playerNameInput.value);
         if (!entered) return;
+        const selectedDifficulty = nameForm.querySelector(
+          'input[name="difficulty"]:checked',
+        );
+        difficultyKey = selectedDifficulty
+          ? selectedDifficulty.value
+          : "normal";
+        difficulty = DIFFICULTIES[difficultyKey] || DIFFICULTIES.normal;
+        best = Number(
+          localStorage.getItem("wheelieCatBest-" + difficultyKey) || 0,
+        );
+        bestEl.textContent = best;
         playerName = entered;
         localStorage.setItem("wheeliePlayerName", playerName);
+        localStorage.setItem("wheelieDifficulty", difficultyKey);
         nameOverlay.classList.add("hidden");
-        loadScores();
+        showLeague(difficulty.game);
         reset();
+      });
+      leagueTabs.addEventListener("click", (event) => {
+        const button = event.target.closest(".league-tab");
+        if (button) showLeague(button.dataset.league);
       });
       $("changePlayer").addEventListener("click", () => {
         canResume = ready && !over;
@@ -1277,6 +1539,11 @@
         );
       });
       playerNameInput.value = localStorage.getItem("wheeliePlayerName") || "";
+      const savedDifficulty = localStorage.getItem("wheelieDifficulty");
+      const savedDifficultyInput = nameForm.querySelector(
+        `input[name="difficulty"][value="${savedDifficulty}"]`,
+      );
+      if (savedDifficultyInput) savedDifficultyInput.checked = true;
       loadScores();
       setTimeout(() => playerNameInput.focus(), 100);
     </script>
