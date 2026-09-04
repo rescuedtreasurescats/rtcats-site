@@ -113,26 +113,106 @@
         border-radius: 26px;
         background: linear-gradient(160deg, #312e81, #6d28d9);
         color: #fff;
-        box-shadow: 0 13px 0 #312e8140, 0 18px 32px #17233c30;
+        box-shadow:
+          0 13px 0 #312e8140,
+          0 18px 32px #17233c30;
         position: sticky;
         top: 18px;
       }
-      .leaderboard h2 { margin: 0; font-size: 25px; line-height: 1.05; }
-      .leaderboard .sub { margin: 7px 0 15px; color: #ddd6fe; font-size: 13px; }
-      .score-list { display: grid; gap: 8px; }
-      .score-row { display: grid; grid-template-columns: 30px 1fr auto; gap: 8px; align-items: center; background: #ffffff14; padding: 9px 10px; border-radius: 12px; }
-      .score-row.me { background: #fbbf2440; outline: 2px solid #fbbf24; }
-      .rank { font-weight: 1000; text-align: center; }
-      .player { font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-      .points { font-weight: 1000; color: #fde68a; }
-      .board-status { color: #ddd6fe; font-size: 13px; padding: 12px 0; }
-      .change-player { margin-top: 15px; border: 0; border-radius: 999px; background: #ffffff1f; color: #fff; padding: 9px 12px; font-weight: 900; width: 100%; }
-      .modal-input { width: 100%; padding: 14px 15px; border: 3px solid #cbd5e1; border-radius: 14px; font-size: 18px; font-weight: 800; margin: 8px 0 14px; text-align: center; }
-      .modal-input:focus { outline: 3px solid #5eead4; border-color: #0f766e; }
-      .menu-buttons { display: grid; gap: 10px; margin-top: 14px; }
-      .menu-link,.secondary { display: block; width: 100%; border: 0; border-radius: 14px; padding: 13px; text-decoration: none; font-weight: 900; font-size: 16px; }
-      .menu-link { background: #0f766e; color: #fff; }
-      .secondary { background: #e2e8f0; color: #17233c; }
+      .leaderboard h2 {
+        margin: 0;
+        font-size: 25px;
+        line-height: 1.05;
+      }
+      .leaderboard .sub {
+        margin: 7px 0 15px;
+        color: #ddd6fe;
+        font-size: 13px;
+      }
+      .score-list {
+        display: grid;
+        gap: 8px;
+      }
+      .score-row {
+        display: grid;
+        grid-template-columns: 30px 1fr auto;
+        gap: 8px;
+        align-items: center;
+        background: #ffffff14;
+        padding: 9px 10px;
+        border-radius: 12px;
+      }
+      .score-row.me {
+        background: #fbbf2440;
+        outline: 2px solid #fbbf24;
+      }
+      .rank {
+        font-weight: 1000;
+        text-align: center;
+      }
+      .player {
+        font-weight: 900;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .points {
+        font-weight: 1000;
+        color: #fde68a;
+      }
+      .board-status {
+        color: #ddd6fe;
+        font-size: 13px;
+        padding: 12px 0;
+      }
+      .change-player {
+        margin-top: 15px;
+        border: 0;
+        border-radius: 999px;
+        background: #ffffff1f;
+        color: #fff;
+        padding: 9px 12px;
+        font-weight: 900;
+        width: 100%;
+      }
+      .modal-input {
+        width: 100%;
+        padding: 14px 15px;
+        border: 3px solid #cbd5e1;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: 800;
+        margin: 8px 0 14px;
+        text-align: center;
+      }
+      .modal-input:focus {
+        outline: 3px solid #5eead4;
+        border-color: #0f766e;
+      }
+      .menu-buttons {
+        display: grid;
+        gap: 10px;
+        margin-top: 14px;
+      }
+      .menu-link,
+      .secondary {
+        display: block;
+        width: 100%;
+        border: 0;
+        border-radius: 14px;
+        padding: 13px;
+        text-decoration: none;
+        font-weight: 900;
+        font-size: 16px;
+      }
+      .menu-link {
+        background: #0f766e;
+        color: #fff;
+      }
+      .secondary {
+        background: #e2e8f0;
+        color: #17233c;
+      }
       .stats {
         position: absolute;
         top: calc(13dvh + 8px);
@@ -555,14 +635,35 @@
         }
       }
       @media (max-width: 880px) {
-        body { flex-direction: column; align-items: center; padding-left: 0; padding-right: 0; }
-        .leaderboard { position: static; width: min(calc(100% - 24px), 540px); margin: 14px auto 28px; }
+        body {
+          flex-direction: column;
+          align-items: center;
+          padding-left: 0;
+          padding-right: 0;
+        }
+        .leaderboard {
+          position: static;
+          width: min(calc(100% - 24px), 540px);
+          margin: 14px auto 28px;
+        }
       }
       @media (max-width: 420px) {
-        .top { padding-left: 9px; padding-right: 9px; }
-        .back { font-size: 0; padding: 9px 11px; }
-        .back::after { content: "←"; font-size: 18px; }
-        .stop { padding: 0 9px; font-size: 12px; }
+        .top {
+          padding-left: 9px;
+          padding-right: 9px;
+        }
+        .back {
+          font-size: 0;
+          padding: 9px 11px;
+        }
+        .back::after {
+          content: "←";
+          font-size: 18px;
+        }
+        .stop {
+          padding: 0 9px;
+          font-size: 12px;
+        }
       }
       @media (prefers-reduced-motion: reduce) {
         * {
@@ -626,19 +727,36 @@
       </div>
       <div class="overlay" id="nameOverlay">
         <form class="card" id="nameForm">
-          <div style="font-size:64px">🏆🐈</div>
+          <div style="font-size: 64px">🏆🐈</div>
           <h2>Who’s playing?</h2>
-          <p>Your name will appear on the shared Wheelie Legends board if you earn a Top 10 score.</p>
-          <input class="modal-input" id="playerName" maxlength="20" autocomplete="nickname" placeholder="Enter your name" required />
+          <p>
+            Your name will appear on the shared Wheelie Legends board if you
+            earn a Top 10 score.
+          </p>
+          <input
+            class="modal-input"
+            id="playerName"
+            maxlength="20"
+            autocomplete="nickname"
+            placeholder="Enter your name"
+            required
+          />
           <button class="again" type="submit">Choose My Cat</button>
-          <div class="menu-buttons"><a class="secondary" href="cat-corner.html">Never mind — Cat Corner</a></div>
+          <div class="menu-buttons">
+            <a class="secondary" href="cat-corner.html"
+              >Never mind — Cat Corner</a
+            >
+          </div>
         </form>
       </div>
       <div class="overlay hidden" id="stopOverlay">
         <div class="card">
-          <div style="font-size:64px">🐾</div>
+          <div style="font-size: 64px">🐾</div>
           <h2>Game Paused</h2>
-          <p>The cat has agreed to remain where it is for approximately seven seconds.</p>
+          <p>
+            The cat has agreed to remain where it is for approximately seven
+            seconds.
+          </p>
           <div class="menu-buttons">
             <button class="again" id="resume" type="button">Resume Game</button>
             <a class="menu-link" href="cat-corner.html">Back to Cat Corner</a>
@@ -649,9 +767,15 @@
     </main>
     <aside class="leaderboard" aria-live="polite">
       <h2>🏆 Wheelie Legends</h2>
-      <p class="sub">The ten finest examples of questionable cat-wheel judgment.</p>
-      <div id="scoreList" class="score-list"><div class="board-status">Loading the legends…</div></div>
-      <button class="change-player" id="changePlayer" type="button">Change Player</button>
+      <p class="sub">
+        The ten finest examples of questionable cat-wheel judgment.
+      </p>
+      <div id="scoreList" class="score-list">
+        <div class="board-status">Loading the legends…</div>
+      </div>
+      <button class="change-player" id="changePlayer" type="button">
+        Change Player
+      </button>
     </aside>
     <script>
       const cats = [
@@ -681,6 +805,7 @@
         wheelWrap = $("wheelWrap"),
         cat = $("cat"),
         catImage = $("catImage"),
+        meter = document.querySelector(".meter"),
         needle = $("needle"),
         scoreEl = $("score"),
         bestEl = $("best"),
@@ -794,7 +919,9 @@
           .join("");
         [...scoreList.querySelectorAll(".player")].forEach((node, index) => {
           const item = scores[index] || {};
-          node.textContent = cleanName(item.name || item.Name || "Mystery Human");
+          node.textContent = cleanName(
+            item.name || item.Name || "Mystery Human",
+          );
         });
       }
       async function loadScores() {
@@ -962,9 +1089,14 @@
         const dt = Math.min(45, now - last);
         last = now;
         if (ready) {
-          const level = Math.min(1, score / 250),
-            greenLow = 25 + level * 8,
-            greenHigh = 72 - level * 10;
+          const level = Math.min(1, score / 400),
+            greenLow = 25 + level * 14,
+            greenHigh = 72 - level * 15;
+          meter.style.background = `linear-gradient(90deg,
+              #60a5fa 0 ${greenLow}%,
+              #22c55e ${greenLow}% ${greenHigh}%,
+              #facc15 ${greenHigh}% 86%,
+              #f43f5e 86%)`;
           speed = Math.max(0, speed - dt * (0.013 + level * 0.006));
           rotation = (rotation + speed * dt * 0.0062) % 360;
           wheel.style.transform = "rotate(" + rotation + "deg)";
