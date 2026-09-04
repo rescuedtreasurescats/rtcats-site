@@ -62,56 +62,75 @@
         color: #38526a;
       }
       .games {
-        max-width: 760px;
+        max-width: 700px;
         margin: 5px auto;
         padding: 15px 20px;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 20px;
+        grid-template-columns: 1fr;
+        gap: 13px;
       }
       .game-card {
-        min-height: 260px;
-        border: 4px solid #fff;
-        border-radius: 27px;
-        padding: 24px;
+        min-height: 92px;
+        border: 3px solid #fff;
+        border-radius: 18px;
+        padding: 13px 16px;
         text-decoration: none;
         color: #17233c;
-        background: #fff;
+        background: linear-gradient(110deg, #fff 65%, #fff5c9);
         box-shadow:
-          0 11px 0 #0f766e22,
-          0 15px 30px #0f766e18;
-        display: flex;
-        flex-direction: column;
+          0 6px 0 #0f766e1f,
+          0 9px 22px #0f766e14;
+        display: grid;
+        grid-template-columns: 54px minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        column-gap: 14px;
+        align-items: center;
         transition: 0.18s;
       }
       .game-card:not(.restoring):hover {
-        transform: translateY(-5px);
+        transform: translateY(-3px) rotate(-0.25deg);
         box-shadow:
-          0 16px 0 #0f766e22,
-          0 21px 34px #0f766e22;
+          0 9px 0 #0f766e20,
+          0 13px 25px #0f766e20;
       }
       .icon {
-        font-size: 67px;
+        grid-row: 1 / 3;
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        border-radius: 15px;
+        background: #ffe071;
+        box-shadow: inset 0 -4px 0 #d5932533;
+        font-size: 31px;
         line-height: 1;
-        margin-bottom: 15px;
       }
       .game-card h2 {
-        font-size: 26px;
-        margin: 0 0 9px;
+        align-self: end;
+        font-size: 21px;
+        margin: 0 0 2px;
       }
       .game-card p {
+        align-self: start;
         color: #52657a;
-        line-height: 1.45;
-        margin: 0 0 18px;
+        font-size: 14px;
+        line-height: 1.3;
+        margin: 0;
       }
       .play {
-        margin-top: auto;
+        grid-column: 3;
+        grid-row: 1 / 3;
         font-weight: 900;
         color: #0f766e;
-        font-size: 18px;
+        font-size: 28px;
+        padding: 8px 2px 8px 8px;
       }
       .wheelie {
-        background: linear-gradient(145deg, #fff, #fff1c2);
+        background: linear-gradient(110deg, #fff 65%, #eadfff);
+      }
+      .wheelie .icon {
+        background: #d7c3ff;
+        box-shadow: inset 0 -4px 0 #764bb033;
       }
       .restoring {
         background: #f5f7f8;
@@ -137,14 +156,26 @@
         font-weight: 700;
       }
       @media (max-width: 620px) {
-        .games {
-          grid-template-columns: 1fr;
-        }
         .hero {
           padding-top: 30px;
         }
         .game-card {
-          min-height: 215px;
+          min-height: 86px;
+          grid-template-columns: 48px minmax(0, 1fr) auto;
+          column-gap: 11px;
+          padding: 11px 13px;
+        }
+        .icon {
+          width: 48px;
+          height: 48px;
+          font-size: 28px;
+          border-radius: 13px;
+        }
+        .game-card h2 {
+          font-size: 19px;
+        }
+        .game-card p {
+          font-size: 13px;
         }
       }
     </style>
@@ -172,7 +203,7 @@
             Reviews written by the cats. The opinions are strong. The
             accountability is nonexistent.
           </p>
-          <span class="play">Read the complaints →</span>
+          <span class="play" aria-hidden="true">›</span>
         </a>
         <a class="game-card wheelie" href="wheelie-cat.html">
           <div class="icon">🎡</div>
@@ -181,7 +212,7 @@
             Keep your randomly selected cat running—but not so fast that physics
             takes over.
           </p>
-          <span class="play">Play now →</span>
+          <span class="play" aria-hidden="true">›</span>
         </a>
       </section>
       <p class="coming">
