@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0f766e" />
+    <title>Cat Yelp | Cat Corner</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        color: #17233c;
+        background: linear-gradient(155deg, #caf4ec, #fff7dc);
+        min-height: 100vh;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      header {
+        background: #0f766e;
+        color: #fff;
+        padding: 14px 18px;
+        box-shadow: 0 4px 15px #064e3b33;
+      }
+      .bar {
+        max-width: 900px;
+        margin: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+      }
+      .back {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 900;
+        background: #ffffff20;
+        padding: 10px 13px;
+        border-radius: 999px;
+      }
+      main {
+        max-width: 900px;
+        margin: auto;
+        padding: 32px 18px 55px;
+      }
+      .hero {
+        text-align: center;
+        margin-bottom: 25px;
+      }
+      h1 {
+        font-size: clamp(38px, 9vw, 62px);
+        margin: 0;
+        letter-spacing: -2px;
+        text-shadow: 0 4px #fff;
+      }
+      .hero p {
+        color: #52657a;
+        font-size: 17px;
+        line-height: 1.5;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 340px 1fr;
+        gap: 22px;
+        align-items: start;
+      }
+      .panel {
+        background: #fff;
+        border: 4px solid #fff;
+        border-radius: 24px;
+        padding: 21px;
+        box-shadow:
+          0 10px 0 #0f766e1f,
+          0 15px 28px #17233c16;
+      }
+      .panel h2 {
+        margin: 0 0 15px;
+        font-size: 24px;
+      }
+      .field {
+        margin-bottom: 13px;
+      }
+      .field label {
+        display: block;
+        font-weight: 900;
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border: 2px solid #cbd5e1;
+        border-radius: 11px;
+        background: #fff;
+      }
+      .field textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+      .stars {
+        display: flex;
+        gap: 5px;
+      }
+      .star {
+        border: 0;
+        background: transparent;
+        font-size: 31px;
+        padding: 0;
+        filter: grayscale(1);
+        cursor: pointer;
+      }
+      .star.on {
+        filter: none;
+      }
+      .submit {
+        width: 100%;
+        border: 0;
+        border-radius: 13px;
+        padding: 13px;
+        background: #f97316;
+        color: #fff;
+        font-weight: 900;
+        font-size: 17px;
+        box-shadow: 0 5px 0 #c2410c;
+      }
+      .submit:disabled {
+        opacity: 0.55;
+      }
+      .status {
+        font-weight: 800;
+        font-size: 13px;
+        margin-top: 12px;
+        min-height: 18px;
+      }
+      .review-list {
+        display: grid;
+        gap: 14px;
+      }
+      .review {
+        background: #fff;
+        border-radius: 18px;
+        padding: 17px;
+        box-shadow: 0 6px 16px #17233c12;
+        border-left: 7px solid #fbbf24;
+      }
+      .review h3 {
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+      .rating {
+        color: #f59e0b;
+        letter-spacing: 1px;
+      }
+      .review-text {
+        line-height: 1.5;
+        white-space: pre-wrap;
+        margin: 10px 0;
+      }
+      .meta {
+        font-size: 12px;
+        color: #64748b;
+        font-weight: 700;
+      }
+      .empty {
+        background: #ffffffaa;
+        border-radius: 18px;
+        padding: 24px;
+        text-align: center;
+        color: #52657a;
+      }
+      .loading {
+        text-align: center;
+        padding: 25px;
+        font-weight: 900;
+        color: #52657a;
+      }
+      @media (max-width: 760px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .form-panel {
+          order: 2;
+        }
+        .reviews-panel {
+          order: 1;
+        }
+        main {
+          padding-top: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="bar">
+        <a class="back" href="cat-corner.html">← Cat Corner</a
+        ><strong>⭐ CAT YELP</strong><a class="back" href="/">RTCats HQ</a>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <h1>⭐ Cat Yelp</h1>
+        <p>
+          The cats have opinions. Unfortunately, someone gave them internet
+          access.
+        </p>
+      </section>
+      <div class="layout">
+        <section class="panel form-panel">
+          <h2>Write a Review</h2>
+          <form id="reviewForm">
+            <div class="field">
+              <label for="volunteer">Your name</label
+              ><input id="volunteer" maxlength="30" required />
+            </div>
+            <div class="field">
+              <label for="store">Store</label
+              ><select id="store" required>
+                <option value="">Choose a store</option>
+                <option>Brighton</option>
+                <option>Baytowne</option>
+                <option>Hard Rd</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="catName">Reviewing cat</label
+              ><input
+                id="catName"
+                maxlength="30"
+                placeholder="Marmalade"
+                required
+              />
+            </div>
+            <div class="field">
+              <label for="title">Headline</label
+              ><input
+                id="title"
+                maxlength="60"
+                placeholder="Staff arrived three minutes late"
+                required
+              />
+            </div>
+            <div class="field">
+              <label>Rating</label>
+              <div class="stars" id="stars" aria-label="Rating">
+                <button class="star on" type="button" data-value="1">⭐</button
+                ><button class="star on" type="button" data-value="2">⭐</button
+                ><button class="star on" type="button" data-value="3">⭐</button
+                ><button class="star on" type="button" data-value="4">⭐</button
+                ><button class="star on" type="button" data-value="5">
+                  ⭐
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="content">The complaint—or rare compliment</label
+              ><textarea id="content" maxlength="600" required></textarea>
+            </div>
+            <div class="field">
+              <label
+                ><input id="anonymous" type="checkbox" style="width: auto" />
+                Post volunteer as Anonymous</label
+              >
+            </div>
+            <button class="submit" id="submit" type="submit">
+              Post Cat Review
+            </button>
+            <div class="status" id="status"></div>
+          </form>
+        </section>
+        <section class="reviews-panel">
+          <div id="reviews" class="review-list">
+            <div class="loading">Loading cat opinions…</div>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script>
+      const SETTINGS_URL =
+        "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
+      let apiBase = "",
+        rating = 5;
+      const $ = (id) => document.getElementById(id),
+        reviews = $("reviews"),
+        status = $("status"),
+        submit = $("submit");
+      async function getApiBase() {
+        if (apiBase) return apiBase;
+        const settings = await fetch(SETTINGS_URL).then((r) => r.json());
+        apiBase = settings.PortalDeploymentURL;
+        if (!apiBase) throw new Error("Portal unavailable");
+        return apiBase;
+      }
+      function clean(value) {
+        return String(value == null ? "" : value)
+          .replace(/[<>]/g, "")
+          .trim();
+      }
+      function render(items) {
+        if (!Array.isArray(items) || !items.length) {
+          reviews.innerHTML =
+            '<div class="empty">No reviews yet. Apparently the cats are drafting strongly worded statements.</div>';
+          return;
+        }
+        reviews.innerHTML = "";
+        items.forEach((r) => {
+          const card = document.createElement("article");
+          card.className = "review";
+          const h = document.createElement("h3");
+          h.textContent = clean(r.Title || "Untitled grievance");
+          const stars = document.createElement("div");
+          stars.className = "rating";
+          stars.textContent = "⭐".repeat(
+            Math.max(1, Math.min(5, Number(r.Rating) || 1)),
+          );
+          const text = document.createElement("div");
+          text.className = "review-text";
+          text.textContent = clean(r.Content);
+          const meta = document.createElement("div");
+          meta.className = "meta";
+          const anonymous = String(r.Anonymous).toLowerCase() === "true",
+            volunteer = anonymous
+              ? "Anonymous"
+              : clean(r.Volunteer || "Anonymous"),
+            reviewingCat = clean(r.Cat || r["Cat Name"] || r.CatName);
+          meta.textContent =
+            (reviewingCat
+              ? "By " + reviewingCat + " · translated by " + volunteer
+              : "By " + volunteer) +
+            " · " +
+            clean(r.Store);
+          card.append(h, stars, text, meta);
+          reviews.appendChild(card);
+        });
+      }
+      async function loadReviews() {
+        try {
+          const base = await getApiBase();
+          const data = await fetch(
+            base + "?action=yelpReviews&t=" + Date.now(),
+          ).then((r) => r.json());
+          render(Array.isArray(data) ? data : data.reviews);
+        } catch (e) {
+          reviews.innerHTML =
+            '<div class="empty">Cat Yelp is having trouble loading. Please try again shortly.</div>';
+        }
+      }
+      $("stars").addEventListener("click", (e) => {
+        const button = e.target.closest(".star");
+        if (!button) return;
+        rating = Number(button.dataset.value);
+        document
+          .querySelectorAll(".star")
+          .forEach((s) =>
+            s.classList.toggle("on", Number(s.dataset.value) <= rating),
+          );
+      });
+      $("reviewForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        submit.disabled = true;
+        status.textContent = "Posting the cat’s allegations…";
+        try {
+          const base = await getApiBase(),
+            params = new URLSearchParams({
+              action: "saveYelpReview",
+              store: $("store").value,
+              catName: $("catName").value,
+              title: $("title").value,
+              rating: String(rating),
+              content: $("content").value,
+              volunteer: $("volunteer").value,
+              anonymous: $("anonymous").checked ? "true" : "false",
+            });
+          const result = await fetch(base + "?" + params).then((r) => r.json());
+          if (!result.success)
+            throw new Error(result.error || "Could not save");
+          status.textContent = "Posted! The cat feels heard.";
+          e.target.reset();
+          rating = 5;
+          document
+            .querySelectorAll(".star")
+            .forEach((s) => s.classList.add("on"));
+          await loadReviews();
+        } catch (err) {
+          status.textContent = "Could not post that review. Please try again.";
+        } finally {
+          submit.disabled = false;
+        }
+      });
+      loadReviews();
+    </script>
+  </body>
+</html>
