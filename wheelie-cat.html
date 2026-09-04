@@ -225,12 +225,36 @@
         gap: 6px;
       }
       .pill {
+        position: relative;
         background: #ffffffe8;
         border: 2px solid #fff;
         padding: 7px 11px;
         border-radius: 999px;
         box-shadow: 0 5px 14px #064e3b22;
         font-size: 14px;
+      }
+      .score-pop {
+        position: absolute;
+        left: 50%;
+        bottom: -5px;
+        color: #15803d;
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translate(-50%, 0) scale(0.7);
+      }
+      .score-pop.bump {
+        animation: scorePop 0.65s ease-out;
+      }
+      @keyframes scorePop {
+        20% {
+          opacity: 1;
+          transform: translate(-50%, 4px) scale(1.15);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(-50%, -20px) scale(1);
+        }
       }
       .arena {
         height: 51dvh;
@@ -488,7 +512,8 @@
         height: 29px;
         background: linear-gradient(
           90deg,
-          #60a5fa 0 23%,
+          #60a5fa 0 12%,
+          #facc15 12% 23%,
           #22c55e 23% 72%,
           #facc15 72% 86%,
           #f43f5e 86%
@@ -498,6 +523,26 @@
         box-shadow: 0 5px 0 #92400e22;
         overflow: hidden;
         position: relative;
+      }
+      .meter.too-slow {
+        animation: slowWarning 0.45s ease-in-out infinite alternate;
+      }
+      .meter.too-fast {
+        animation: fastWarning 0.28s ease-in-out infinite alternate;
+      }
+      @keyframes slowWarning {
+        to {
+          box-shadow:
+            0 0 0 5px #3b82f677,
+            0 5px 0 #92400e22;
+        }
+      }
+      @keyframes fastWarning {
+        to {
+          box-shadow:
+            0 0 0 6px #f43f5e88,
+            0 5px 0 #92400e22;
+        }
       }
       .needle {
         position: absolute;
@@ -544,10 +589,9 @@
         margin: 2px 0 0;
       }
       .toast {
-        position: absolute;
-        left: 50%;
-        bottom: 29%;
-        transform: translateX(-50%) translateY(12px);
+        min-height: 32px;
+        align-self: center;
+        transform: translateY(7px) scale(0.96);
         z-index: 12;
         background: #17233ce8;
         color: #fff;
@@ -558,10 +602,11 @@
         opacity: 0;
         transition: 0.2s;
         white-space: nowrap;
+        pointer-events: none;
       }
       .toast.show {
         opacity: 1;
-        transform: translateX(-50%);
+        transform: none;
       }
       .overlay {
         position: absolute;
@@ -682,7 +727,10 @@
         <button class="sound" id="sound" aria-label="Turn sound off">🔊</button>
       </header>
       <div class="stats">
-        <div class="pill">Score: <span id="score">0</span></div>
+        <div class="pill">
+          Score: <span id="score">0</span
+          ><span class="score-pop" id="scorePop">+5</span>
+        </div>
         <div class="pill">Level: <span id="level">1</span></div>
         <div class="pill">Best: <span id="best">0</span></div>
       </div>
@@ -705,6 +753,7 @@
         <div class="countdown hidden" id="countdown"></div>
       </section>
       <section class="controls">
+        <div class="toast" id="toast"></div>
         <div class="meter-label">
           <span>😴 LOAF</span><span>😸 PURRFECT</span><span>🚀 YEET</span>
         </div>
@@ -714,7 +763,6 @@
           Tap to keep a purrfect pace. Overdo it and… well, physics.
         </p>
       </section>
-      <div class="toast" id="toast"></div>
       <div class="overlay hidden" id="overlay">
         <div class="card">
           <img class="result-cat" id="resultCat" alt="" />
@@ -818,6 +866,7 @@
         meter = document.querySelector(".meter"),
         needle = $("needle"),
         scoreEl = $("score"),
+        scorePop = $("scorePop"),
         levelEl = $("level"),
         bestEl = $("best"),
         catName = $("catName"),
@@ -856,6 +905,7 @@
         playerName = "",
         scoreSaved = false,
         currentLevel = 1,
+        lastRewardMark = 0,
         paused = false,
         canResume = false,
         toastTimer,
@@ -1087,10 +1137,12 @@
         scoreEl.textContent = "0";
         levelEl.textContent = "1";
         currentLevel = 1;
+        lastRewardMark = 0;
         needle.style.left = "0%";
         wheel.style.transform = "rotate(0deg)";
         wheel.classList.remove("danger");
         wheelWrap.classList.remove("danger");
+        meter.classList.remove("too-slow", "too-fast");
         cat.className = "cat";
         game.classList.remove("shake");
         overlay.classList.add("hidden");
@@ -1116,7 +1168,8 @@
             beep(440 + Math.min(currentLevel, 8) * 35, 0.18, 0.045, "square");
           }
           meter.style.background = `linear-gradient(90deg,
-              #60a5fa 0 ${greenLow}%,
+              #60a5fa 0 12%,
+              #facc15 12% ${greenLow}%,
               #22c55e ${greenLow}% ${greenHigh}%,
               #facc15 ${greenHigh}% 86%,
               #f43f5e 86%)`;
@@ -1135,10 +1188,19 @@
           if (speed >= greenLow && speed <= greenHigh) {
             score += dt * 0.017 * (1 + speed / 75);
             scoreEl.textContent = Math.floor(score);
+            const rewardMark = Math.floor(score / 5);
+            if (rewardMark > lastRewardMark) {
+              lastRewardMark = rewardMark;
+              scorePop.classList.remove("bump");
+              void scorePop.offsetWidth;
+              scorePop.classList.add("bump");
+            }
           }
           cat.className =
             speed < 8 ? "cat" : speed < 84 ? "cat running" : "cat wobble";
-          if (speed < 23) {
+          meter.classList.toggle("too-slow", speed < 12);
+          meter.classList.toggle("too-fast", speed > 84);
+          if (speed < 12) {
             loafTime += dt;
             if (loafTime > 650 && loafTime < 720)
               showToast("WAKE UP! TAP TAP TAP!");
