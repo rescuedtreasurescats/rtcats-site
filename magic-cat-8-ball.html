@@ -72,7 +72,67 @@
       "My reply is no—but leave it anyway.",
       "My sources say no. My sources are me.",
       "Outlook not so good. Have you tried tuna?",
-      "Very doubtful. Yesterday was another lifetime."
+      "Very doubtful. Yesterday was another lifetime.",
+      "It is certain. I have already claimed the bowl.",
+      "It is decidedly so. Now open the can faster.",
+      "Without a doubt—but warm it slightly.",
+      "Yes, definitely. I may even eat around the edges.",
+      "You may rely on it until I change my mind.",
+      "As I see it, yes. I see everything.",
+      "Most likely. Is that the good spoon?",
+      "Outlook good. Aroma acceptable. Proceed.",
+      "Yes. Place it three inches to the left.",
+      "Signs point to yes—and toward the treat cabinet.",
+      "Reply hazy. My whiskers are still calculating.",
+      "Ask again after my pre-dinner nap.",
+      "Better not tell you now. Another cat might hear.",
+      "Cannot predict now. The plate is the wrong color.",
+      "Concentrate and ask again without making eye contact.",
+      "Don't count on it. I remember what you served Tuesday.",
+      "My reply is no. I requested poultry, not betrayal.",
+      "My sources say no—and they have excellent whiskers.",
+      "Outlook not so good. The pâté has offended me.",
+      "Very doubtful. I can see the bottom of the bowl.",
+      "Certainly. But call it a tasting menu.",
+      "Absolutely. I have been starving for eleven minutes.",
+      "Yes—but mash it properly, kitchen staff.",
+      "Proceed. I will supervise from six feet away.",
+      "The flavor is acceptable. Your service needs work.",
+      "All paws point to yes.",
+      "The spirits say yes. The nose says investigate first.",
+      "Chances are excellent. Compliments remain unlikely.",
+      "Approved—subject to a sniff inspection.",
+      "Yes, and make the portion look accidental.",
+      "Maybe. Put it down and avert your eyes.",
+      "Ask again when the can opener is present.",
+      "The answer is unclear. Add a decorative treat.",
+      "Future uncertain. Bowl suspiciously clean.",
+      "I cannot say. Someone moved my favorite blanket.",
+      "The signs are mixed. Is there a backup flavor?",
+      "No prediction until you say 'Your Majesty.'",
+      "Try again after rotating the plate clockwise.",
+      "No. I have chosen hunger for dramatic effect.",
+      "Absolutely not. Leave it there just in case.",
+      "My answer is no. My second answer may be breakfast.",
+      "Unlikely—but I will lick the gravy to be polite.",
+      "No chance. Unless the other cat wants it.",
+      "The outlook is bleak. The treat outlook is better.",
+      "I reject this flavor on mysterious personal grounds.",
+      "Not today. Yesterday's review has been withdrawn.",
+      "Hard no. Please submit a new menu for approval.",
+      "Doubtful. It lacks the essence of forbidden counter food.",
+      "No—but I reserve the right to eat it at 3 a.m.",
+      "Ask the other cat. I refuse to be accountable.",
+      "The answer is yes. This conversation never happened.",
+      "Feed it. I will decide whether it was correct afterward.",
+      "Approved for immediate burial beside the bowl.",
+      "It may please me. Do not look hopeful.",
+      "Yes, but I expect a clean dish and zero witnesses.",
+      "The stars say yes. The stomach says hurry.",
+      "Outcome favorable. Tip your server with treats.",
+      "Permission granted—for one cautious nibble.",
+      "Leave it down. I enjoy having options to ignore.",
+      "Serve it. I need something fresh to complain about."
     ];
     const input = document.getElementById("flavor");
     const ball = document.getElementById("ball");
@@ -80,6 +140,17 @@
     const prompt = document.getElementById("prompt");
     const askButton = document.getElementById("ask");
     let revealTimer;
+    let answerDeck = [];
+    function nextAnswer(){
+      if(!answerDeck.length){
+        answerDeck = answers.map((_,index)=>index);
+        for(let i=answerDeck.length-1;i>0;i--){
+          const j = Math.floor(Math.random()*(i+1));
+          [answerDeck[i],answerDeck[j]] = [answerDeck[j],answerDeck[i]];
+        }
+      }
+      return answers[answerDeck.pop()];
+    }
     function askCats(){
       const flavor = input.value.trim();
       if(!flavor){
@@ -96,7 +167,7 @@
       void ball.offsetWidth;
       ball.classList.add("shake");
       revealTimer = setTimeout(() => {
-        answer.textContent = answers[Math.floor(Math.random()*answers.length)];
+        answer.textContent = nextAnswer();
         ball.classList.remove("shake");
         ball.classList.add("answered");
         prompt.textContent = "";
