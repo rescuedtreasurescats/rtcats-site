@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Feeding History</title>
+<style>
+:root{--blue:#1976d2;--navy:#173b57;--line:#dbe4ec;--soft:#f5f7fa;--green:#2e7d32}
+*{box-sizing:border-box}
+body{margin:0;background:var(--soft);color:#1f2933;font-family:Arial,sans-serif}
+header{background:var(--blue);color:#fff;padding:16px;text-align:center;font-size:23px;font-weight:700}
+.container{max-width:850px;margin:auto;padding:16px}
+.back{display:inline-block;margin-bottom:14px;padding:9px 14px;background:var(--blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:700}
+h1{font-size:28px;margin:2px 0 4px;color:var(--navy)}
+.sub{color:#5f6c78;margin:0 0 14px}
+.filters{background:#fff;border-radius:12px;padding:13px;box-shadow:0 2px 8px rgba(0,0,0,.1);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+label{font-size:13px;font-weight:700;color:#455565}
+select,input{display:block;width:100%;margin-top:5px;padding:10px 8px;border:1px solid #b8c4cf;border-radius:8px;background:#fff;color:#1f2933;font-size:15px}
+.customDates{display:none;grid-column:1/-1;grid-template-columns:1fr 1fr;gap:10px}
+.summary{font-size:14px;color:#52606d;margin:8px 2px}
+.tableWrap{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.1);overflow:hidden}
+.feedHead,.feedRow{display:grid;grid-template-columns:88px minmax(100px,1.25fr) repeat(3,minmax(72px,1fr));align-items:stretch}
+.feedHead{background:var(--navy);color:#fff;font-weight:700;font-size:14px}
+.feedHead div,.feedRow>div{padding:11px 9px;border-right:1px solid rgba(255,255,255,.16)}
+.feedHead div:last-child,.feedRow>div:last-child{border-right:0}
+.feedRow{border-bottom:1px solid var(--line);font-size:15px}
+.feedRow:last-child{border-bottom:0}
+.date{font-weight:700;color:var(--navy)}
+.day{display:block;font-size:12px;font-weight:400;color:#687784;margin-top:3px}
+.shift{font-weight:700}
+.volunteer{display:block;font-size:12px;font-weight:400;color:#687784;margin-top:3px}
+.amount{text-align:center;font-weight:700}
+.muted{color:#9aa5b1;font-weight:400}
+.state{padding:26px 16px;text-align:center;color:#5f6c78}
+@media(max-width:620px){
+ .container{padding:12px}
+ .filters{grid-template-columns:1fr 1fr}
+ .feedHead,.feedRow{grid-template-columns:64px 82px repeat(3,minmax(58px,1fr))}
+ .feedHead div,.feedRow>div{padding:10px 5px}
+ .feedHead{font-size:12px}
+ .feedRow{font-size:13px}
+ .day,.volunteer{font-size:11px}
+ h1{font-size:25px}
+}
+</style>
+</head>
+<body>
+<header>Feeding History</header>
+<main class="container">
+<a id="backLink" class="back" href="index.html">← Store</a>
+<h1 id="title">Feeding History</h1>
+<p class="sub">See what was found and how much food was given.</p>
+
+<section class="filters" aria-label="Feeding history filters">
+<label>Store<select id="store">
+<option>BayTowne</option><option>Brighton</option><option>Hard Rd</option>
+</select></label>
+<label>Show<select id="period">
+<option value="4">Recent 4 days</option>
+<option value="7">Last 7 days</option>
+<option value="30">Last 30 days</option>
+<option value="all">All available</option>
+<option value="custom">Date range</option>
+</select></label>
+<label>Weekday<select id="weekday">
+<option value="">All days</option>
+<option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option><option>Sunday</option>
+</select></label>
+<label>Shift<select id="shift">
+<option value="">All shifts</option><option>Breakfast</option><option>Lunch</option><option>Dinner</option>
+</select></label>
+<div id="customDates" class="customDates">
+<label>From<input id="fromDate" type="date"></label>
+<label>Through<input id="toDate" type="date"></label>
+</div>
+</section>
+
+<div id="summary" class="summary">Loading feeding history…</div>
+<section class="tableWrap">
+<div class="feedHead"><div>Date</div><div>Shift</div><div>Found</div><div>Given</div><div>Added</div></div>
+<div id="rows"><div class="state">Loading…</div></div>
+</section>
+</main>
+<script>
+const SETTINGS_URL="https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
+const storePages={"BayTowne":"baytowne.html","Brighton":"brighton.html","Hard Rd":"hardrd.html"};
+let records=[];
+const params=new URLSearchParams(location.search);
+const requestedStore=params.get("store");
+if(storePages[requestedStore])document.getElementById("store").value=requestedStore;
+
+function esc(value){return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;")}
+function isoDate(value){
+ if(value)return value;
+ return "";
+}
+function updateStoreHeading(){
+ const store=document.getElementById("store").value;
+ document.getElementById("title").textContent=store+" Feeding History";
+ document.getElementById("backLink").href=storePages[store]||"index.html";
+ document.getElementById("backLink").textContent="← "+store;
+}
+function cutoff(days){
+ const d=new Date();
+ d.setHours(0,0,0,0);
+ d.setDate(d.getDate()-Number(days)+1);
+ return d.toISOString().slice(0,10);
+}
+function render(){
+ updateStoreHeading();
+ const store=document.getElementById("store").value;
+ const weekday=document.getElementById("weekday").value;
+ const shift=document.getElementById("shift").value;
+ const period=document.getElementById("period").value;
+ const from=document.getElementById("fromDate").value;
+ const through=document.getElementById("toDate").value;
+ document.getElementById("customDates").style.display=period==="custom"?"grid":"none";
+ let shown=records.filter(r=>{
+   if(r.store!==store)return false;
+   if(weekday&&r.weekday!==weekday)return false;
+   if(shift&&r.shift!==shift)return false;
+   const d=isoDate(r.dateIso);
+   if(period==="custom"){
+     if(from&&d<from)return false;
+     if(through&&d>through)return false;
+   }else if(period!=="all"&&d<cutoff(period))return false;
+   return true;
+ });
+ document.getElementById("summary").textContent=shown.length+(shown.length===1?" shift":" shifts")+" shown";
+ const box=document.getElementById("rows");
+ if(!shown.length){box.innerHTML='<div class="state">No feeding entries match these filters.</div>';return}
+ box.innerHTML=shown.map(r=>{
+   const given=r.given||"—";
+   const added=r.added||"—";
+   const found=r.found||"—";
+   return '<div class="feedRow">'+
+     '<div class="date">'+esc(r.date)+'<span class="day">'+esc(r.weekday)+'</span></div>'+
+     '<div class="shift">'+esc(r.shift)+'<span class="volunteer">'+esc(r.volunteer)+'</span></div>'+
+     '<div class="amount '+(found==="—"?"muted":"")+'">'+esc(found)+'</div>'+
+     '<div class="amount '+(given==="—"?"muted":"")+'">'+esc(given)+'</div>'+
+     '<div class="amount '+(added==="—"?"muted":"")+'">'+esc(added)+'</div>'+
+   '</div>';
+ }).join("");
+}
+async function loadHistory(){
+ try{
+   const settings=await fetch(SETTINGS_URL).then(r=>r.json());
+   if(!settings.PortalDeploymentURL)throw new Error();
+   const data=await fetch(settings.PortalDeploymentURL+"?action=feedingHistory&limit=500").then(r=>r.json());
+   if(!data||!data.success)throw new Error();
+   records=data.records||[];
+   render();
+ }catch(error){
+   document.getElementById("summary").textContent="";
+   document.getElementById("rows").innerHTML='<div class="state">Feeding history is temporarily unavailable. Please try again.</div>';
+ }
+}
+["store","period","weekday","shift","fromDate","toDate"].forEach(id=>document.getElementById(id).addEventListener("change",render));
+updateStoreHeading();
+loadHistory();
+</script>
+</body>
+</html>
