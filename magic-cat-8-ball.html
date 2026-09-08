@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Magic Cat 8 Ball | RTCats HQ</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#17233c;background:radial-gradient(circle at 50% 25%,#d9fff6 0,#c8f5ec 30%,#fff6d8 100%);padding-bottom:44px}
+    header{background:#0f766e;color:#fff;padding:15px 18px;box-shadow:0 4px 16px #0f4f4a33}
+    .bar{max-width:920px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .back{color:#fff;text-decoration:none;font-weight:900;background:#ffffff20;padding:10px 13px;border-radius:999px}
+    .shell{width:min(680px,calc(100% - 32px));margin:34px auto 0;text-align:center}
+    h1{font-size:clamp(34px,8vw,58px);margin:0 0 14px;letter-spacing:-1.5px}
+    .howto{background:#fff;border:3px solid #fff;border-radius:20px;padding:18px 20px;box-shadow:0 8px 26px #0f766e1c;font-size:17px;line-height:1.5}
+    .howto strong{color:#0f766e}
+    .quote{display:block;margin-top:10px;font-weight:800;color:#6b4d12}
+    label{display:block;margin:25px 0 9px;font-weight:900;font-size:18px}
+    input{width:min(500px,100%);min-height:52px;border:3px solid #0f766e;border-radius:14px;padding:10px 14px;font:inherit;font-size:17px;background:#fff}
+    input:focus{outline:4px solid #facc15;outline-offset:2px}
+    .ball{width:min(340px,82vw);aspect-ratio:1;margin:24px auto 18px;border-radius:50%;background:radial-gradient(circle at 34% 26%,#4b5563 0,#111827 30%,#020617 72%);box-shadow:inset -22px -26px 38px #000,0 17px 28px #0f4f4a3d;display:grid;place-items:center;position:relative}
+    .window{width:62%;aspect-ratio:1;display:grid;place-items:center;padding:28px;clip-path:polygon(50% 3%,97% 86%,3% 86%);background:radial-gradient(circle,#2563eb,#172554 72%);color:#e0f2fe;text-shadow:0 0 8px #60a5fa;font-weight:900;font-size:clamp(15px,4vw,21px);line-height:1.15;text-align:center}
+    .eight{font-size:88px;width:140px;height:140px;display:grid;place-items:center;border-radius:50%;background:#fff;color:#111827;font-weight:900;box-shadow:inset 0 0 0 7px #dbeafe}
+    .ball.answered .eight{display:none}.ball:not(.answered) .window{display:none}
+    button{min-height:52px;border:0;border-radius:999px;background:#f2b827;color:#17233c;padding:12px 25px;font-weight:900;font-size:18px;cursor:pointer;box-shadow:0 5px 0 #b7791f;transition:.15s}
+    button:hover{transform:translateY(-2px)}button:active{transform:translateY(3px);box-shadow:0 2px 0 #b7791f}
+    .prompt{min-height:24px;margin:13px 0 0;font-weight:800;color:#9a3412}
+    .shake{animation:shake .55s ease-in-out}
+    @keyframes shake{0%,100%{transform:rotate(0)}20%{transform:rotate(-7deg)}40%{transform:rotate(7deg)}60%{transform:rotate(-5deg)}80%{transform:rotate(5deg)}}
+    @media(max-width:520px){.shell{margin-top:24px}.howto{font-size:15px;padding:15px}.ball{margin-top:18px}.window{padding:24px}.bar strong{font-size:13px}}
+    @media(prefers-reduced-motion:reduce){.shake{animation:none}button{transition:none}}
+  </style>
+</head>
+<body>
+  <header><div class="bar"><a class="back" href="cat-corner.html">← Cat Corner</a><strong>EXTREMELY SCIENTIFIC</strong><span aria-hidden="true">🐾</span></div></header>
+  <main class="shell">
+    <h1>🐾 Magic Cat 8 Ball</h1>
+    <div class="howto">
+      Cats are famously consistent about food. Type the flavor you are thinking
+      of leaving down, ask the all-knowing ball, and obey its ruling—or don't.
+      The cat certainly won't.
+      <span class="quote">For the “I liked it yesterday but will only bury it today” factor.</span>
+    </div>
+    <label for="flavor">Should I leave down…</label>
+    <input id="flavor" maxlength="60" placeholder="Example: chicken pâté" autocomplete="off" />
+    <div class="ball" id="ball" aria-live="polite">
+      <div class="eight">8</div>
+      <div class="window" id="answer"></div>
+    </div>
+    <button id="ask" type="button">Ask the Cats</button>
+    <p class="prompt" id="prompt" role="status"></p>
+  </main>
+  <script>
+    const answers = [
+      "It is certain—if you add gravy.",
+      "It is decidedly tuna.",
+      "Without a doubt. Serve it and walk away.",
+      "Yes, definitely. Pretend it was my idea.",
+      "You may rely on it. I won't.",
+      "As I see it, yes—for the next seven minutes.",
+      "Most likely, unless I smell chicken.",
+      "Outlook good. Bowl placement questionable.",
+      "Yes, but only on the cleanest plate.",
+      "Signs point to yes. My tail points to no.",
+      "Reply hazy. Shake the treat bag.",
+      "Ask again after I inspect the other bowls.",
+      "Better not tell you now. The dog is listening.",
+      "Cannot predict now. Currently washing a leg.",
+      "Concentrate and ask again. Use my full title.",
+      "Don't count on it, human.",
+      "My reply is no—but leave it anyway.",
+      "My sources say no. My sources are me.",
+      "Outlook not so good. Have you tried tuna?",
+      "Very doubtful. Yesterday was another lifetime."
+    ];
+    const input = document.getElementById("flavor");
+    const ball = document.getElementById("ball");
+    const answer = document.getElementById("answer");
+    const prompt = document.getElementById("prompt");
+    function askCats(){
+      const flavor = input.value.trim();
+      if(!flavor){
+        prompt.textContent = "The cats require a flavor to judge. They are professionals.";
+        input.focus();
+        return;
+      }
+      prompt.textContent = "";
+      ball.classList.remove("shake");
+      void ball.offsetWidth;
+      ball.classList.add("shake","answered");
+      answer.textContent = answers[Math.floor(Math.random()*answers.length)];
+    }
+    document.getElementById("ask").addEventListener("click",askCats);
+    input.addEventListener("keydown",event=>{if(event.key==="Enter")askCats()});
+  </script>
+</body>
+</html>
