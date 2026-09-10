@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HOW TO Guides | RTCats HQ</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
+    .guide-card{display:flex;align-items:center;gap:1rem;width:100%;min-height:76px;background:white;color:#1e293b;border:1px solid #e2e8f0;border-radius:1rem;padding:1rem 1.2rem;font-weight:700;line-height:1.3;text-decoration:none;box-shadow:0 5px 14px rgba(0,0,0,.05);transition:.18s}
+    .guide-card:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.08)}
+    .guide-card::after{content:"›";margin-left:auto;color:#2f9ea0;font-size:1.8rem;line-height:1}
+  </style>
+</head>
+<body>
+  <header class="bg-[#2f9ea0] text-white shadow-lg">
+    <div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+      <a href="../" class="flex items-center gap-3 text-white no-underline">
+        <img src="../rtlogo.webp" class="h-16 md:h-20 object-contain" alt="RTPA Logo">
+      </a>
+      <a href="../#shared" class="px-4 py-2 bg-white/15 hover:bg-white/25 rounded-lg font-semibold text-white no-underline transition">← Shared Resources</a>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 md:py-16">
+    <div class="mb-8">
+      <div class="text-[#2f9ea0] text-lg font-bold mb-2">📁 VOLUNTEER RESOURCE FOLDER</div>
+      <h1 class="text-4xl md:text-5xl font-extrabold mb-3">HOW TO Guides</h1>
+      <p class="text-slate-600 text-lg">Simple, printable instructions for common cat-care tasks.</p>
+    </div>
+
+    <section class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:p-7">
+      <a href="../downloads/How-to-Give-a-Crushed-Pill.pdf" target="_blank" class="guide-card">
+        <span class="text-3xl" aria-hidden="true">💊</span>
+        <span>
+          <span class="block">How to Give a Crushed Pill</span>
+          <span class="block text-sm font-normal text-slate-500 mt-1">Using a squeeze treat and pill crusher</span>
+        </span>
+      </a>
+    </section>
+  </main>
+</body>
+</html>
