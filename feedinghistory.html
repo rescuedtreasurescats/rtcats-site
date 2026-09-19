@@ -31,6 +31,9 @@ select,input{display:block;width:100%;margin-top:5px;padding:10px 8px;border:1px
 .volunteer{display:block;font-size:12px;font-weight:400;color:#687784;margin-top:3px}
 .amount{text-align:center;font-weight:700}
 .muted{color:#9aa5b1;font-weight:400}
+.additionalFood{background:#f5f0ff;color:#5b21b6}
+.additionalFood .date,.additionalFood .shift,.additionalFood .volunteer,.additionalFood .day{color:#5b21b6}
+.additionalBadge{display:inline-block;margin-top:4px;padding:2px 6px;border-radius:999px;background:#6d28d9;color:#fff;font-size:10px;font-weight:700;letter-spacing:.02em}
 .state{padding:26px 16px;text-align:center;color:#5f6c78}
 @media(max-width:620px){
  .container{padding:12px}
@@ -133,12 +136,14 @@ function render(){
    const given=r.given||"—";
    const added=r.added||"—";
    const found=r.found||"—";
-   return '<div class="feedRow">'+
+   const isAdditional=String(added).indexOf("Additional:")===0;
+   const displayAdded=isAdditional?String(added).replace(/^Additional:\s*/,""):added;
+   return '<div class="feedRow '+(isAdditional?'additionalFood':'')+'">'+
      '<div class="date">'+esc(r.date)+'<span class="day">'+esc(r.weekday)+'</span></div>'+
-     '<div class="shift">'+esc(r.shift)+'<span class="volunteer">'+esc(r.volunteer)+'</span></div>'+
+     '<div class="shift">'+esc(r.shift)+'<span class="volunteer">'+esc(r.volunteer)+'</span>'+(isAdditional?'<span class="additionalBadge">ADDITIONAL FOOD</span>':'')+'</div>'+
      '<div class="amount '+(found==="—"?"muted":"")+'">'+esc(found)+'</div>'+
      '<div class="amount '+(given==="—"?"muted":"")+'">'+esc(given)+'</div>'+
-     '<div class="amount '+(added==="—"?"muted":"")+'">'+esc(added)+'</div>'+
+     '<div class="amount '+(displayAdded==="—"?"muted":"")+'">'+esc(displayAdded)+'</div>'+
    '</div>';
  }).join("");
 }

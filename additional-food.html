@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Additional Food</title>
+<style>
+:root{--blue:#1976d2;--navy:#173b57;--purple:#6d28d9;--soft:#f5f7fa;--line:#cbd5e1}
+*{box-sizing:border-box}
+body{margin:0;background:var(--soft);color:#1f2933;font-family:Arial,sans-serif}
+header{background:var(--blue);color:#fff;padding:16px;text-align:center;font-size:23px;font-weight:700}
+.container{max-width:650px;margin:auto;padding:16px}
+.back{display:inline-block;margin-bottom:14px;padding:9px 14px;background:var(--blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:700}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+h1{font-size:28px;margin:0 0 5px;color:var(--navy)}
+.sub{color:#5f6c78;margin:0 0 18px;line-height:1.4}
+label{display:block;font-size:14px;font-weight:700;color:#455565;margin-top:13px}
+select,input,textarea{display:block;width:100%;margin-top:6px;padding:11px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#1f2933;font:inherit}
+textarea{min-height:84px;resize:vertical}
+button{width:100%;margin-top:18px;padding:12px 16px;border:0;border-radius:9px;background:var(--purple);color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}
+.status{min-height:20px;margin-top:12px;font-size:14px;font-weight:700}
+.hint{font-size:12px;font-weight:400;color:#64748b;margin-top:4px}
+</style>
+</head>
+<body>
+<header>Additional Food</header>
+<main class="container">
+<a id="backLink" class="back" href="index.html">← Store</a>
+<section class="card">
+<h1 id="title">Additional Food</h1>
+<p class="sub">Use this when the cats eat after the regular feeding report was submitted and you put down more food.</p>
+<form id="foodForm">
+<label>Volunteer
+<select id="volunteer" required><option value="">Loading volunteers…</option></select>
+</label>
+<label>Date
+<input id="date" type="date" required>
+</label>
+<label>Shift
+<select id="shift" required><option value="">Select shift</option><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select>
+</label>
+<label>Additional food put down
+<select id="amount" required></select>
+<span class="hint">Record only the food added after the original feeding entry.</span>
+</label>
+<label>Short note <span style="font-weight:400">(optional)</span>
+<textarea id="note" maxlength="250" placeholder="Example: Cats finished the first bowls, so I added more before leaving."></textarea>
+</label>
+<button id="submitButton" type="submit">Add to Feeding History</button>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+</form>
+</section>
+</main>
+<script>
+const SETTINGS_URL="https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
+const storePages={"Baytowne":"baytowne.html","Brighton":"brighton.html","Hard Rd":"hardrd.html"};
+const amountChoices={
+ "Baytowne":["½ can","1 can","1½ cans","2 cans","2+ cans"],
+ "Brighton":["½ can","1 can","1½ cans","2 cans","2½ cans","3 cans","3½ cans","4 cans","4½ cans","5 cans"],
+ "Hard Rd":["½ can","1 can","1½ cans","2 cans","2½ cans","3 cans","3½ cans","4 cans","4½ cans","5 cans","5½ cans","6 cans","6½ cans","7 cans","7½ cans","8 cans"]
+};
+const requestedStore=new URLSearchParams(location.search).get("store");
+const store=storePages[requestedStore]?requestedStore:"Baytowne";
+let portalBaseUrl="";
+document.getElementById("title").textContent=store+" Additional Food";
+document.getElementById("backLink").href=storePages[store];
+document.getElementById("backLink").textContent="← "+store;
+document.getElementById("date").value=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});
+document.getElementById("amount").innerHTML='<option value="">Select amount</option>'+amountChoices[store].map(v=>'<option>'+v+'</option>').join("");
+
+async function getPortalBaseUrl(){
+ if(portalBaseUrl)return portalBaseUrl;
+ const settings=await fetch(SETTINGS_URL).then(r=>r.json());
+ portalBaseUrl=settings.PortalDeploymentURL;
+ if(!portalBaseUrl)throw new Error("Portal is temporarily unavailable.");
+ return portalBaseUrl;
+}
+function esc(value){return String(value||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+async function loadVolunteers(){
+ const select=document.getElementById("volunteer");
+ try{
+   const base=await getPortalBaseUrl();
+   const data=await fetch(base+"?action=additionalFoodVolunteers&store="+encodeURIComponent(store)).then(r=>r.json());
+   if(!data||!data.success)throw new Error();
+   select.innerHTML='<option value="">Select your name</option>'+data.volunteers.map(v=>'<option>'+esc(v)+'</option>').join("");
+ }catch(error){
+   select.innerHTML='<option value="">Unable to load volunteers</option>';
+   document.getElementById("status").style.color="#b91c1c";
+   document.getElementById("status").textContent="Volunteer list is temporarily unavailable. Please try again.";
+ }
+}
+document.getElementById("foodForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ const volunteer=document.getElementById("volunteer").value;
+ const date=document.getElementById("date").value;
+ const shift=document.getElementById("shift").value;
+ const amount=document.getElementById("amount").value;
+ const note=document.getElementById("note").value.trim();
+ const button=document.getElementById("submitButton");
+ const status=document.getElementById("status");
+ if(!volunteer||!date||!shift||!amount)return;
+ button.disabled=true;status.style.color="#475569";status.textContent="Adding food entry…";
+ try{
+   const base=await getPortalBaseUrl();
+   const url=base+"?action=addAdditionalFood&store="+encodeURIComponent(store)+"&volunteer="+encodeURIComponent(volunteer)+"&date="+encodeURIComponent(date)+"&shift="+encodeURIComponent(shift)+"&amount="+encodeURIComponent(amount)+"&note="+encodeURIComponent(note);
+   const data=await fetch(url).then(r=>r.json());
+   if(!data||!data.success)throw new Error(data&&data.message||"Could not save the entry.");
+   status.style.color="#166534";status.textContent="Added to Feeding History!";
+   document.getElementById("amount").value="";document.getElementById("note").value="";
+ }catch(error){status.style.color="#b91c1c";status.textContent=error.message||"Could not save the entry. Please try again."}
+ finally{button.disabled=false}
+});
+loadVolunteers();
+</script>
+</body>
+</html>
