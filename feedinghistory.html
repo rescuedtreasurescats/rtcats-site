@@ -129,6 +129,15 @@ function render(){
    }else if(period!=="all"&&d<cutoff(period))return false;
    return true;
  });
+ const shiftOrder={Dinner:0,Lunch:1,Breakfast:2};
+ shown.sort((a,b)=>{
+   const dateCompare=String(b.dateIso||"").localeCompare(String(a.dateIso||""));
+   if(dateCompare)return dateCompare;
+   const aAdditional=String(a.added||"").indexOf("Additional:")===0;
+   const bAdditional=String(b.added||"").indexOf("Additional:")===0;
+   if(aAdditional!==bAdditional)return aAdditional?-1:1;
+   return (shiftOrder[a.shift]??9)-(shiftOrder[b.shift]??9);
+ });
  document.getElementById("summary").textContent=shown.length+(shown.length===1?" shift":" shifts")+" shown";
  const box=document.getElementById("rows");
  if(!shown.length){box.innerHTML='<div class="state">No feeding entries match these filters.</div>';return}
