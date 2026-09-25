@@ -111,7 +111,8 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
   <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 md:p-5 shadow-sm"> 
     <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-3"> 🆕 Volunteer Schedule Portal </h2> 
         <div class="flex flex-col md:flex-row gap-3"> 
-      <a href="https://script.google.com/macros/s/AKfycbyddU2ObZ4DkECGUqVA62O7nVN9pHxCjYsauSb1WJmF_kufiIuQ9J7v_DncXVa1xTN2/exec" target="_blank" class="quick-button schedule-btn"> Open Schedule Portal </a> 
+      <a id="schedulePortalLink" target="_blank" rel="noopener" class="quick-button schedule-btn" aria-disabled="true"> Loading Schedule Portal… </a>
+      <span id="schedulePortalError" class="hidden text-red-700 text-sm self-center" role="alert">Portal link unavailable. Please try refreshing this page.</span> 
       <a href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing" target="_blank" class="quick-button tracker-btn"> View Schedule </a> 
     </div> 
     
@@ -234,13 +235,21 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
 (async function () {
   try {
     const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
-    const settings = await fetch(SETTINGS_URL).then(r => r.json());
+    const response = await fetch(SETTINGS_URL, { cache: "no-store" });
+    if (!response.ok) throw new Error("Settings request failed");
+    const settings = await response.json();
+    const portalUrl = new URL(settings.PortalDeploymentURL);
+    if (portalUrl.protocol !== "https:" || portalUrl.hostname !== "script.google.com" ||
+        !/^\\/macros\\/s\\/[^/]+\\/exec$/.test(portalUrl.pathname)) {
+      throw new Error("Invalid portal deployment URL in Settings");
+    }
+    const portalLink = document.getElementById("schedulePortalLink");
+    portalLink.href = portalUrl.href;
+    portalLink.textContent = "Open Schedule Portal";
+    portalLink.removeAttribute("aria-disabled");
 
     document.querySelectorAll('a').forEach(link => {
       switch (link.textContent.trim()) {
-        case "Open Schedule Portal":
-          link.href = settings.PortalDeploymentURL;
-          break;
         case "View Schedule":
         case "Volunteer Schedule":
           link.href = settings.LiveScheduleURL;
@@ -260,6 +269,8 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
       }
     });
   } catch (err) {
+    document.getElementById("schedulePortalLink").textContent = "Schedule Portal Unavailable";
+    document.getElementById("schedulePortalError").classList.remove("hidden");
     console.error("Unable to load settings.", err);
   }
 })();
