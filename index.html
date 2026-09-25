@@ -240,7 +240,8 @@ body{font-family:'Poppins',sans-serif;background:#f7f4ef;color:#1e293b}
     const settings = await response.json();
     const portalUrl = new URL(settings.PortalDeploymentURL);
     if (portalUrl.protocol !== "https:" || portalUrl.hostname !== "script.google.com" ||
-        !/^\\/macros\\/s\\/[^/]+\\/exec$/.test(portalUrl.pathname)) {
+        portalUrl.pathname.split("/").filter(Boolean).length !== 4 ||
+        !portalUrl.pathname.startsWith("/macros/s/") || !portalUrl.pathname.endsWith("/exec")) {
       throw new Error("Invalid portal deployment URL in Settings");
     }
     const portalLink = document.getElementById("schedulePortalLink");
