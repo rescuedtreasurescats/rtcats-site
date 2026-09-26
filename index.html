@@ -95,8 +95,9 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
   <details class="emergency-menu">
     <summary aria-label="Emergency phone number" title="Emergency phone number">☎</summary>
     <div class="emergency-panel">
-      <strong>In case of emergency, call Scott.</strong>
-      <a href="tel:+15852109372">585-210-9372</a>
+      <strong>In case of emergency, call <span id="emergencyName">our rescue contact</span>.</strong>
+      <a id="emergencyPhone" href="#" hidden></a>
+      <span id="emergencyLoading">Loading contact…</span>
     </div>
   </details>
 
@@ -297,6 +298,28 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
     console.error("Unable to load settings.", err);
   }
 })();
+</script>
+<script>
+document.querySelector(".emergency-menu").addEventListener("toggle", async function () {
+  if (!this.open) return;
+  const name = document.getElementById("emergencyName");
+  const phone = document.getElementById("emergencyPhone");
+  const status = document.getElementById("emergencyLoading");
+  try {
+    const response = await fetch("/_emergency", { cache: "no-store" });
+    if (!response.ok) throw new Error("Contact unavailable");
+    const contact = await response.json();
+    const digits = String(contact.phone || "").replace(/[^0-9+]/g, "");
+    if (!digits || !contact.name) throw new Error("Contact unavailable");
+    name.textContent = contact.name;
+    phone.textContent = contact.phone;
+    phone.href = "tel:" + digits;
+    phone.hidden = false;
+    status.hidden = true;
+  } catch {
+    status.textContent = "Contact unavailable. Please ask in Volunteer Chat.";
+  }
+});
 </script>
 </body>
 </html>
