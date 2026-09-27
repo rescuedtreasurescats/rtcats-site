@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Volunteer Training | RTCats HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;background:#f7f4ef;color:#1e293b;font-family:Poppins,Arial,sans-serif;line-height:1.55}
+    a{color:inherit}
+    header{background:#2f9ea0;color:white;padding:18px 22px}
+    .top{max-width:1040px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .brand{display:flex;align-items:center;gap:16px;text-decoration:none;font-weight:700}
+    .brand img{width:72px;height:64px;object-fit:contain}
+    .back{color:white;text-decoration:none;border:1px solid #ffffff88;border-radius:999px;padding:9px 15px;font-weight:600;white-space:nowrap}
+    main{max-width:1040px;margin:0 auto;padding:42px 20px 76px}
+    .eyebrow{color:#087d80;font-weight:800;letter-spacing:.08em;text-transform:uppercase;font-size:.78rem}
+    h1{font-size:clamp(2rem,4vw,2.7rem);line-height:1.15;margin:8px 0 10px}
+    .intro{font-size:1.05rem;color:#475569;margin:0 0 30px;max-width:720px}
+    .card{background:white;border:1px solid #e2e8f0;border-radius:24px;padding:clamp(22px,4vw,38px);box-shadow:0 12px 30px #0f172a0b}
+    h2{font-size:1.55rem;line-height:1.25;margin:0 0 10px}
+    .card>p{margin:0 0 26px;color:#475569}
+    .parts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .part{background:#f0fafa;border:1px solid #bfe6e6;border-radius:18px;padding:22px}
+    .part h3{margin:0 0 8px;color:#0f5960;font-size:1.22rem}
+    .part p{margin:0 0 17px;color:#334155}
+    .actions{display:flex;flex-wrap:wrap;gap:10px}
+    .button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 15px;border-radius:11px;background:#087d80;color:#fff;text-decoration:none;font-weight:700}
+    .button.secondary{background:white;color:#0f5960;border:1px solid #8ac8ca}
+    .button:hover,.pill:hover,.back:hover{filter:brightness(.94)}
+    .note{font-size:.94rem;color:#475569;margin:23px 0 0!important}
+    .more{margin-top:34px}
+    .more h2{font-size:1.32rem}
+    .pills{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+    .pill{display:inline-flex;align-items:center;min-height:44px;padding:10px 17px;border:1px solid #a7ced0;border-radius:999px;background:#fff;color:#0f5960;font-weight:700;text-decoration:none}
+    @media(max-width:700px){.parts{grid-template-columns:1fr}.top{align-items:center}.brand span{display:none}.brand img{width:60px;height:54px}.back{font-size:.9rem}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <a class="brand" href="index.html"><img src="rtlogo.webp" alt="RTPA logo"><span>RTCats HQ</span></a>
+    <a class="back" href="index.html">← Back to HQ</a>
+  </div>
+</header>
+<main>
+  <div class="eyebrow">For new and current volunteers</div>
+  <h1>Volunteer Training</h1>
+  <p class="intro">A home for cat room training, annual refreshers, and trainer resources.</p>
+
+  <section class="card" aria-labelledby="refresher-title">
+    <h2 id="refresher-title">2026 Refresher Training</h2>
+    <p>Complete both parts. Read each short guide, then take its quiz. You need 80% to pass, and you can take a quiz again if needed.</p>
+    <div class="parts">
+      <div class="part">
+        <h3>Part 1 · Cat room basics</h3>
+        <p>Review the Training Checklist, then take the 20-question quiz.</p>
+        <div class="actions">
+          <a class="button secondary" href="https://script.google.com/macros/s/AKfycbwtxDLC3x8yzoKmpGn_ft7lEb1qj-vk6H00AXc1m2mGdwy0HTKAak5IXe_I1s_s81in/exec?page=checklist" target="_blank" rel="noopener noreferrer">1. Read checklist</a>
+          <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLScYRAUeHBsjJw0LmDRxLcNawgnsp3JN_ONO4AMsOUpG9E4sKg/viewform" target="_blank" rel="noopener noreferrer">2. Take Part 1 quiz</a>
+        </div>
+      </div>
+      <div class="part">
+        <h3>Part 2 · Safe handling</h3>
+        <p>Read the PSP Cat Room Safe Handling &amp; Cleanup SOP, then take the 10-question quiz.</p>
+        <div class="actions">
+          <a class="button secondary" href="sop/psp-cat-room-safe-handling.html">1. Read SOP</a>
+          <a class="button" href="https://docs.google.com/forms/d/e/1FAIpQLSfSlL13uC3YdWuM5r9JNhbo2ATNo0YWvUJbge8kKk-AwMCObQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer">2. Take Part 2 quiz</a>
+        </div>
+      </div>
+    </div>
+    <p class="note">Once you pass, we record your completion date on the volunteer list. Questions? Ask a coordinator.</p>
+  </section>
+
+  <section class="card more" aria-labelledby="trainers-title">
+    <h2 id="trainers-title">🔐 Trainers Only</h2>
+    <p>Trainer discussions, resources, tools, and support.</p>
+    <a class="button" href="/trainers">Open Trainer Center</a>
+  </section>
+
+  <section class="more" aria-labelledby="more-title">
+    <h2 id="more-title">More training resources</h2>
+    <div class="pills">
+      <a class="pill" href="https://docs.google.com/document/d/1BE_inKh50bLNo3OeF8G61bUyaDlDCmCpZKw16lUclCw/edit" target="_blank" rel="noopener noreferrer">📋 Hard Rd Shadower/Trainer Checklist</a>
+      <a class="pill" href="how-to/">📁 HOW TO Guides</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>
