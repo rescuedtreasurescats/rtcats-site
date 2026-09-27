@@ -1,66 +1,62 @@
-# RTCats site access rollout
+# RTCats volunteer email access rollout
 
-This branch prepares a server-side gate. It does not protect the current
-GitHub Pages site until the Cloudflare deployment and domain cutover are done.
+This branch prepares an email-code gate. It does not protect the current GitHub
+Pages site until the Cloudflare deployment and domain cutover are complete.
 
-## Source of truth
+## Settings and roster
 
-In the portal database's `Settings` tab, the website-only values are kept in
-`D1:E4`. `E2` is the website PIN and is intentionally blank. Blank means the
-site is public. `E3:E4` hold the emergency contact name and phone number.
+In the portal database `Settings!D1:E4`, `D2` is `WebsiteAccessMode`.
+Leave `E2` blank for public access during rollout; set it to exactly `Email`
+after announcing the change. `E3:E4` store the emergency contact name and phone.
+The existing public settings endpoint must never expose columns D:E.
 
-The public `action=settings` endpoint currently serves settings used by the
-website. Do not add `SiteAccessPIN` to columns A:B or expose columns D:E through
-that endpoint. The dedicated Apps Script source in `Code.gs` reads D:E and
-returns only whether a PIN is required, whether a submitted PIN matches, and
-the emergency contact. It never returns the PIN.
+The `Volunteers` tab is the authorization source: column A is volunteer ID,
+D and E are email addresses, and F is Active. A code goes only to an address
+on a row marked `Yes`. Every site request checks the roster again, so changing
+Active to `No` revokes access even for an existing session. Two currently
+active volunteers lack email addresses and need one before email mode is enabled.
+An email address alone never unlocks the site.
 
-## Prepare the dedicated Apps Script backend
+## Dedicated Apps Script backend
 
 1. Create a separate Apps Script project owned by the rescue account and paste
-   `site-access/Code.gs` into it. It must not replace the Schedule Portal script.
+   `site-access/Code.gs` into it. Do not replace the Schedule Portal script.
 2. Set script properties `SITE_SETTINGS_SPREADSHEET_ID` to the portal database
-   spreadsheet ID, and `SITE_GATE_TOKEN` to a new long random secret. Do not
-   place either token in this repository or in a public settings response.
-3. Deploy as a web app, executing as the owner with access set to Anyone.
-   Record the `/exec` URL privately. A request without the token must return
-   `unauthorized` and must never reveal Settings values.
-4. With E2 blank, test the backend's `status` result from a trusted client:
-   `required:false`, `version:"open"`. Test a nonblank PIN on a **copy** of the
-   sheet before enabling the real site PIN.
+   ID and `SITE_GATE_TOKEN` to a new long random secret. Keep secrets outside
+   the repository and outside public settings responses.
+3. Deploy as a web app executing as owner, access `Anyone`. Record the `/exec`
+   URL privately. Requests without the secret must return `unauthorized`.
+4. Authorize spreadsheet and MailApp permissions in the rescue account. MailApp
+   has a daily recipient quota (100 consumer, 1,500 Workspace); plan the first
+   rollout accordingly. Requesting another code for the same address within
+   60 seconds does not send another message; codes expire after 10 minutes.
 
-## Prepare Cloudflare Pages
+## Cloudflare Pages
 
-1. Connect the **same GitHub repository** to a Cloudflare Pages project using
-   this branch for a test deployment. It is a static site: no framework or
-   build command, root (`.`) as the output directory. Pages Functions finds
-   `functions/_middleware.js` at the repository root.
-2. Configure encrypted project secrets for both preview and production:
-   `SITE_GATE_API_URL` (the dedicated `/exec` URL), `SITE_GATE_TOKEN` (same
-   value as the Apps Script property), and `SITE_SESSION_SECRET` (a separate
-   long random secret). Never put them in a checked-in file.
-3. For the Free plan, set the project to fail closed / disable on Functions
-   quota exhaustion. The middleware also fails closed when the backend cannot
-   be read.
-4. Test `/`, a direct store page, a CSS/image asset, and `/_emergency` on the
-   Cloudflare preview with E2 blank. In a test copy of the Settings sheet,
-   check wrong PIN, right PIN, session persistence, PIN rotation, and direct
-   URL blocking. Do not use the real Settings E2 for the locked test.
+1. Connect the same GitHub repository to Cloudflare Pages, using this branch
+   for preview. No build command or framework; root (`.`) output directory.
+   Pages Functions loads `functions/_middleware.js` from the repository root.
+2. Set encrypted preview and production secrets: `SITE_GATE_API_URL` (dedicated
+   Apps Script `/exec` URL), `SITE_GATE_TOKEN` (matching property), and
+   `SITE_SESSION_SECRET` (a separate long random secret). Disable bypass on
+   Functions quota exhaustion. Backend errors return 503.
+3. Test the public preview with `E2` blank: home, deep links, assets, and
+   emergency control. For locked tests, use a **copy** of the spreadsheet with
+   `E2=Email` and an active test volunteer. Test code delivery, wrong/expired
+   code, direct asset access, session persistence, and revocation on Active=No.
+   Restore the preview configuration afterward.
 
-## Cut over while E2 is blank
+## Cutover and activation
 
-1. Merge after preview passes; connect `rtcats.com` as the custom domain and
-   verify the live pages and emergency control still work without a PIN.
-2. Unpublish the GitHub Pages site, including its `github.io` URL. Move the
-   repository to private visibility after verifying Cloudflare still deploys
-   from it. Previously copied public content cannot be recalled, so the new
-   emergency number is loaded from Settings only by the protected service.
-3. Confirm all volunteer page URLs pass through Cloudflare, including direct
-   links. Linked Apps Script, Google Forms, and third-party sites have their
-   own access rules.
+1. After preview passes, connect `rtcats.com` to Cloudflare Pages and verify
+   direct URLs and emergency control while `E2` is still blank.
+2. Disable GitHub Pages and its `github.io` address so it cannot bypass the
+   new gate. Keep GitHub as the source repository; confirm Cloudflare deployments
+   still work before making the repository private. Old public copies of the
+   emergency number may remain accessible elsewhere.
+3. Tell volunteers how to sign in and update missing roster emails. Set
+   `Settings!E2` to `Email` only when ready. Blanking E2 restores public
+   access without a code change.
 
-## Activate later
-
-Once volunteers have been told the PIN, enter it in `Settings!E2`. No website
-source change or redeployment is needed. Blank E2 again to restore public
-access. A shared PIN can be forwarded; it is not an individual volunteer login.
+This gate covers rtcats.com pages and assets. Linked Forms, Apps Script URLs,
+and third-party sites retain their own access rules.
