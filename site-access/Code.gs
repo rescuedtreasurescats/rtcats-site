@@ -47,7 +47,9 @@ function doPost(e) {
       if (MailApp.getRemainingDailyQuota() < 1) return json_({ error: 'mail_quota' });
       // UUID randomness; 8 decimal digits and five verification attempts.
       var code = String(parseInt(Utilities.getUuid().replace(/-/g, '').slice(0, 12), 16) % 100000000).padStart(8, '0');
-      cache.put(key, JSON.stringify({ hash: signature_(email + ':' + code, token), tries: 0 }), 600);
+      cache.put(key, JSON.stringify({
+        hash: signature_(email + ':' + code, token), tries: 0, expires: Date.now() + 600000
+      }), 600);
       MailApp.sendEmail({
         to: email, subject: 'Your RTCats volunteer sign-in code',
         body: 'Your RTCats sign-in code is ' + code + '. It expires in 10 minutes. If you did not request it, you can ignore this message.'
@@ -57,13 +59,14 @@ function doPost(e) {
     var record = cache.get(key);
     if (!record) return json_({ valid: false });
     var challenge = JSON.parse(record);
+    if (Date.now() >= challenge.expires) { cache.remove(key); return json_({ valid: false }); }
     if (challenge.tries >= 5) { cache.remove(key); return json_({ valid: false }); }
     var candidate = String(request.code || '');
     if (!/^\d{8}$/.test(candidate) ||
         !sameText_(signature_(email + ':' + candidate, token), challenge.hash)) {
       challenge.tries++;
       if (challenge.tries >= 5) cache.remove(key);
-      else cache.put(key, JSON.stringify(challenge), 600);
+      else cache.put(key, JSON.stringify(challenge), Math.max(1, Math.ceil((challenge.expires - Date.now()) / 1000)));
       return json_({ valid: false });
     }
     cache.remove(key);
