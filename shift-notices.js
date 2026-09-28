@@ -82,16 +82,17 @@
     });
     subtitle.insertAdjacentElement("afterend", container);
   }
+  const freshNotices = getActiveNotices();
   async function showStoreButtons() {
     const cached = cachedNotices();
     if (cached) renderStoreButtons(cached);
-    try { renderStoreButtons(await getActiveNotices()); }
+    try { renderStoreButtons(await freshNotices); }
     catch (error) { console.error("Shift notices could not be loaded.", error); }
   }
   async function showStoreNotices(store) {
     const cached = cachedNotices();
     if (cached) renderStoreNotices(store, cached);
-    try { renderStoreNotices(store, await getActiveNotices()); }
+    try { renderStoreNotices(store, await freshNotices); }
     catch (error) { console.error("Shift notices could not be loaded.", error); }
   }
   window.RTPAShiftNotices = { showStoreButtons, showStoreNotices };
