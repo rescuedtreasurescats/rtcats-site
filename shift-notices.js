@@ -2,19 +2,29 @@
   const PORTAL_URL = "https://script.google.com/macros/s/AKfycbwtxDLC3x8yzoKmpGn_ft7lEb1qj-vk6H00AXc1m2mGdwy0HTKAak5IXe_I1s_s81in/exec";
   const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
   const CACHE_KEY = "rtpa-shift-notices";
-  const CACHE_AGE_MS = 30000;
+  const CACHE_AGE_MS = 24 * 60 * 60 * 1000;
 
+  function easternNow() {
+    const parts = new Intl.DateTimeFormat("en-US", {
+      timeZone: "America/New_York", year: "numeric", month: "2-digit",
+      day: "2-digit", hour: "2-digit", minute: "2-digit", hourCycle: "h23"
+    }).formatToParts(new Date());
+    const value = type => parts.find(part => part.type === type)?.value || "";
+    return value("year") + "-" + value("month") + "-" + value("day") +
+      " " + value("hour") + ":" + value("minute");
+  }
   function cachedNotices() {
     try {
-      const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) || "null");
+      const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
       if (cached && Date.now() - cached.savedAt < CACHE_AGE_MS && Array.isArray(cached.notices)) {
-        return cached.notices;
+        const now = easternNow();
+        return cached.notices.filter(notice => notice.endAt && notice.endAt > now);
       }
     } catch (_) {}
     return null;
   }
   function saveNotices(notices) {
-    try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), notices })); } catch (_) {}
+    try { localStorage.setItem(CACHE_KEY, JSON.stringify({ savedAt: Date.now(), notices })); } catch (_) {}
   }
   function validPortalUrl(raw) {
     const url = new URL(raw);
