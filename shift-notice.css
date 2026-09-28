@@ -1,0 +1,12 @@
+.shift-notice{box-sizing:border-box;margin:0 0 16px;padding:16px 18px;border:2px solid #d97706;border-radius:10px;background:#fffbeb;color:#3b2a11;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.shift-notice__heading{margin:0 0 7px;font-size:18px;font-weight:700;line-height:1.3}
+.shift-notice__body{margin:0;font-size:16px;line-height:1.5}
+.shift-notice__detail{margin:8px 0 0;font-size:14px;line-height:1.4}
+.shift-notice-dialog{max-width:min(520px,calc(100vw - 36px));box-sizing:border-box;padding:22px;border:2px solid #d97706;border-radius:12px;background:#fff;color:#292524;box-shadow:0 15px 55px rgba(0,0,0,.25)}
+.shift-notice-dialog::backdrop{background:rgba(15,23,42,.6)}
+.shift-notice-dialog .shift-notice{margin:0 0 18px;box-shadow:none}
+.shift-notice-dialog__actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}
+.shift-notice-dialog__actions a,.shift-notice-dialog__actions button{font:700 16px Arial,sans-serif;padding:11px 15px;border-radius:8px;cursor:pointer}
+.shift-notice-dialog__actions a{background:#1976d2;color:white;text-decoration:none}
+.shift-notice-dialog__actions button{background:white;color:#334155;border:1px solid #94a3b8}
+.shift-notice-badge{display:inline-block;margin-left:10px;padding:4px 8px;border:1px solid #d97706;border-radius:999px;background:#fffbeb;color:#78350f;font:700 13px/1.3 Arial,sans-serif;vertical-align:middle;white-space:nowrap}
