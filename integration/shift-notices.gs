@@ -18,15 +18,22 @@ function shiftNoticesApi_(e) {
 
   var sheet = getDatabase().getSheetByName('Shift Notices');
   if (!sheet || sheet.getLastRow() < 2) return shiftNoticesJson_(output);
-  var values = sheet.getRange(1, 1, sheet.getLastRow(), 8).getDisplayValues();
+  var range = sheet.getRange(1, 1, sheet.getLastRow(), 8);
+  var values = range.getDisplayValues();
+  var rawDates = range.getValues().map(function (row) { return row[1]; });
   var headers = values.shift();
+  rawDates.shift();
   var expected = ['Active', 'Date', 'Store', 'Shift', 'Title', 'Message',
     'Action Required', 'Confirmation Label'];
   if (expected.some(function (name, i) { return headers[i] !== name; })) {
     return shiftNoticesJson_({success: false, notices: []});
   }
-  values.forEach(function (row) {
-    if (row[0].trim().toLowerCase() !== 'yes' || row[1].trim() !== today ||
+  values.forEach(function (row, index) {
+    var dateValue = rawDates[index];
+    var rowDate = dateValue instanceof Date
+      ? Utilities.formatDate(dateValue, 'America/New_York', 'yyyy-MM-dd')
+      : String(dateValue).trim();
+    if (row[0].trim().toLowerCase() !== 'yes' || rowDate !== today ||
         row[2].trim() !== store || !row[5].trim()) return;
     var shift = row[3].trim();
     if (['Breakfast', 'Lunch', 'Dinner', 'All shifts'].indexOf(shift) < 0) return;
