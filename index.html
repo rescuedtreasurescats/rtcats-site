@@ -69,6 +69,10 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
 .hero-art{min-height:0;height:205px;width:100%;overflow:hidden;align-self:auto}
 .hero-art img{width:auto;height:220px;max-height:none;max-width:100%;transform:translateY(2px)}
 }
+.store-link.has-shift-notice{border:2px solid #f59e0b;background:#fffaf0}
+.shift-notice-tag{margin-left:auto;color:#a63c00;font-size:.95rem;font-weight:800;line-height:1.25}
+.shift-notice-tag[hidden]{display:none}
+@media(max-width:480px){.store-link.has-shift-notice{flex-wrap:wrap}.shift-notice-tag{margin-left:2rem}}
 </style>
 </head>
 
@@ -161,9 +165,9 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
     </p>
   </div>
   <div class="space-y-4">
-    <a href="brighton.html" class="quick-button">🐈 Brighton</a>
-    <a href="hardrd.html" class="quick-button">🐾 Hard Rd</a>
-    <a href="baytowne.html" class="quick-button">🏡 Baytowne</a>
+    <a href="brighton.html" class="quick-button store-link" data-shift-store="Brighton"><span>🐈 Brighton</span><strong class="shift-notice-tag" hidden>Important Shift Notice</strong></a>
+    <a href="hardrd.html" class="quick-button store-link" data-shift-store="Hard Rd"><span>🐾 Hard Rd</span><strong class="shift-notice-tag" hidden>Important Shift Notice</strong></a>
+    <a href="baytowne.html" class="quick-button store-link" data-shift-store="Baytowne"><span>🏡 Baytowne</span><strong class="shift-notice-tag" hidden>Important Shift Notice</strong></a>
   </div>
 </section>
 
@@ -277,7 +281,9 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
   </div>
 </footer>
 
+<script src="shift-notices.js"></script>
 <script>
+RTPAShiftNotices.showStoreButtons();
 (async function () {
   try {
     const SETTINGS_URL = "https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
