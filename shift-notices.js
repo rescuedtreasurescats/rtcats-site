@@ -18,7 +18,7 @@
       const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
       if (cached && Date.now() - cached.savedAt < CACHE_AGE_MS && Array.isArray(cached.notices)) {
         const now = easternNow();
-        return cached.notices.filter(notice => notice.endAt && notice.endAt > now);
+        return cached.notices.filter(notice => !notice.endAt || notice.endAt > now);
       }
     } catch (_) {}
     return null;
