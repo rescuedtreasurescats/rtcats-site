@@ -81,6 +81,9 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
 .foster-entry-desc{display:block;margin-top:.4rem;line-height:1.5;color:#ecfeff}
 .foster-entry-action{margin-left:auto;flex-shrink:0;padding:.75rem 1rem;border-radius:.75rem;background:white;color:#066568;font-weight:700}
 @media(max-width:767px){.foster-entry{flex-wrap:wrap;gap:1rem;padding:1.25rem}.foster-entry-icon{display:none}.foster-entry-action{margin-left:0}}
+
+.foster-entry > .min-w-0{min-width:0;flex:1}
+#new-volunteers{padding-top:0}
 </style>
 </head>
 
@@ -149,20 +152,17 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
   </div>
 </section>
 
-<!-- NEW SCHEDULE PORTAL --> 
-<section class="max-w-7xl mx-auto px-6 pb-10 pt-10"> 
-  <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 md:p-5 shadow-sm"> 
-    <h2 class="text-2xl md:text-3xl font-bold text-blue-900 mb-3"> 🆕 Volunteer Schedule Portal </h2> 
-        <div class="flex flex-col md:flex-row gap-3"> 
+<!-- NEW SCHEDULE PORTAL -->
+<section class="max-w-7xl mx-auto px-6 pb-10 pt-10">
+<div class="foster-entry"><span class="foster-entry-icon" aria-hidden="true">📅</span><span class="min-w-0"><span class="foster-entry-title">Volunteer Schedule Portal</span><span class="foster-entry-desc">Sign up for shifts or view the volunteer schedule.</span></span></div>
+<div class="mt-4"><div class="flex flex-col md:flex-row gap-3"> 
       <a id="schedulePortalLink" target="_blank" rel="noopener" class="quick-button schedule-btn" aria-disabled="true"> Loading Schedule Portal… </a>
       <span id="schedulePortalError" class="hidden text-red-700 text-sm self-center" role="alert">Portal link unavailable. Please try refreshing this page.</span> 
       <a href="https://docs.google.com/spreadsheets/d/1UveWxuUVJ4DVYctLirlA-t4G7G5kTjw2Xo9T-tNBJXI/edit?usp=sharing" target="_blank" class="quick-button tracker-btn"> View Schedule </a> 
-    </div> 
-    
-  </div> 
+    </div></div>
 </section>
 
-  <!-- STORE OPERATIONS -->
+<!-- STORE OPERATIONS -->
 <section id="stores" class="max-w-4xl mx-auto px-6 py-14">
   <div class="mb-8">
     <h2 class="text-3xl md:text-4xl font-bold mb-2">
@@ -180,29 +180,13 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
 </section>
 
 <!-- NEW VOLUNTEERS -->
-<section id="new-volunteers" class="max-w-7xl mx-auto px-6 py-12">
-  <div class="mb-8">
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">🌟 New Volunteers</h2>
-    <p class="text-slate-600">Getting started? Begin here.</p>
-  </div>
-  <div class="max-w-xl">
-    <a href="gettingstarted.html" class="volunteer-card">
-      <div class="volunteer-card-icon">🌟</div><div class="volunteer-card-title">New Volunteers</div><div class="volunteer-card-subtitle">Getting Started?</div><div class="volunteer-card-desc">Your first steps, store chats, and schedule access.</div><div class="volunteer-card-arrow">›</div>
-    </a>
-  </div>
+<section id="new-volunteers" class="max-w-7xl mx-auto px-6 pb-14">
+<a href="gettingstarted.html" class="foster-entry"><span class="foster-entry-icon" aria-hidden="true">🌟</span><span class="min-w-0"><span class="foster-entry-title">New Volunteers</span><span class="foster-entry-desc">Your first steps, store chats, and schedule access.</span></span><span class="foster-entry-action">Open New Volunteers</span></a>
 </section>
 
 <!-- TRAINING -->
 <section id="training" class="max-w-7xl mx-auto px-6 pb-14">
-  <div class="mb-8">
-    <h2 class="text-3xl md:text-4xl font-bold mb-2">📚 Training</h2>
-    <p class="text-slate-600">Training and refreshers for all cat room volunteers.</p>
-  </div>
-  <div class="max-w-xl">
-    <a href="training.html" class="volunteer-card">
-      <div class="volunteer-card-icon">📚</div><div class="volunteer-card-title">Training</div><div class="volunteer-card-subtitle">All Training Resources</div><div class="volunteer-card-desc">Checklists, refreshers, guides, and trainer resources in one place.</div><div class="volunteer-card-arrow">›</div>
-    </a>
-  </div>
+<a href="training.html" class="foster-entry"><span class="foster-entry-icon" aria-hidden="true">📚</span><span class="min-w-0"><span class="foster-entry-title">Training</span><span class="foster-entry-desc">Checklists, refreshers, guides, and trainer resources.</span></span><span class="foster-entry-action">Open Training</span></a>
 </section>
 
 <!-- FOSTER TOOLS -->
@@ -215,31 +199,13 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
 </section>
 
 <!-- SHARED RESOURCES -->
-<section id="shared" class="max-w-7xl mx-auto px-6 pb-20">
-  <div class="bg-white section-card">
-    <div class="mb-8">
-      <h2 class="text-3xl md:text-4xl font-bold mb-2">Shared Resources</h2>
-      <p class="text-slate-600">Common RTPA links used by volunteers, fosters, coordinators, and adopters.</p>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdy2lkq1s519kkf6xbsS69Q4t9c9vIocRXCSIHcd83Okxxr_g/viewform?usp=dialog" target="_blank" class="quick-button">Cat Adoption Application</a>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfVIlZ0wUGf-gJYVN0ljsAmPfbja4TCZga7HqpHhxWsSI4wUQ/viewform?usp=dialog" target="_blank" rel="noopener noreferrer" class="quick-button">Cat Volunteer Application</a>
-      <a href="https://www.petfinder.com/member/us/ny/rochester/rescued-treasures-pet-adoptions-ny990/" target="_blank" class="quick-button">Current Cats on Petfinder</a>
-      <a href="https://docs.google.com/forms/d/1G2bYpwNbE1UjdULtMMuP10VO3Ojo1U14vR_oLLAVLgA/viewform?edit_requested=true" target="_blank" class="quick-button">Petfinder Submission Form</a>
-      <a id="wishlist" href="https://www.chewy.com/g/rescued-treasures-pet-adoptions_b75574561#wish-list" target="_blank" class="quick-button">Chewy Wishlist</a>
-      <a href="https://a.co/a66QHo9" target="_blank" class="quick-button">Amazon Wishlist</a>
-      <a href="how-to/" class="quick-button">📁 HOW TO Guides</a>
-      <a href="#standard-operating-procedures" class="quick-button">📘 Standard Operating Procedures</a>
-      <a href="https://calendar.google.com/calendar/embed?src=rtcatroom%40gmail.com&amp;ctz=America%2FNew_York" target="_blank" rel="noopener noreferrer" class="quick-button">RT Cats Calendar</a>
-    </div>
-    <div id="standard-operating-procedures" class="mt-10 pt-8 border-t border-slate-200">
-      <h3 class="text-2xl font-bold mb-2">Standard Operating Procedures</h3>
-      <p class="text-slate-600 mb-4">Quick, practical directions for the work we do.</p>
-      <div class="flex flex-wrap gap-3">
-        <a href="sop/psp-cat-room-safe-handling.html" class="inline-flex items-center rounded-full bg-teal-50 border border-teal-300 px-4 py-2 font-semibold text-teal-900 hover:bg-teal-100 no-underline">🐾 PSP Cat Room Safe Handling &amp; Cleanup</a>
-      </div>
-    </div>
-  </div>
+<section id="shared" class="max-w-7xl mx-auto px-6 pb-14">
+<a href="shared-resources.html" class="foster-entry"><span class="foster-entry-icon" aria-hidden="true">🤝</span><span class="min-w-0"><span class="foster-entry-title">Foster &amp; Volunteer Shared Resources</span><span class="foster-entry-desc">Applications, current cats, wishlists, guides, and the rescue calendar.</span></span><span class="foster-entry-action">Open Shared Resources</span></a>
+</section>
+
+<!-- STANDARD OPERATING PROCEDURES -->
+<section id="standard-operating-procedures" class="max-w-7xl mx-auto px-6 pb-20">
+<a href="sops.html" class="foster-entry"><span class="foster-entry-icon" aria-hidden="true">📘</span><span class="min-w-0"><span class="foster-entry-title">SOPs</span><span class="foster-entry-desc">Standard Operating Procedures for rescue operations.</span></span><span class="foster-entry-action">Open SOPs</span></a>
 </section>
 
 <!-- FOOTER -->
