@@ -74,15 +74,27 @@ header .header-btn,header nav>a{padding:.4rem .45rem;font-size:.8rem}
 .shift-notice-tag[hidden]{display:none}
 @media(max-width:480px){.store-link.has-shift-notice{flex-wrap:wrap}.shift-notice-tag{margin-left:2rem}}
 
-.foster-entry{display:flex;align-items:center;gap:1.25rem;padding:1.75rem;background:#087d80;color:white;border:2px solid #066568;border-radius:1.25rem;text-decoration:none;box-shadow:0 8px 22px rgba(8,125,128,.15);transition:.18s}
-.foster-entry:hover{background:#066568;box-shadow:0 12px 26px rgba(8,125,128,.22)}
-.foster-entry:focus-visible{outline:3px solid #087d80;outline-offset:4px}
-.foster-entry-icon{font-size:2.5rem}.foster-entry-title{display:block;font-size:clamp(1.6rem,3vw,2.25rem);font-weight:800;line-height:1.25}
-.foster-entry-desc{display:block;margin-top:.4rem;line-height:1.5;color:#ecfeff}
-.foster-entry-action{margin-left:auto;flex-shrink:0;padding:.75rem 1rem;border-radius:.75rem;background:white;color:#066568;font-weight:700}
-@media(max-width:767px){.foster-entry{flex-wrap:wrap;gap:1rem;padding:1.25rem}.foster-entry-icon{display:none}.foster-entry-action{margin-left:0}}
-
-.foster-entry > .min-w-0{min-width:0;flex:1}
+.foster-entry{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:1.25rem;padding:1.5rem 1.75rem;background:#2f9ea0;color:#073b3d;border:1px solid #27898b;border-radius:1.25rem;text-decoration:none;box-shadow:0 8px 22px rgba(47,158,160,.13);transition:.18s}
+.foster-entry:hover{background:#38a6a8;box-shadow:0 12px 26px rgba(47,158,160,.2)}
+.foster-entry:focus-visible{outline:3px solid #19777a;outline-offset:4px}
+.foster-entry-icon{font-size:2.5rem}
+.foster-entry > span:nth-child(2){min-width:0}
+.foster-entry-title{display:block;font-size:clamp(1.6rem,3vw,2.25rem);font-weight:800;line-height:1.25}
+.foster-entry-desc{display:block;margin-top:.4rem;line-height:1.5;color:#073b3d}
+.foster-entry-action{padding:.75rem 1rem;border-radius:.75rem;background:white;color:#155c60;font-weight:700;text-align:center;line-height:1.4;white-space:normal}
+@media(max-width:900px){
+.foster-entry{grid-template-columns:minmax(0,1fr);gap:1rem;padding:1.25rem}
+.foster-entry-icon{display:none}
+.foster-entry > span:nth-child(2){width:100%}
+.foster-entry-title{font-size:1.5rem;line-height:1.3}
+.foster-entry-desc{font-size:1rem;line-height:1.5}
+.foster-entry-action{justify-self:start;max-width:100%;font-size:1rem}
+}
+@media(max-width:480px){
+#new-volunteers,#training,#fosters,#shared{padding-bottom:1.5rem}
+.foster-entry{padding:1.125rem;border-radius:1rem;gap:.875rem}
+.foster-entry-action{justify-self:stretch;padding:.65rem .85rem}
+}
 #new-volunteers{padding-top:0}
 </style>
 </head>
