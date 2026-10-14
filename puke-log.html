@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Baytowne Puke Log</title>
+<style>
+:root{--blue:#1976d2;--navy:#173b57;--soft:#f5f7fa;--line:#cbd5e1;--green:#2e7d32}
+*{box-sizing:border-box}body{margin:0;background:var(--soft);color:#1f2933;font-family:Arial,sans-serif}
+header{background:var(--blue);color:#fff;padding:16px;text-align:center;font-size:23px;font-weight:700}
+.container{max-width:650px;margin:auto;padding:16px}.back{display:inline-block;margin-bottom:14px;padding:9px 14px;background:var(--blue);color:#fff;text-decoration:none;border-radius:8px;font-weight:700}
+.card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+h1{font-size:28px;margin:0 0 5px;color:var(--navy)}.sub{color:#5f6c78;margin:0 0 18px;line-height:1.4}
+label,.question{display:block;font-size:14px;font-weight:700;color:#455565;margin-top:14px}
+select,input,textarea{display:block;width:100%;margin-top:6px;padding:11px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;color:#1f2933;font:inherit}
+textarea{min-height:90px;resize:vertical}.radios{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}.choice{display:flex;align-items:center;gap:7px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font-weight:600}
+.choice input{width:auto;margin:0}.hidden{display:none}.done{padding:18px;border-radius:10px;background:#ecfdf3;color:#166534;font-weight:700;margin-top:16px}
+button{width:100%;margin-top:18px;padding:12px 16px;border:0;border-radius:9px;background:var(--green);color:#fff;font-size:17px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}.status{min-height:20px;margin-top:12px;font-size:14px;font-weight:700}
+</style></head><body>
+<header>Baytowne Puke Log</header>
+<main class="container"><a class="back" href="baytowne.html">← Baytowne</a>
+<section class="card"><h1>🤮 Puke Log</h1><p class="sub">Quickly record any puke found waiting for you or seen during your Baytowne shift.</p>
+<form id="pukeForm">
+<label>Volunteer<select id="volunteer" required><option value="">Loading volunteers…</option></select></label>
+<label>Date<input id="date" type="date" required></label>
+<label>Shift<select id="shift" required><option value="">Select shift</option><option>Breakfast</option><option>Lunch</option><option>Dinner</option></select></label>
+
+<div class="question">Was there any puke waiting for you or during your shift?</div>
+<div class="radios">
+<label class="choice"><input type="radio" name="puke" value="Yes" required> Yes</label>
+<label class="choice"><input type="radio" name="puke" value="No" required> No</label>
+</div>
+
+<div id="yesFields" class="hidden">
+<div class="question">Do you know whodunnit?</div>
+<div class="radios">
+<label class="choice"><input type="radio" name="known" value="Yes"> Yes</label>
+<label class="choice"><input type="radio" name="known" value="No"> No</label>
+</div>
+
+<div id="horkerFields" class="hidden">
+<label>Who?
+<select id="horker"><option value="">Select one</option><option>Peter</option><option>Paul</option><option>Unknown Horker</option></select>
+</label>
+</div>
+
+<label>Any needed details <span style="font-weight:400">(optional)</span>
+<textarea id="details" maxlength="500" placeholder="Anything useful about what you found or saw."></textarea>
+</label>
+</div>
+
+<div id="noDone" class="done hidden">No puke — you’re done. Submit and get back to the cats. 🐾</div>
+<button id="submitButton" type="submit">Submit Puke Log</button>
+<div id="status" class="status" role="status" aria-live="polite"></div>
+</form></section></main>
+<script>
+const SETTINGS_URL="https://script.google.com/macros/s/AKfycbxjbnFhs4Q0dUt9PGbd1z8PlRTzCwu-c6ge2ZsAj9-HqYsdcs_Sj26zql_hXSzZGG_b/exec?action=settings";
+let portalBaseUrl="";
+document.getElementById("date").value=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});
+function esc(v){return String(v||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+async function getPortalBaseUrl(){if(portalBaseUrl)return portalBaseUrl;const s=await fetch(SETTINGS_URL).then(r=>r.json());portalBaseUrl=s.PortalDeploymentURL;if(!portalBaseUrl)throw new Error("Portal is temporarily unavailable.");return portalBaseUrl}
+async function loadVolunteers(){const sel=document.getElementById("volunteer");try{const base=await getPortalBaseUrl(),d=await fetch(base+"?action=additionalFoodVolunteers&store=Baytowne").then(r=>r.json());if(!d||!d.success)throw Error();sel.innerHTML='<option value="">Select your name</option>'+d.volunteers.map(v=>'<option>'+esc(v)+'</option>').join("")}catch(e){sel.innerHTML='<option value="">Unable to load volunteers</option>';document.getElementById("status").textContent="Volunteer list is temporarily unavailable."}}
+document.querySelectorAll('input[name="puke"]').forEach(el=>el.addEventListener("change",()=>{
+ const yes=el.value==="Yes"&&el.checked;document.getElementById("yesFields").classList.toggle("hidden",!yes);document.getElementById("noDone").classList.toggle("hidden",yes);
+ if(!yes){document.querySelectorAll('input[name="known"]').forEach(x=>x.checked=false);document.getElementById("horker").value="";document.getElementById("details").value="";document.getElementById("horkerFields").classList.add("hidden")}
+}));
+document.querySelectorAll('input[name="known"]').forEach(el=>el.addEventListener("change",()=>{
+ document.getElementById("horkerFields").classList.toggle("hidden",!(el.value==="Yes"&&el.checked));
+ if(el.value==="No"&&el.checked)document.getElementById("horker").value="Unknown Horker";
+}));
+document.getElementById("pukeForm").addEventListener("submit",async e=>{
+ e.preventDefault();const puke=document.querySelector('input[name="puke"]:checked')?.value||"";const known=document.querySelector('input[name="known"]:checked')?.value||"";
+ const volunteer=document.getElementById("volunteer").value,date=document.getElementById("date").value,shift=document.getElementById("shift").value;
+ let horker=document.getElementById("horker").value,details=document.getElementById("details").value.trim();
+ if(!volunteer||!date||!shift||!puke)return;
+ if(puke==="Yes"&&!known){document.getElementById("status").style.color="#b91c1c";document.getElementById("status").textContent="Please answer whether you know whodunnit.";return}
+ if(puke==="Yes"&&known==="Yes"&&!horker){document.getElementById("status").style.color="#b91c1c";document.getElementById("status").textContent="Please choose Peter, Paul, or Unknown Horker.";return}
+ if(puke==="Yes"&&known==="No")horker="Unknown Horker";
+ const btn=document.getElementById("submitButton"),status=document.getElementById("status");btn.disabled=true;status.style.color="#475569";status.textContent="Saving…";
+ try{const base=await getPortalBaseUrl();const url=base+"?action=addPukeLog&volunteer="+encodeURIComponent(volunteer)+"&date="+encodeURIComponent(date)+"&shift="+encodeURIComponent(shift)+"&puke="+encodeURIComponent(puke)+"&known="+encodeURIComponent(known)+"&horker="+encodeURIComponent(horker)+"&details="+encodeURIComponent(details);
+ const d=await fetch(url).then(r=>r.json());if(!d||!d.success)throw new Error(d&&d.message||"Could not save.");
+ status.style.color="#166534";status.textContent="Saved to Puke Log.";setTimeout(()=>location.href="baytowne.html",900)
+ }catch(err){status.style.color="#b91c1c";status.textContent=err.message||"Could not save. Please try again."}finally{btn.disabled=false}
+});
+loadVolunteers();
+</script></body></html>
