@@ -54,6 +54,11 @@ header{
     gap:18px;
 }
 
+.doseText{
+    white-space:pre-line;
+    line-height:1.6;
+}
+
 </style>
 
 </head>
@@ -89,6 +94,16 @@ Loading medication instructions...
 </div>
 
 <script>
+
+// Preserve meal-by-meal directions while treating spreadsheet text as plain text.
+function formatMedicationText(value) {
+    const text = String(value ?? "");
+    const escaped = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    if (!["Breakfast", "Lunch", "Dinner"].every(meal => new RegExp("\\b" + meal + ":", "i").test(text))) {
+        return escaped;
+    }
+    return escaped.replace(/\s*\b(Breakfast|Lunch|Dinner):\s*/gi, (match, meal) => "\n<strong>" + meal + ":</strong> ").trim();
+}
 
 const params = new URLSearchParams(window.location.search);
 
@@ -161,9 +176,7 @@ if (med.dinner) meals.push("🍽 Dinner");
             ${
                 med.instructions
                 ? `<div style="font-weight:bold;">Instructions</div>
-                   <div style="margin-bottom:12px;">
-                     ${med.instructions}
-                   </div>`
+                   <div class="doseText" style="margin-bottom:12px;">${formatMedicationText(med.instructions)}</div>`
                 : ""
             }
 
@@ -175,7 +188,7 @@ if (med.dinner) meals.push("🍽 Dinner");
             ${
                 med.notes
                 ? `<div style="font-weight:bold;">Notes</div>
-                   <div>${med.notes}</div>`
+                   <div class="doseText">${formatMedicationText(med.notes)}</div>`
                 : ""
             }
         `;
