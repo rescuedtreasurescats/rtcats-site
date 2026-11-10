@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cleaning · RTPA</title>
+  <link rel="preconnect" href="https://script.google.com" crossorigin>
+  <link rel="stylesheet" href="cleaning.css?v=1">
+  <script src="cleaning.js?v=1" defer></script>
+</head>
+<body>
+  <header id="storeHeader">Cat Room Cleaning</header>
+  <main>
+    <a id="back" class="back" href="index.html">← Back to HQ</a>
+    <section class="intro">
+      <span class="eyebrow">A little teamwork, a happier cat room</span>
+      <h1>🧹 Cleaning</h1>
+      <p>See what needs doing, then record the jobs you actually completed.</p>
+    </section>
+    <section class="card context" aria-label="Your shift">
+      <label>Your name<select id="volunteer" required disabled><option value="">Loading volunteers…</option></select></label>
+      <div class="fields">
+        <label>Date<input id="date" type="date" required></label>
+        <label>Shift<select id="shift" required disabled><option value="">Select your shift</option></select></label>
+      </div>
+      <p class="hint">Everyone at this store sees the same checklist. Each-shift jobs are tracked separately for each shift.</p>
+    </section>
+    <div class="list-heading"><h2 id="listTitle">Jobs to do</h2><button id="refresh" class="quiet" type="button">↻ Refresh</button></div>
+    <p id="progress" class="hint" aria-live="polite">Loading the shared checklist…</p>
+    <div id="status" class="status" role="status" aria-live="polite"></div>
+    <div id="jobs" aria-busy="true"></div>
+    <p id="empty" class="card" hidden>No jobs are listed for this shift yet.</p>
+    <p class="hint footer-note">Weekly jobs run Monday–Sunday; monthly jobs run by calendar month. Points will appear when coordinators assign them. For a correction to saved work, contact a coordinator.</p>
+    <noscript><p class="card">Please enable JavaScript to use the cleaning checklist.</p></noscript>
+  </main>
+  <div class="savebar"><div><span id="selectedCount">No jobs selected</span><button id="save" type="button" disabled>Save completed jobs</button></div></div>
+</body>
+</html>
