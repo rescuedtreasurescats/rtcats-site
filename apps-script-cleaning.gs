@@ -63,7 +63,7 @@ function cleaningJobs_(ss,store,shift) {
   const seen = new Set();
   return values.filter(r => /^(true|yes)$/i.test(String(get(r,'Active'))) &&
     ['Both','All',store].indexOf(String(get(r,'Store')).trim()) >= 0 &&
-    ['All',shift].indexOf(String(get(r,'Shift')||'All').trim()) >= 0
+    ['All','All shifts',shift].indexOf(String(get(r,'Shift')||'All').trim()) >= 0
   ).map(r => {
     const id = String(get(r,'Task ID')||'').trim(), frequency = String(get(r,'Frequency')||'').trim();
     if (!id || seen.has(id) || CLEANING_FREQUENCIES_.indexOf(frequency) < 0) throw new Error('A job needs a unique ID and valid frequency. Please contact a coordinator.');
@@ -188,7 +188,7 @@ function cleaningFillJobIds_(ss) {
       // Save the counter first so a failed write can never reuse an existing number.
       props.setProperty(key,String(next));
       sh.getRange(i+2,col('Task ID')+1).setValue(id);
-      [['Active',false],['Order',next*10],['Store','Both'],['Shift','All']].forEach(([name,value]) => {
+      [['Active',false],['Order',next*10],['Store','Both'],['Shift','All shifts']].forEach(([name,value]) => {
         if (r[col(name)] === '' || r[col(name)] == null) sh.getRange(i+2,col(name)+1).setValue(value);
       });
       assigned++;
