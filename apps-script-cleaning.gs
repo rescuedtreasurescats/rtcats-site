@@ -171,3 +171,39 @@ function CHECK_CLEANING_SETUP() {
   console.log(JSON.stringify(results));
   return results;
 }
+
+function cleaningFillJobIds_(ss) {
+  const lock = LockService.getScriptLock();
+  if (!lock.tryLock(20000)) throw new Error('Job numbering is busy. Try editing the job again.');
+  try {
+    const sh = ss.getSheetByName('Job List'), values = sh.getDataRange().getValues();
+    const h = values[0], col = name => h.indexOf(name);
+    const props = PropertiesService.getScriptProperties(), key = 'CleaningNextJobNumber:'+ss.getId();
+    let next = Math.max(0,Number(props.getProperty(key))||0);
+    values.slice(1).forEach(r => { const m = /^CLN-(\d+)$/.exec(String(r[col('Task ID')])); if(m) next = Math.max(next,Number(m[1])); });
+    let assigned = 0;
+    values.slice(1).forEach((r,i) => {
+      if (!String(r[col('Job')]||'').trim() || String(r[col('Task ID')]||'').trim()) return;
+      const id = 'CLN-'+String(++next).padStart(3,'0');
+      // Save the counter first so a failed write can never reuse an existing number.
+      props.setProperty(key,String(next));
+      sh.getRange(i+2,col('Task ID')+1).setValue(id);
+      [['Active',false],['Order',next*10],['Store','Both'],['Shift','All']].forEach(([name,value]) => {
+        if (r[col(name)] === '' || r[col(name)] == null) sh.getRange(i+2,col(name)+1).setValue(value);
+      });
+      assigned++;
+    });
+    return assigned;
+  } finally { lock.releaseLock(); }
+}
+function onCleaningJobEdit(e) {
+  if (!e || !e.range || e.range.getSheet().getName() !== 'Job List' || e.range.getLastRow() < 2) return;
+  cleaningFillJobIds_(e.source);
+}
+function SETUP_CLEANING_JOB_NUMBERS() {
+  const ss = cleaningWorkbook_();
+  const exists = ScriptApp.getProjectTriggers().some(t => t.getHandlerFunction() === 'onCleaningJobEdit' && t.getTriggerSourceId() === ss.getId());
+  if (!exists) ScriptApp.newTrigger('onCleaningJobEdit').forSpreadsheet(ss).onEdit().create();
+  const assigned = cleaningFillJobIds_(ss);
+  console.log(JSON.stringify({automaticJobNumbers:true,assigned}));
+}
