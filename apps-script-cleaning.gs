@@ -78,7 +78,12 @@ function cleaningHistory_(ss) {
   if (!sh) throw new Error('Cleaning History is unavailable.');
   const rows = sh.getDataRange().getValues(), h = rows.shift() || [];
   if (CLEANING_HEADERS_.some((x,i) => h[i] !== x)) throw new Error('Cleaning History columns have changed. Please contact a coordinator.');
-  return {sheet:sh,rows:rows.filter(r => r[0])};
+  return {sheet:sh,rows:rows.filter(r => r[0]).map(r => {
+    // Sheets may coerce ISO work dates and daily/weekly period keys into dates.
+    if (r[2] instanceof Date) r[2] = Utilities.formatDate(r[2],'America/New_York','yyyy-MM-dd');
+    if (r[8] instanceof Date) r[8] = Utilities.formatDate(r[8],'America/New_York',r[7] === 'Monthly' ? 'yyyy-MM' : 'yyyy-MM-dd');
+    return r;
+  })};
 }
 function cleaningCompletion_(rows,job,store,date,shift) {
   const key = cleaningPeriod_(job.frequency,date,shift);

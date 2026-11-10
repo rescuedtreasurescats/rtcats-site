@@ -102,3 +102,13 @@ test('notes cannot become spreadsheet formulas',() => {
   c.portalSaveCleaning({...payload,items:[{taskId:'CLN-001',note:'=IMPORTXML("bad")'}]});
   assert.equal(rows[0][14],"'=IMPORTXML(\"bad\")");
 });
+test('Sheets-coerced dates retain completion status and prevent duplicate credit',() => {
+  const c = vm.createContext({Utilities:{formatDate:(_date,_tz,format) => format === 'yyyy-MM' ? '2026-11' : '2026-11-09'}});
+  vm.runInContext(source,c);
+  vm.runInContext(`
+    const row = ['QA','2026-11-09T20:00:00-05:00',new Date('2026-11-09T05:00:00Z'),'Brighton','Breakfast','CLN-001','Bowls','Daily',new Date('2026-11-09T05:00:00Z'),'V1','Jane A',10,1,10,'','Completed'];
+    const fakeSheet = {getDataRange:() => ({getValues:() => [CLEANING_HEADERS_,row]})};
+    const history = cleaningHistory_({getSheetByName:() => fakeSheet});
+    if (!cleaningCompletion_(history.rows,{id:'CLN-001',frequency:'Daily'},'Brighton','2026-11-09','Breakfast').done) throw Error('Date coercion lost completion');
+  `,c);
+});

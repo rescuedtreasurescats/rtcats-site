@@ -13,6 +13,10 @@
   function status(message,error = false) { $('status').textContent = message; $('status').classList.toggle('error',error); }
   function updateSave() {
     const count = selected().length;
+    $('date').disabled = busy || loading;
+    $('volunteer').disabled = busy || loading || !data;
+    $('shift').disabled = busy || loading || !data;
+    $('refresh').disabled = busy || loading;
     $('selectedCount').textContent = count ? count+' job'+(count === 1 ? '' : 's')+' selected' : 'No jobs selected';
     $('save').disabled = busy || loading || !count || !$('date').value || !$('volunteer').value || !$('shift').value;
     document.querySelectorAll('.job-check').forEach(el => el.closest('.job').classList.toggle('picked',el.checked));
@@ -81,7 +85,10 @@
       $('shift').innerHTML = '<option value="">Select your shift</option>'+result.shifts.map(s => '<option'+(s === shift ? ' selected' : '')+'>'+escape(s)+'</option>').join('');
       $('shift').disabled = false;
       render();
-    } catch (err) { status(err.message || 'Unable to load the checklist.',true); }
+    } catch (err) {
+      data = null; $('jobs').innerHTML = ''; $('progress').textContent = 'Checklist unavailable. Use Refresh to try again.';
+      status(err.message || 'Unable to load the checklist.',true);
+    }
     finally { loading = false; $('jobs').setAttribute('aria-busy','false'); updateSave(); }
   }
   async function save(items,mode = 'complete') {
