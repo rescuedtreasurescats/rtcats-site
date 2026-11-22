@@ -5,6 +5,9 @@
   const $ = id => document.getElementById(id);
   let baseUrl = '', data = null, busy = false, loading = false, request = null;
   const groups = ['Each Shift','Daily','Weekly','Monthly','As Needed'];
+  // Daily jobs with this title prefix are pinned until coordinators remove it.
+  const bonusDailyPrefix = /^BONUS DAILY:\s*/i;
+  const isBonusDaily = job => job.frequency === 'Daily' && bonusDailyPrefix.test(job.title);
   const escape = value => String(value || '').replace(/[&<>"']/g,c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const newId = () => crypto.randomUUID ? crypto.randomUUID() : Date.now()+'-'+Math.random().toString(36).slice(2);
   const readPreference = key => { try { return localStorage.getItem('cleaning:'+store+':'+key) || ''; } catch { return ''; } };
@@ -30,15 +33,19 @@
   }
   function render() {
     const actor = $('volunteer').value, html = [];
-    groups.forEach(frequency => {
-      const jobs = data.jobs.filter(j => j.frequency === frequency);
+    const sections = [{label:'BONUS daily tasks — temporary',bonus:true,jobs:data.jobs.filter(isBonusDaily)}].concat(
+      groups.map(frequency => ({label:frequency,jobs:data.jobs.filter(j => j.frequency === frequency && !isBonusDaily(j))}))
+    );
+    sections.forEach(({label,bonus,jobs}) => {
       if (!jobs.length) return;
-      html.push('<section aria-label="'+escape(frequency)+'"><h3>'+escape(frequency)+'</h3>');
+      html.push('<section'+(bonus ? ' class="bonus-daily"' : '')+' aria-label="'+escape(label)+'"><h3>'+escape(label)+'</h3>'+
+        (bonus ? '<p class="bonus-explainer">Please do these <strong>daily if possible</strong> while cats are being treated for parasites. Completed jobs stay checked for the rest of the day at this store.</p>' : ''));
       jobs.forEach(job => {
         const pts = job.points == null ? 'Points to be set' : job.points+' point'+(job.points === 1 ? '' : 's');
         const index = data.jobs.indexOf(job);
+        const title = bonus ? job.title.replace(bonusDailyPrefix,'') : job.title;
         html.push('<article class="card job'+(job.done ? ' done' : '')+'" data-task="'+escape(job.id)+'">'+
-          '<label class="job-label"><input class="job-check" type="checkbox" data-id="'+escape(job.id)+'"'+(job.done ? ' checked disabled' : '')+' aria-label="'+escape(job.title)+'"><span class="job-content"><span class="job-heading"><span class="job-title">'+escape(job.title)+'</span><span class="points">'+escape(pts)+'</span></span>'+
+          '<label class="job-label"><input class="job-check" type="checkbox" data-id="'+escape(job.id)+'"'+(job.done ? ' checked disabled' : '')+' aria-label="'+escape(title)+'"><span class="job-content"><span class="job-heading"><span class="job-title">'+escape(title)+'</span><span class="points">'+escape(pts)+'</span></span>'+
           (job.instructions ? '<span class="instructions">'+escape(job.instructions)+'</span>' : '')+'</span></label>'+
           (job.last ? '<p class="completion">'+(job.frequency === 'As Needed' ? 'Last done: ' : '✓ Completed: ')+escape(job.last.names.join(' + '))+' · '+escape(displayTime(job.last.at))+'</p>' : '')+
           (job.issue ? '<p class="issue"><b>Needs attention:</b> '+escape(job.issue.note)+'<br>'+escape(job.issue.name)+' · '+escape(displayTime(job.issue.at))+'</p>' : '')+
