@@ -29,18 +29,15 @@ function cleaningWorkbook_() {
   if (!row || !row[1]) throw new Error('Cleaning is not configured yet. Please contact a coordinator.');
   return SpreadsheetApp.openById(String(row[1]).trim());
 }
-function cleaningVolunteers_(store) {
-  // Use the same active/store rules as the Daily Form and Additional Food name lists.
-  const allowed = portalGetAdditionalFoodVolunteers(store).volunteers;
+function cleaningVolunteers_() {
   const sheet = getDatabaseSheet(CONFIG.SHEETS.VOLUNTEERS), headers = getHeaderMap(sheet);
   const result = sheet.getDataRange().getDisplayValues().slice(1).filter(r =>
     String(getValueByHeader_(r,headers,'Active')).trim() === 'Yes' &&
-    String(getValueByHeader_(r,headers,store)).trim() === 'Yes' &&
     !/(^|,)\s*(Inactive|Leave)\s*(,|$)/i.test(String(getValueByHeader_(r,headers,'Volunteer Status')))
   ).map(r => ({
     id:String(getValueByHeader_(r,headers,'Volunteer ID')||'').trim(),
     name:String(getValueByHeader_(r,headers,'Display Name')||getValueByHeader_(r,headers,'Name')||'').trim()
-  })).filter(v => v.id && allowed.indexOf(v.name) >= 0);
+  })).filter(v => v.id && v.name);
   const seen = new Set();
   result.forEach(v => { if (seen.has(v.id)) throw new Error('Duplicate volunteer identity; please contact a coordinator.'); seen.add(v.id); });
   return result.sort((a,b) => a.name.localeCompare(b.name));
@@ -106,7 +103,7 @@ function portalGetCleaning(p) {
   if (shift && shifts.indexOf(shift) < 0) throw new Error('Choose a current shift.');
   const ss = cleaningWorkbook_(), history = cleaningHistory_(ss);
   const jobs = cleaningJobs_(ss,store,shift || 'All').map(job => Object.assign({},job,cleaningCompletion_(history.rows,job,store,date,shift)));
-  return {success:true,store,date,today:cleaningToday_(),shifts,volunteers:cleaningVolunteers_(store),jobs,weekStarts:'Monday'};
+  return {success:true,store,date,today:cleaningToday_(),shifts,volunteers:cleaningVolunteers_(),jobs,weekStarts:'Monday'};
 }
 function cleaningSafeCell_(v) { return typeof v === 'string' && /^[=+@-]/.test(v) ? "'"+v : v; }
 function portalSaveCleaning(p) {
@@ -114,7 +111,7 @@ function portalSaveCleaning(p) {
   if (cleaningShifts_(store).indexOf(shift) < 0) throw new Error('Choose your shift.');
   const request = String(p.requestId||'');
   if (!/^[a-zA-Z0-9-]{8,80}$/.test(request)) throw new Error('Please reload the checklist and try again.');
-  const actorId = String(p.volunteerId||''), volunteers = cleaningVolunteers_(store);
+  const actorId = String(p.volunteerId||''), volunteers = cleaningVolunteers_();
   const actor = volunteers.find(v => v.id === actorId);
   if (!actor) throw new Error('Choose your name from the current volunteer list.');
   if (!Array.isArray(p.items) || !p.items.length || p.items.length > 100) throw new Error('Select the jobs you completed.');
@@ -136,7 +133,7 @@ function portalSaveCleaning(p) {
       if (mode === 'complete' && cleaningCompletion_(history.rows,job,store,date,shift).done) { skipped.push(job.id); return; }
       const ids = mode === 'issue' ? [actorId] : [actorId].concat(Array.isArray(item.helpers) ? item.helpers.map(String) : []);
       if (ids.length > 6 || new Set(ids).size !== ids.length) throw new Error('Choose each helper only once.');
-      const people = ids.map(id => { const person = volunteers.find(v => v.id === id); if (!person) throw new Error('A helper is not active for this store.'); return person; });
+      const people = ids.map(id => { const person = volunteers.find(v => v.id === id); if (!person) throw new Error('A helper is not active.'); return person; });
       people.forEach(person => rows.push([
         completionId,now,date,store,shift,job.id,job.title,job.frequency,cleaningPeriod_(job.frequency,date,shift),
         person.id,person.name,mode === 'complete' && job.points !== null ? job.points : '',people.length,
