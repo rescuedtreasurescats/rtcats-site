@@ -30,8 +30,7 @@ function portalGetAdditionalFoodVolunteers(store) {
   const names = data.slice(1).filter(row => {
     const active = String(getValueByHeader_(row, headers, "Active") || "").trim();
     const status = String(getValueByHeader_(row, headers, "Volunteer Status") || "");
-    const storeAccess = String(getValueByHeader_(row, headers, store) || "").trim();
-    return active === "Yes" && storeAccess === "Yes" && !/(^|,)\s*(Inactive|Leave)\s*(,|$)/i.test(status);
+    return active === "Yes" && !/(^|,)\s*(Inactive|Leave)\s*(,|$)/i.test(status);
   }).map(row => String(
     getValueByHeader_(row, headers, "Display Name") ||
     getValueByHeader_(row, headers, "Name") || ""
@@ -66,7 +65,7 @@ function portalAddAdditionalFood(store, volunteer, date, shift, amount, note) {
   }
 
   const volunteers = portalGetAdditionalFoodVolunteers(store).volunteers;
-  if (volunteers.indexOf(volunteer) < 0) throw new Error("Volunteer is not active for this store.");
+  if (volunteers.indexOf(volunteer) < 0) throw new Error("Volunteer is not active.");
 
   const sheet = getDatabase().getSheetByName(formSheets[store]);
   if (!sheet) throw new Error("Store feeding sheet is unavailable.");
